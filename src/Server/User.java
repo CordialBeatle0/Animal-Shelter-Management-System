@@ -1,6 +1,11 @@
 package Server;
 
-public class User implements Observer {
+import RMI.UserRMI;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class User extends UnicastRemoteObject implements Observer, UserRMI {
     private int ID;
     private String name;
     private Account account;
@@ -11,7 +16,7 @@ public class User implements Observer {
     private TrainingROI trainingVideos;
     
     public User(int ID, String name, Account account, String phoneNumber, String address, Payment paymentType,
-                Subscription subscription, TrainingROI trainingVideos) {
+                Subscription subscription, TrainingROI trainingVideos) throws RemoteException {
         this.ID = ID;
         this.name = name;
         this.account = account;
@@ -86,7 +91,7 @@ public class User implements Observer {
         this.trainingVideos = trainingVideos;
     }
     
-    public void signUp(User user) {
+    public void signUp(User user) throws RemoteException {
     
     }
     

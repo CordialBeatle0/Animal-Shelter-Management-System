@@ -1,8 +1,12 @@
 package Server;
 
+import RMI.VolunteerRMI;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Volunteer {
+public class Volunteer extends UnicastRemoteObject implements VolunteerRMI {
     private int ID;
     private String name;
     private Account account;
@@ -11,7 +15,7 @@ public class Volunteer {
     private ArrayList<VolunteerTask> tasks;
     
     public Volunteer(int ID, String name, Account account, String phoneNumber, String address,
-                     ArrayList<VolunteerTask> tasks) {
+                     ArrayList<VolunteerTask> tasks) throws RemoteException {
         this.ID = ID;
         this.name = name;
         this.account = account;
@@ -72,11 +76,11 @@ public class Volunteer {
     
     }
     
-    public void signUpToVolunteering() {
+    public void signUpToVolunteering() throws RemoteException {
     
     }
     
-    public void removeVolunteer() {
+    public void removeVolunteer() throws RemoteException {
     
     }
 }

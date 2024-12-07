@@ -1,12 +1,15 @@
 package Server;
 
-public class Item {
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class Item extends UnicastRemoteObject { //TODO: extends unicast for now but not sure if we should keep it
     private int ID;
     private String itemName;
     private int quality;
     private String type;
     
-    public Item(int ID, String itemName, int quality, String type) {
+    public Item(int ID, String itemName, int quality, String type) throws RemoteException {
         this.ID = ID;
         this.itemName = itemName;
         this.quality = quality;
@@ -45,11 +48,11 @@ public class Item {
         this.type = type;
     }
     
-    public void addItem() {
+    public void addItem() throws RemoteException {
         // how no parameters
     }
     
-    public void removeItem() {
+    public void removeItem() throws RemoteException {
         // how no parameters
     }
 }

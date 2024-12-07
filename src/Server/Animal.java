@@ -1,9 +1,13 @@
 package Server;
 
+import RMI.AnimalRMI;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Animal {
+public class Animal extends UnicastRemoteObject implements AnimalRMI {
     private int ID;
     private String name;
     private String animalType;
@@ -15,7 +19,7 @@ public class Animal {
     private boolean fostered;
     
     public Animal(int ID, String name, String animalType, String breed, int age, LocalDateTime lastFeedingTime,
-                  boolean adopted, boolean sponsored, boolean fostered) {
+                  boolean adopted, boolean sponsored, boolean fostered) throws RemoteException {
         this.ID = ID;
         this.name = name;
         this.animalType = animalType;
@@ -99,39 +103,39 @@ public class Animal {
         this.fostered = fostered;
     }
     
-    public void registerAnimal(Animal animal) {
+    public void registerAnimal(Animal animal) throws RemoteException {
     
     }
     
-    public void removeAnimal(int ID) {
+    public void removeAnimal(int ID) throws RemoteException {
     
     }
     
-    public void updateAnimal(Animal animal) {
+    public void updateAnimal(Animal animal) throws RemoteException {
     
     }
     
-    public Animal viewAnimal(Animal animal) {
+    public Animal viewAnimal(Animal animal) throws RemoteException {
         return null;
     }
     
-    public ArrayList<Animal> viewAllAnimals() {
+    public ArrayList<Animal> viewAllAnimals() throws RemoteException {
         return null;
     }
     
-    public void recordFeeding() {
+    public void recordFeeding() throws RemoteException {
     
     }
     
-    public void adoptAnimal(User user) {
+    public void adoptAnimal(User user) throws RemoteException {
     
     }
     
-    public void fosterAnimal(User user) {
+    public void fosterAnimal(User user) throws RemoteException {
     
     }
     
-    public void sponsorAnimal(User user) {
+    public void sponsorAnimal(User user) throws RemoteException {
     
     }
 }

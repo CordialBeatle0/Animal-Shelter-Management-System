@@ -1,10 +1,14 @@
 package Server;
 
+import RMI.TrainingRMI;
+
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Training implements TrainingROI, Publisher {
+public class Training extends UnicastRemoteObject implements TrainingROI, Publisher, TrainingRMI {
     private ArrayList<Observer> observers;
     private int ID;
     private URL url;
@@ -13,7 +17,7 @@ public class Training implements TrainingROI, Publisher {
     private String description;
     
     public Training(ArrayList<Observer> observers, int ID, URL url, LocalDateTime uploadedDate, float runtime,
-                    String description) {
+                    String description) throws RemoteException {
         this.observers = observers;
         this.ID = ID;
         this.url = url;
@@ -70,26 +74,26 @@ public class Training implements TrainingROI, Publisher {
         this.description = description;
     }
     
-    public void uploadTrainingVideo() {
+    public void uploadTrainingVideo() throws RemoteException {
     
     }
     
-    public void removeTrainingVideo() {
+    public void removeTrainingVideo() throws RemoteException {
     
     }
     
     @Override
-    public Training viewTrainingVideo() {
+    public Training viewTrainingVideo() throws RemoteException {
         return null;
     }
     
     @Override
-    public void addObserver(Observer observer) {
+    public void addObserver(Observer observer) throws RemoteException {
     
     }
     
     @Override
-    public void removeObserver(Observer observer) {
+    public void removeObserver(Observer observer) throws RemoteException {
     
     }
     

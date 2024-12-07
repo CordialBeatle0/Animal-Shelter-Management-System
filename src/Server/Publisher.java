@@ -1,9 +1,12 @@
 package Server;
 
-public interface Publisher {
-    public void addObserver(Observer observer);
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface Publisher extends Remote {
+    void addObserver(Observer observer) throws RemoteException;
     
-    public void removeObserver(Observer observer);
+    void removeObserver(Observer observer) throws RemoteException;
     
-    public void notifySubscriber();
+    void notifySubscriber();
 }

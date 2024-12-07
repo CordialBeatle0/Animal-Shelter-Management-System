@@ -1,15 +1,19 @@
 package Server;
 
+import RMI.VolunteerTaskRMI;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 
-public class VolunteerTask {
+public class VolunteerTask extends UnicastRemoteObject implements VolunteerTaskRMI {
     private int ID;
     private String taskName;
     private String type;
     private LocalDateTime date;
     private boolean completionStatus;
     
-    public VolunteerTask(int ID, String taskName, String type, LocalDateTime date, boolean completionStatus) {
+    public VolunteerTask(int ID, String taskName, String type, LocalDateTime date, boolean completionStatus) throws RemoteException {
         this.ID = ID;
         this.taskName = taskName;
         this.type = type;
@@ -57,19 +61,19 @@ public class VolunteerTask {
         this.completionStatus = completionStatus;
     }
     
-    public void addVolunteerTask() {
+    public void addVolunteerTask() throws RemoteException {
     
     }
     
-    public void removeVolunteerTask() {
+    public void removeVolunteerTask() throws RemoteException {
     
     }
     
-    public VolunteerTask viewVolunteerTask() {
+    public VolunteerTask viewVolunteerTask() throws RemoteException {
         return null;
     }
     
-    public void recordTaskCompletion() {
+    public void recordTaskCompletion() throws RemoteException {
     
     }
 }

@@ -1,8 +1,12 @@
 package Server;
 
+import RMI.AppointmentRMI;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 
-public class Appointment {
+public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     private int ID;
     private LocalDateTime date;
     private Doctor assignedDoctor;
@@ -11,7 +15,7 @@ public class Appointment {
     private Animal animal;
     
     public Appointment(int ID, LocalDateTime date, Doctor assignedDoctor, int price, String description,
-                       Animal animal) {
+                       Animal animal) throws RemoteException {
         this.ID = ID;
         this.date = date;
         this.assignedDoctor = assignedDoctor;
@@ -68,19 +72,19 @@ public class Appointment {
         this.animal = animal;
     }
     
-    public void bookAppointment() {
+    public void bookAppointment() throws RemoteException {
     
     }
     
-    public void cancelAppointment() {
+    public void cancelAppointment() throws RemoteException {
     
     }
     
-    public Appointment viewAppointment() {
+    public Appointment viewAppointment() throws RemoteException {
         return null;
     }
     
-    public void recordAppointmentDetail(String details) {
+    public void recordAppointmentDetail(String details) throws RemoteException {
     
     }
 }

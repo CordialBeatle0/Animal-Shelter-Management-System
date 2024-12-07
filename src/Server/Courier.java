@@ -1,11 +1,13 @@
 package Server;
 
+import java.rmi.RemoteException;
+
 public class Courier extends Employee {
     private static int maxCapacity;
     private String assignedLocation;
     
     public Courier(int ID, String name, int age, char gender, String email, String phoneNumber, String address,
-                   Account account, float salary, String assignedLocation) {
+                   Account account, float salary, String assignedLocation) throws RemoteException {
         super(ID, name, age, gender, email, phoneNumber, address, account, salary);
         this.assignedLocation = assignedLocation;
     }

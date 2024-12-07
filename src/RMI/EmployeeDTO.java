@@ -1,12 +1,11 @@
 package RMI;
 
-public class EmployeeDTO {
+import java.io.Serializable;
+
+public class EmployeeDTO implements Serializable {
     private String name;
     private String email;
     private String phoneNumber;
-    
-    public EmployeeDTO() {
-    }
     
     public EmployeeDTO(String name, String email, String phoneNumber) {
         this.name = name;

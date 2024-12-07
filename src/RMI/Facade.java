@@ -1,12 +1,11 @@
 package RMI;
 
-import Server.Account;
 import Server.Employee;
 
 public interface Facade {
-    public EmployeeDTO getEmployeeDTO();
+    EmployeeDTO getEmployeeDTO();
     
-    public Employee getEmployee();
+    Employee getEmployee();
     
-    public void setEmployee(String name, String email, String phoneNumber);
+    void setEmployee(String name, String email, String phoneNumber);
 }

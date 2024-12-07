@@ -1,12 +1,13 @@
 package Server;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class SellingItem extends Item {
+public class SellingItem extends Item { //TODO: Class cant extend Unicast thing what do we do
     private StockStatus stockStatus;
     private float price;
     
-    public SellingItem(int ID, String itemName, int quality, String type, StockStatus stockStatus, float price) {
+    public SellingItem(int ID, String itemName, int quality, String type, StockStatus stockStatus, float price) throws RemoteException {
         super(ID, itemName, quality, type);
         this.stockStatus = stockStatus;
         this.price = price;
@@ -28,15 +29,15 @@ public class SellingItem extends Item {
         this.price = price;
     }
     
-    public void buyItem() {
+    public void buyItem() throws RemoteException {
     
     }
     
-    public SellingItem viewSellingItem() {
+    public SellingItem viewSellingItem() throws RemoteException {
         return null;
     }
     
-    public ArrayList<SellingItem> viewAllSellingItems() {
+    public ArrayList<SellingItem> viewAllSellingItems() throws RemoteException {
         return null;
     }
 }

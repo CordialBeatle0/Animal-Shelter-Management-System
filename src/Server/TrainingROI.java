@@ -1,11 +1,13 @@
 package Server;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface TrainingROI {
-    public static ArrayList<Training> viewAllTrainingVideos() {
+public interface TrainingROI extends Remote {
+    static ArrayList<Training> viewAllTrainingVideos() throws RemoteException {
         return null;
     }
     
-    public Training viewTrainingVideo();
+    Training viewTrainingVideo() throws RemoteException;
 }

@@ -1,12 +1,20 @@
 package Server;
 
-public class Cash implements Payment {
+import RMI.CashRMI;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class Cash extends UnicastRemoteObject implements Payment, CashRMI {
+    public Cash() throws RemoteException {
+    }
+    
     @Override
-    public void makePayment(User user, float amount) {
+    public void makePayment(User user, float amount) throws RemoteException {
     
     }
     
-    public void confirmCashPayment(Courier courier, float amount) {
+    public void confirmCashPayment(Courier courier, float amount) throws RemoteException {
     
     }
 }

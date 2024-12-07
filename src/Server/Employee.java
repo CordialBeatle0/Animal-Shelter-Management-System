@@ -1,6 +1,9 @@
 package Server;
 
-public class Employee {
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class Employee extends UnicastRemoteObject {
     private int ID;
     private String name;
     private int age;
@@ -11,11 +14,11 @@ public class Employee {
     private Account account;
     private float salary;
     
-    public Employee() {
+    public Employee() throws RemoteException {
     }
     
     public Employee(int ID, String name, int age, char gender, String email, String phoneNumber, String address,
-                    Account account, float salary) {
+                    Account account, float salary) throws RemoteException {
         this.ID = ID;
         this.name = name;
         this.age = age;
@@ -25,12 +28,6 @@ public class Employee {
         this.address = address;
         this.account = account;
         this.salary = salary;
-    }
-    
-    public Employee(String name, String email, String phoneNumber) {
-        this.name = name;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
     }
     
     public int getID() {
