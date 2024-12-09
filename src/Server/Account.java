@@ -10,6 +10,9 @@ public class Account extends UnicastRemoteObject implements AccountRMI {
     private String username;
     private String password;
     
+    public Account() throws RemoteException {
+    }
+    
     public Account(int ID, String username, String password) throws RemoteException {
         this.ID = ID;
         this.username = username;

@@ -16,6 +16,9 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
     private float runtime;
     private String description;
     
+    public Training() throws RemoteException {
+    }
+    
     public Training(ArrayList<Observer> observers, int ID, URL url, LocalDateTime uploadedDate, float runtime,
                     String description) throws RemoteException {
         this.observers = observers;

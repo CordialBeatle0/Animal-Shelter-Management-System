@@ -14,6 +14,9 @@ public class Volunteer extends UnicastRemoteObject implements VolunteerRMI {
     private String Address;
     private ArrayList<VolunteerTask> tasks;
     
+    public Volunteer() throws RemoteException {
+    }
+    
     public Volunteer(int ID, String name, Account account, String phoneNumber, String address,
                      ArrayList<VolunteerTask> tasks) throws RemoteException {
         this.ID = ID;

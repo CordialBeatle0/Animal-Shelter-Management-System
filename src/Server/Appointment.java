@@ -14,6 +14,9 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     private String description;
     private Animal animal;
     
+    public Appointment() throws RemoteException {
+    }
+    
     public Appointment(int ID, LocalDateTime date, Doctor assignedDoctor, int price, String description,
                        Animal animal) throws RemoteException {
         this.ID = ID;

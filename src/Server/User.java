@@ -15,6 +15,9 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     private Subscription subscription;
     private TrainingROI trainingVideos;
     
+    public User() throws RemoteException {
+    }
+    
     public User(int ID, String name, Account account, String phoneNumber, String address, Payment paymentType,
                 Subscription subscription, TrainingROI trainingVideos) throws RemoteException {
         this.ID = ID;

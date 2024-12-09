@@ -13,6 +13,9 @@ public class VolunteerTask extends UnicastRemoteObject implements VolunteerTaskR
     private LocalDateTime date;
     private boolean completionStatus;
     
+    public VolunteerTask() throws RemoteException {
+    }
+    
     public VolunteerTask(int ID, String taskName, String type, LocalDateTime date, boolean completionStatus) throws RemoteException {
         this.ID = ID;
         this.taskName = taskName;

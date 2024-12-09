@@ -12,6 +12,9 @@ public class Subscription extends UnicastRemoteObject implements SubscriptionRMI
     private float price;
     private LocalDateTime date;
     
+    public Subscription() throws RemoteException {
+    }
+    
     public Subscription(int ID, boolean status, float price, LocalDateTime date) throws RemoteException {
         this.ID = ID;
         this.status = status;
