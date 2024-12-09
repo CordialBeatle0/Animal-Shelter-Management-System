@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Training extends UnicastRemoteObject implements TrainingROI, Publisher, TrainingRMI {
-    private ArrayList<Observer> observers;
+    private static ArrayList<Observer> observers;
     private int ID;
     private URL url;
     private LocalDateTime uploadedDate;
@@ -19,9 +19,7 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
     public Training() throws RemoteException {
     }
     
-    public Training(ArrayList<Observer> observers, int ID, URL url, LocalDateTime uploadedDate, float runtime,
-                    String description) throws RemoteException {
-        this.observers = observers;
+    public Training(int ID, URL url, LocalDateTime uploadedDate, float runtime, String description) throws RemoteException {
         this.ID = ID;
         this.url = url;
         this.uploadedDate = uploadedDate;
@@ -29,12 +27,12 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
         this.description = description;
     }
     
-    public ArrayList<Observer> getObservers() {
+    public static ArrayList<Observer> getObservers() {
         return observers;
     }
     
-    public void setObservers(ArrayList<Observer> observers) {
-        this.observers = observers;
+    public static void setObservers(ArrayList<Observer> observers) {
+        Training.observers = observers;
     }
     
     public int getID() {
