@@ -8,5 +8,5 @@ public interface Publisher extends Remote {
     
     void removeObserver(Observer observer) throws RemoteException;
     
-    void notifySubscriber();
+    void notifySubscriber() throws RemoteException;
 }
