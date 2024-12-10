@@ -3,16 +3,16 @@ package Server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class Item extends UnicastRemoteObject { //TODO: extends unicast for now but not sure if we should keep it
+public abstract class Item extends UnicastRemoteObject {
     private int ID;
     private String itemName;
-    private int quality;
+    private int quantity;
     private String type;
     
-    public Item(int ID, String itemName, int quality, String type) throws RemoteException {
+    public Item(int ID, String itemName, int quantity, String type) throws RemoteException {
         this.ID = ID;
         this.itemName = itemName;
-        this.quality = quality;
+        this.quantity = quantity;
         this.type = type;
     }
     
@@ -32,12 +32,12 @@ public class Item extends UnicastRemoteObject { //TODO: extends unicast for now 
         this.itemName = itemName;
     }
     
-    public int getQuality() {
-        return quality;
+    public int getQuantity() {
+        return quantity;
     }
     
-    public void setQuality(int quality) {
-        this.quality = quality;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
     
     public String getType() {
@@ -48,11 +48,7 @@ public class Item extends UnicastRemoteObject { //TODO: extends unicast for now 
         this.type = type;
     }
     
-    public void addItem() throws RemoteException {
-        // how no parameters
-    }
+    public abstract void addItem() throws RemoteException;
     
-    public void removeItem() throws RemoteException {
-        // how no parameters
-    }
+    public abstract boolean removeItem() throws RemoteException;
 }

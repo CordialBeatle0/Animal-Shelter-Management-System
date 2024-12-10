@@ -75,30 +75,39 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
     }
     
     public void uploadTrainingVideo() throws RemoteException {
-    
+        Database.uploadTrainingVideo(this);
+        notifySubscriber("A new video has been uploaded");
     }
     
-    public void removeTrainingVideo() throws RemoteException {
-    
+    public boolean removeTrainingVideo() throws RemoteException {
+        return Database.removeTrainingVideo(this);
     }
     
     @Override
     public Training viewTrainingVideo() throws RemoteException {
-        return null;
+        return Database.getTrainingVideo(this.ID);
+    }
+    
+    @Override
+    public ArrayList<Training> viewAllTrainingVideos() throws RemoteException {
+        return Database.getAllTrainingVideos();
     }
     
     @Override
     public void addObserver(Observer observer) throws RemoteException {
-    
+        Database.addObserver(observer);
     }
     
     @Override
     public void removeObserver(Observer observer) throws RemoteException {
-    
+        Database.removeObserver(observer);
     }
     
     @Override
-    public void notifySubscriber() {
-    
+    public void notifySubscriber(String message) throws RemoteException {
+        observers = Database.getAllObservers();
+        for (Observer observer : observers) {
+            observer.updateObserver(message);
+        }
     }
 }
