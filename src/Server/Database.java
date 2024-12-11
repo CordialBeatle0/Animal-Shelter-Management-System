@@ -9,6 +9,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -30,7 +31,10 @@ public class Database {
     static MongoCollection<Document> volunteerTaskCollection;
     static MongoCollection<Document> volunteerCollection;
     static MongoCollection<Document> accountCollection;
+    static MongoCollection<Document> animalCollection;
+    static MongoCollection<Document> animal_UserCollection;
 
+    
     public Database() {
         // Disables Mongo Logs
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
@@ -45,6 +49,9 @@ public class Database {
         volunteerTaskCollection = instance.getCollection("VolunteerTask");
         volunteerCollection = instance.getCollection("Volunteer");
         accountCollection = instance.getCollection("Account");
+        animalCollection = instance.getCollection("Animal");
+        animal_UserCollection = instance.getCollection("Animal_User");
+
     }
 
     public void close() {
@@ -78,7 +85,6 @@ public class Database {
 
         if (task != null) {
             String json = task.toJson();
-            Gson gson = new Gson();
             return gson.fromJson(json, VolunteerTask.class);
         }
 
@@ -119,4 +125,92 @@ public class Database {
                 Updates.set("assignedVolunteer", volunteerID));
     }
 
+
+    // Animnal database functions
+    public static void registerAnimal(Animal animal) {
+        Document document = Document.parse(gson.toJson(animal));
+        animalCollection.insertOne(document);
+    }
+    
+    public static void removeAnimal(int animalID) {
+        animalCollection.deleteOne(Filters.eq("ID", animalID));
+    }
+    
+    public static Animal viewAnimal(Animal animal) {
+        Document animalDoc = animalCollection.find(Filters.eq("ID", animal.getID())).first();
+
+        if (animalDoc != null) {
+            String json = animalDoc.toJson();
+            return gson.fromJson(json, Animal.class);
+        }
+
+        return null;
+    }
+    
+    // this function retrieves all animals. will be used by the admin
+    public static ArrayList<Animal> viewAllAnimals() {
+        ArrayList<Animal> allAnimals = new ArrayList();
+        for (Document animalDoc : animalCollection.find()) {
+            String json = animalDoc.toJson();
+            Animal animal = gson.fromJson(json, Animal.class);
+            allAnimals.add(animal);
+        }
+        return allAnimals;
+    }
+
+    // this is the function that retrieves only the adpotable and fosterable animalss
+    public static ArrayList<Animal> viewAllConditionedAnimals(String animalStatus) {
+        ArrayList<Document> allAnimalsDocs = animalCollection.find(Filters.eq(animalStatus, "false"))
+                .into(new ArrayList<>());
+        ArrayList<Animal> allAnimals = new ArrayList();
+        for (Document animalDoc : allAnimalsDocs) {
+            String json = animalDoc.toJson();
+            Animal animal = gson.fromJson(json, Animal.class);
+            allAnimals.add(animal);
+        }
+        return allAnimals;
+    }
+    
+    // this function returns with the animals that are not adopted or fostered 
+    public static ArrayList<Animal> viewAllSponsorableAnimals() {
+        ArrayList<Document> allAnimalsDocs = animalCollection.find(Filters.and(Filters.eq("adopted", false), Filters.eq("fostered", false)))
+                .into(new ArrayList<>());
+        ArrayList<Animal> allAnimals = new ArrayList();
+        for (Document animalDoc : allAnimalsDocs) {
+            String json = animalDoc.toJson();
+            Animal animal = gson.fromJson(json, Animal.class);
+            allAnimals.add(animal);
+        }
+        return allAnimals;
+    }
+
+   
+    public static void recordFeeding(Animal animal) {
+        animalCollection.updateOne(Filters.eq("ID", animal.getID()),
+                Updates.set("lastFeedingTime", LocalDateTime.now().toString()));
+    }
+    
+    public static void adoptAnimal(Animal animal, User user) {
+        animalCollection.updateOne(Filters.eq("ID", animal.getID()), Updates.set("adopted", true));
+        Document document = new Document("animalID", animal.getID()).append("userID", user.getID())
+                .append("relationshipType", "adopted");
+        animal_UserCollection.insertOne(Document.parse(gson.toJson(document)));
+    }
+    
+    public static void fosterAnimal(Animal animal, User user) {
+        animalCollection.updateOne(Filters.eq("ID", animal.getID()), Updates.set("fostered", true));
+        Document document = new Document("animalID", animal.getID()).append("userID", user.getID())
+                .append("relationshipType", "fostered");
+        animal_UserCollection.insertOne(Document.parse(gson.toJson(document)));
+   
+    }
+    
+    public static void sponsorAnimal(Animal animal, User user) {
+        animalCollection.updateOne(Filters.eq("ID", animal.getID()), Updates.set("sponsored", true));
+        Document document = new Document("animalID", animal.getID()).append("userID", user.getID())
+                .append("relationshipType", "sponsored");
+        animal_UserCollection.insertOne(Document.parse(gson.toJson(document)));
+    
+    }
+    
 }
