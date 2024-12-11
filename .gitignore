@@ -25,3 +25,7 @@ replay_pid*
 nbproject/private/config.properties
 nbproject/private/private.properties
 nbproject/project.properties
+.vscode/settings.json
+build/built-jar.properties
+dist/README.TXT
+nbproject/private/private.xml
