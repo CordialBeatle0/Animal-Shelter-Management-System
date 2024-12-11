@@ -14,11 +14,6 @@ public class EmployeeFacade extends UnicastRemoteObject implements Facade {
     }
     
     @Override
-    public Employee getEmployee() {
-        return employee;
-    }
-    
-    @Override
     public void setEmployee(String name, String email, String phoneNumber) {
         employee.setName(name);
         employee.setEmail(email);
