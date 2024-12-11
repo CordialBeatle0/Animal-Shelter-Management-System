@@ -1,5 +1,7 @@
 package Server;
 
+import RMI.Observer;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 

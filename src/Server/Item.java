@@ -50,5 +50,5 @@ public abstract class Item extends UnicastRemoteObject {
     
     public abstract void addItem() throws RemoteException;
     
-    public abstract boolean removeItem() throws RemoteException;
+    public abstract void removeItem() throws RemoteException;
 }

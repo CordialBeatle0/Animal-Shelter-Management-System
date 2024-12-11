@@ -35,8 +35,8 @@ public class SellingItem extends Item {
     }
     
     @Override
-    public boolean removeItem() throws RemoteException {
-        return Database.removeSellingItem(this);
+    public void removeItem() throws RemoteException {
+        Database.removeSellingItem(this);
     }
     
     public void buyItem(int quantityRequired) throws RemoteException, Exception {

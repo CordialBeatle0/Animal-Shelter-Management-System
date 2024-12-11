@@ -1,5 +1,6 @@
 package Server;
 
+import RMI.Observer;
 import RMI.TrainingRMI;
 
 import java.rmi.RemoteException;
@@ -11,7 +12,7 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
     private static ArrayList<Observer> observers;
     private int ID;
     private String url;
-    private LocalDateTime uploadedDate;
+    private LocalDateTime uploadedDate; // TODO: Maybe change to string
     private float runtime;
     private String description;
     
@@ -79,8 +80,8 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
         notifySubscriber("A new video has been uploaded");
     }
     
-    public boolean removeTrainingVideo() throws RemoteException {
-        return Database.removeTrainingVideo(this);
+    public void removeTrainingVideo() throws RemoteException {
+        Database.removeTrainingVideo(this);
     }
     
     @Override
@@ -94,12 +95,12 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
     }
     
     @Override
-    public void addObserver(Observer observer) throws RemoteException {
+    public void addObserver(Observer observer) {
         Database.addObserver(observer);
     }
     
     @Override
-    public void removeObserver(Observer observer) throws RemoteException {
+    public void removeObserver(Observer observer) {
         Database.removeObserver(observer);
     }
     

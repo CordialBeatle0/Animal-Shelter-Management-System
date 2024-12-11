@@ -25,8 +25,8 @@ public class UtilityItem extends Item {
     }
     
     @Override
-    public boolean removeItem() throws RemoteException {
-        return Database.removeUtilityItem(this);
+    public void removeItem() throws RemoteException {
+        Database.removeUtilityItem(this);
     }
     
     public ArrayList<UtilityItem> purchaseInventory() throws RemoteException {

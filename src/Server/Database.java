@@ -1,11 +1,13 @@
 package Server;
 
+import RMI.Observer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
 
 import java.time.LocalDateTime;
@@ -25,13 +27,13 @@ public class Database {
     private MongoClient mongoClient;
     
     // all collections
-    private static final MongoCollection<Document> trainingCollection = instance.getCollection("Training");
-    private static final MongoCollection<Document> observerCollection = instance.getCollection("Observer");
-    private static final MongoCollection<Document> accountCollection = instance.getCollection("Account");
-    private static final MongoCollection<Document> userCollection = instance.getCollection("User");
-    private static final MongoCollection<Document> employeeCollection = instance.getCollection("Employee");
-    private static final MongoCollection<Document> sellingItemCollection = instance.getCollection("SellingItem");
-    private static final MongoCollection<Document> utilityItemCollection = instance.getCollection("UtilityItem");
+    private static MongoCollection<Document> trainingCollection;
+    private static MongoCollection<Document> observerCollection;
+    private static MongoCollection<Document> accountCollection;
+    private static MongoCollection<Document> userCollection;
+    private static MongoCollection<Document> employeeCollection;
+    private static MongoCollection<Document> sellingItemCollection;
+    private static MongoCollection<Document> utilityItemCollection;
     
     
     public Database() {
@@ -43,6 +45,14 @@ public class Database {
             mongoClient = new MongoClient("localhost", 27017);
             instance = mongoClient.getDatabase("animal-shelter");
         }
+        
+        trainingCollection = instance.getCollection("Training");
+        observerCollection = instance.getCollection("Observer");
+        accountCollection = instance.getCollection("Account");
+        userCollection = instance.getCollection("User");
+        employeeCollection = instance.getCollection("Employee");
+        sellingItemCollection = instance.getCollection("SellingItem");
+        utilityItemCollection = instance.getCollection("UtilityItem");
     }
     
     public void close() {
@@ -51,18 +61,12 @@ public class Database {
     
     // Training methods
     public static void uploadTrainingVideo(Training training) {
-        Document document = new Document("ID", training.getID())
-                .append("url", training.getUrl())
-                .append("uploadedDate", training.getUploadedDate().toString())
-                .append("runtime", training.getRuntime())
-                .append("description", training.getDescription());
-        
-        trainingCollection.insertOne(Document.parse(gson.toJson(document)));
+        trainingCollection.insertOne(Document.parse(gson.toJson(training)));
     }
     
     // returns true if the training video was removed successfully
-    public static boolean removeTrainingVideo(Training training) {
-        return trainingCollection.deleteOne(Filters.eq("ID", training.getID())).wasAcknowledged();
+    public static void removeTrainingVideo(Training training) {
+        trainingCollection.deleteOne(Filters.eq("ID", training.getID()));
     }
     
     public static ArrayList<Observer> getAllObservers() {
@@ -100,13 +104,17 @@ public class Database {
         observerCollection.deleteOne(Filters.eq("ID", user.getID()));
     }
     
+    // User methods
+    public static void signUp(User user) {
+        userCollection.insertOne(Document.parse(gson.toJson(user)));
+    }
+    
     public static void addNotification(String message) {
         Document document = new Document("notification", message);
         observerCollection.insertOne(Document.parse(gson.toJson(document)));
     }
     
     // Account methods
-    
     private static int getIDOfAccount(String username, String password) {
         Document document = accountCollection.find(Filters.and(Filters.eq("username", username),
                 Filters.eq("password", password))).first();
@@ -156,32 +164,42 @@ public class Database {
     }
     
     public static void updateUserAccount(User user, String username, String password) {
-        Document document = new Document("ID", user.getID())
-                .append("username", username)
-                .append("password", password);
-        userCollection.updateOne(Filters.eq("ID", user.getID()), Document.parse(gson.toJson(document)));
+        Document document = new Document("username", username).append("password", password);
+        Document updateOperation = new Document("$set", document);
+        
+        userCollection.updateOne(Filters.eq("ID", user.getID()), updateOperation);
     }
+    
     
     public static void updateSpecialisedAccount(Specialised specialised, String username, String password) {
         Document document = new Document("ID", specialised.getID())
                 .append("username", username)
                 .append("password", password);
-        employeeCollection.updateOne(Filters.eq("ID", specialised.getID()), Document.parse(gson.toJson(document)));
+        Document updateOperation = new Document("$set", document);
+        
+        employeeCollection.updateOne(Filters.eq("ID", specialised.getID()), updateOperation);
     }
     
     // Selling item methods
     public static void addSellingItem(SellingItem item) {
-        Document document = new Document("ID", item.getID())
-                .append("itemName", item.getItemName())
-                .append("quality", item.getQuantity())
-                .append("type", item.getType())
-                .append("price", item.getPrice());
+        // if item already exists
+        Document document = sellingItemCollection.find(Filters.eq("itemName", item.getItemName())).first();
+        if (document != null) {
+            // add the quantity of the current item with the new item
+            SellingItem existingItem = gson.fromJson(document.toJson(), SellingItem.class);
+            int existingQuantity = existingItem.getQuantity();
+            int newQuantity = existingQuantity + item.getQuantity();
+            sellingItemCollection.updateOne(Filters.eq("itemName", item.getItemName()),
+                    Updates.set("quantity", newQuantity));
+            return;
+        }
         
-        sellingItemCollection.insertOne(Document.parse(gson.toJson(document)));
+        // if new item
+        sellingItemCollection.insertOne(Document.parse(gson.toJson(item)));
     }
     
-    public static boolean removeSellingItem(Item item) {
-        return sellingItemCollection.deleteOne(Filters.eq("ID", item.getID())).wasAcknowledged();
+    public static void removeSellingItem(Item item) {
+        sellingItemCollection.deleteOne(Filters.eq("ID", item.getID()));
     }
     
     public static SellingItem viewSellingItem(int ID) {
@@ -202,17 +220,24 @@ public class Database {
     
     // Utility item methods
     public static void addUtilityItem(UtilityItem item) {
-        Document document = new Document("ID", item.getID())
-                .append("itemName", item.getItemName())
-                .append("quality", item.getQuantity())
-                .append("type", item.getType())
-                .append("restockThreshold", item.getRestockThreshold());
+        // if item already exists
+        Document document = utilityItemCollection.find(Filters.eq("itemName", item.getItemName())).first();
+        if (document != null) {
+            // add the quantity of the current item with the new item
+            UtilityItem existingItem = gson.fromJson(document.toJson(), UtilityItem.class);
+            int existingQuantity = existingItem.getQuantity();
+            int newQuantity = existingQuantity + item.getQuantity();
+            utilityItemCollection.updateOne(Filters.eq("itemName", item.getItemName()),
+                    Updates.set("quantity", newQuantity));
+            return;
+        }
         
-        utilityItemCollection.insertOne(Document.parse(gson.toJson(document)));
+        // if new item
+        utilityItemCollection.insertOne(Document.parse(gson.toJson(item)));
     }
     
-    public static boolean removeUtilityItem(Item item) {
-        return utilityItemCollection.deleteOne(Filters.eq("ID", item.getID())).wasAcknowledged();
+    public static void removeUtilityItem(Item item) {
+        utilityItemCollection.deleteOne(Filters.eq("ID", item.getID()));
     }
     
     public static UtilityItem viewUtilityItem(int ID) {
@@ -241,7 +266,8 @@ public class Database {
                 .append("quality", item.getQuantity() - quantityNeeded)
                 .append("type", item.getType())
                 .append("price", item.getPrice());
+        Document updateOperation = new Document("$set", updatedDocument);
         
-        sellingItemCollection.updateOne(Filters.eq("ID", item.getID()), Document.parse(gson.toJson(updatedDocument)));
+        sellingItemCollection.updateOne(Filters.eq("ID", item.getID()), updateOperation);
     }
 }
