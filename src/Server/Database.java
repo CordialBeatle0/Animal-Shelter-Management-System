@@ -3,6 +3,7 @@ package Server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -158,25 +159,18 @@ public class Database {
         return allAnimals;
     }
 
-    // this is the function that retrieves only the adpotable and fosterable animalss
+    //if the animalStatus is "adopted" return animals that are not adopted bas
+    //if the animalStatus is "fostered" or "sponsored" return animals that are not fostered or adopted
+
     public static ArrayList<Animal> viewAllConditionedAnimals(String animalStatus) {
-        ArrayList<Document> allAnimalsDocs = animalCollection.find(Filters.eq(animalStatus, "false"))
-                .into(new ArrayList<>());
         ArrayList<Animal> allAnimals = new ArrayList();
-        for (Document animalDoc : allAnimalsDocs) {
-            String json = animalDoc.toJson();
-            Animal animal = gson.fromJson(json, Animal.class);
-            allAnimals.add(animal);
+        FindIterable<Document> animalDocs = animalCollection.find(Filters.eq("adopted", false));
+        
+        if (animalStatus == "fostered" || animalStatus == "sponsored") {
+            animalDocs= animalCollection.find(Filters.and(Filters.eq("adopted", false), Filters.eq("fostered", false)));
         }
-        return allAnimals;
-    }
-    
-    // this function returns with the animals that are not adopted or fostered 
-    public static ArrayList<Animal> viewAllSponsorableAnimals() {
-        ArrayList<Document> allAnimalsDocs = animalCollection.find(Filters.and(Filters.eq("adopted", false), Filters.eq("fostered", false)))
-                .into(new ArrayList<>());
-        ArrayList<Animal> allAnimals = new ArrayList();
-        for (Document animalDoc : allAnimalsDocs) {
+
+        for (Document animalDoc : animalDocs) {
             String json = animalDoc.toJson();
             Animal animal = gson.fromJson(json, Animal.class);
             allAnimals.add(animal);

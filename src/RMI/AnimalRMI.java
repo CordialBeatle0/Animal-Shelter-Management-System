@@ -17,8 +17,6 @@ public interface AnimalRMI extends Remote {
     ArrayList<Animal> viewAllAnimals() throws RemoteException;
 
     ArrayList<Animal> viewAllConditionedAnimals(String animalStatus) throws RemoteException;
-     
-    ArrayList<Animal> viewAllSponsorableAnimals() throws RemoteException;
     
     void recordFeeding(Animal animal) throws RemoteException;
     

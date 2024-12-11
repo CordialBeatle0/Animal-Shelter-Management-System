@@ -2,6 +2,7 @@ package Server;
 
 import RMI.AnimalRMI;
 
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
@@ -125,12 +126,9 @@ public class Animal extends UnicastRemoteObject implements AnimalRMI {
     }
 
     public ArrayList<Animal> viewAllConditionedAnimals(String animalStatus) throws RemoteException {
-        return Database.viewAllConditionedAnimals(animalStatus);
+        return Database.viewAllConditionedAnimals(animalStatus);  
     }
 
-    public ArrayList<Animal> viewAllSponsorableAnimals() throws RemoteException {
-        return Database.viewAllSponsorableAnimals();
-    }
 
     public void recordFeeding(Animal animal) throws RemoteException {
         Database.recordFeeding(animal);
