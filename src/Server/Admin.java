@@ -13,7 +13,9 @@ public class Admin extends Specialised implements AdminRMI {
         super(ID, name, age, gender, email, phoneNumber, address, account, salary);
     }
     
-    public float calculateSalary() throws RemoteException {
-        return 0;
+    public void calculateSalary(int hours, float workingRate) throws RemoteException {
+        float employeeSalary = hours * workingRate;
+        setSalary(employeeSalary);
+    
     }
 }

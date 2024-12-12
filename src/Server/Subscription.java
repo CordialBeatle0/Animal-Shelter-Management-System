@@ -55,14 +55,15 @@ public class Subscription extends UnicastRemoteObject implements SubscriptionRMI
     }
     
     public void subscribeToTraining(User user, float amountPaid, Payment paymentType) throws RemoteException {
-    
+        paymentType.makePayment(user, amountPaid);
+        Database.addSubscription(this, user);
     }
     
     public void unsubscribeFromTraining() throws RemoteException {
-    
+        setStatus(false);
     }
     
-    public void endSubscription() throws RemoteException {
-    
+    public void endSubscription(User user) throws RemoteException {
+        Database.removeSubscription(this, user);
     }
 }

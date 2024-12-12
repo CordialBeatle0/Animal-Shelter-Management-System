@@ -15,8 +15,8 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     private Payment paymentType;
     private Subscription subscription;
     private TrainingROI trainingVideos;
-    //SH added outstandingfees
-     private float outstandingFees;
+    // SH added outstandingfees
+    private float outstandingFees;
     
     
     public User() throws RemoteException {
@@ -98,11 +98,10 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     public void setTrainingVideos(TrainingROI trainingVideos) {
         this.trainingVideos = trainingVideos;
     }
-
+    
     public float getOutstandingFees() {
         return outstandingFees;
     }
-
     
     
     public void setOutstandingFees(float outstandingFees) {
@@ -110,13 +109,12 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     }
     
     
-    
     public void signUp(User user) throws RemoteException {
         Database.signUp(user);
     }
     
     @Override
-    public void updateObserver(String message) {
+    public void updateObserver(String message) throws RemoteException {
         Database.addNotification(message);
     }
 }

@@ -2,6 +2,7 @@ package Server;
 
 import RMI.AnimalRMI;
 
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ public class Animal extends UnicastRemoteObject implements AnimalRMI {
     private String animalType;
     private String breed;
     private int age;
-    private LocalDateTime lastFeedingTime;
+    private String lastFeedingTime;
     private boolean adopted;
     private boolean sponsored;
     private boolean fostered;
@@ -21,7 +22,7 @@ public class Animal extends UnicastRemoteObject implements AnimalRMI {
     public Animal() throws RemoteException {
     }
     
-    public Animal(int ID, String name, String animalType, String breed, int age, LocalDateTime lastFeedingTime,
+    public Animal(int ID, String name, String animalType, String breed, int age, String lastFeedingTime,
                   boolean adopted, boolean sponsored, boolean fostered) throws RemoteException {
         this.ID = ID;
         this.name = name;
@@ -74,11 +75,11 @@ public class Animal extends UnicastRemoteObject implements AnimalRMI {
         this.age = age;
     }
     
-    public LocalDateTime getLastFeedingTime() {
+    public String getLastFeedingTime() {
         return lastFeedingTime;
     }
     
-    public void setLastFeedingTime(LocalDateTime lastFeedingTime) {
+    public void setLastFeedingTime(String lastFeedingTime) {
         this.lastFeedingTime = lastFeedingTime;
     }
     
@@ -107,39 +108,42 @@ public class Animal extends UnicastRemoteObject implements AnimalRMI {
     }
     
     public void registerAnimal(Animal animal) throws RemoteException {
-    
+        Database.registerAnimal(animal);   
     }
     
-    public void removeAnimal(int ID) throws RemoteException {
-    
+    public void removeAnimal(int animalID) throws RemoteException {
+    Database.removeAnimal(animalID);
     }
     
-    public void updateAnimal(Animal animal) throws RemoteException {
-    
-    }
     
     public Animal viewAnimal(Animal animal) throws RemoteException {
-        return null;
+         return Database.viewAnimal(animal);
+        
     }
     
     public ArrayList<Animal> viewAllAnimals() throws RemoteException {
-        return null;
+        return Database.viewAllAnimals();
+    }
+
+    public ArrayList<Animal> viewAllConditionedAnimals(String animalStatus) throws RemoteException {
+        return Database.viewAllConditionedAnimals(animalStatus);  
+    }
+
+
+    public void recordFeeding(Animal animal) throws RemoteException {
+        Database.recordFeeding(animal);
     }
     
-    public void recordFeeding() throws RemoteException {
-    
+    public void adoptAnimal(Animal animal, User user) throws RemoteException {
+        Database.adoptAnimal(animal, user);
     }
     
-    public void adoptAnimal(User user) throws RemoteException {
-    
+    public void fosterAnimal(Animal animal,User user) throws RemoteException {
+        Database.fosterAnimal(animal, user);
     }
     
-    public void fosterAnimal(User user) throws RemoteException {
-    
-    }
-    
-    public void sponsorAnimal(User user) throws RemoteException {
-    
+    public void sponsorAnimal( Animal animal, User user) throws RemoteException {
+        Database.sponsorAnimal(animal, user);
     }
 
     @Override
