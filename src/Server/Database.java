@@ -128,7 +128,15 @@ public class Database {
     
     // User methods
     public static void signUp(User user) {
-        userCollection.insertOne(Document.parse(gson.toJson(user)));
+        Document document = new Document("ID", user.getID())
+                .append("name", user.getName())
+                .append("account", Document.parse(gson.toJson(user.getAccount())))
+                .append("phoneNumber", user.getPhoneNumber())
+                .append("address", user.getAddress())
+                .append("paymentType", user.getPaymentType().getClass().getName())
+                .append("subscription", Document.parse(gson.toJson(user.getSubscription())))
+                .append("trainingVideos", Document.parse(gson.toJson(user.getTrainingVideos())));
+        userCollection.insertOne(Document.parse(gson.toJson(document)));
     }
     
     public static void addNotification(String message) {
@@ -347,8 +355,8 @@ public class Database {
                 Filters.eq("ID", taskID),
                 Updates.set("assignedVolunteer", volunteerID));
     }
-
-
+    
+    
     // Animnal database functions
     public static void registerAnimal(Animal animal) {
         Document document = Document.parse(gson.toJson(animal));
@@ -361,12 +369,12 @@ public class Database {
     
     public static Animal viewAnimal(Animal animal) {
         Document animalDoc = animalCollection.find(Filters.eq("ID", animal.getID())).first();
-
+        
         if (animalDoc != null) {
             String json = animalDoc.toJson();
             return gson.fromJson(json, Animal.class);
         }
-
+        
         return null;
     }
     
@@ -380,18 +388,19 @@ public class Database {
         }
         return allAnimals;
     }
-
-    //if the animalStatus is "adopted" return animals that are not adopted bas
-    //if the animalStatus is "fostered" or "sponsored" return animals that are not fostered or adopted
-
+    
+    // if the animalStatus is "adopted" return animals that are not adopted bas
+    // if the animalStatus is "fostered" or "sponsored" return animals that are not fostered or adopted
+    
     public static ArrayList<Animal> viewAllConditionedAnimals(String animalStatus) {
         ArrayList<Animal> allAnimals = new ArrayList();
         FindIterable<Document> animalDocs = animalCollection.find(Filters.eq("adopted", false));
         
         if (animalStatus == "fostered" || animalStatus == "sponsored") {
-            animalDocs= animalCollection.find(Filters.and(Filters.eq("adopted", false), Filters.eq("fostered", false)));
+            animalDocs = animalCollection.find(Filters.and(Filters.eq("adopted", false), Filters.eq("fostered",
+                    false)));
         }
-
+        
         for (Document animalDoc : animalDocs) {
             String json = animalDoc.toJson();
             Animal animal = gson.fromJson(json, Animal.class);
@@ -399,8 +408,8 @@ public class Database {
         }
         return allAnimals;
     }
-
-   
+    
+    
     public static void recordFeeding(Animal animal) {
         animalCollection.updateOne(Filters.eq("ID", animal.getID()),
                 Updates.set("lastFeedingTime", LocalDateTime.now().toString()));
@@ -418,7 +427,7 @@ public class Database {
         Document document = new Document("animalID", animal.getID()).append("userID", user.getID())
                 .append("relationshipType", "fostered");
         animal_UserCollection.insertOne(Document.parse(gson.toJson(document)));
-   
+        
     }
     
     public static void sponsorAnimal(Animal animal, User user) {
@@ -426,31 +435,31 @@ public class Database {
         Document document = new Document("animalID", animal.getID()).append("userID", user.getID())
                 .append("relationshipType", "sponsored");
         animal_UserCollection.insertOne(Document.parse(gson.toJson(document)));
-
+        
     }
-
+    
     // Booking functions 
     public static void createBooking(Booking booking) {
         Document document = Document.parse(gson.toJson(booking));
         bookingCollection.insertOne(document);
-
+        
     }
-
+    
     public static void cancleBooking(int bookingID) {
         bookingCollection.deleteOne(Filters.eq("bookingID", bookingID));
     }
     
     public static Booking viewBooking(int bookingID) {
         Document bookingDoc = bookingCollection.find(Filters.eq("bookingID", bookingID)).first();
-
+        
         if (bookingDoc != null) {
             String json = bookingDoc.toJson();
             return gson.fromJson(json, Booking.class);
         }
-
+        
         return null;
     }
-
+    
     public static ArrayList<Booking> viewAllBookings() {
         ArrayList<Booking> allBookings = new ArrayList();
         for (Document bookingDoc : bookingCollection.find()) {
@@ -460,13 +469,9 @@ public class Database {
         }
         return allBookings;
     }
-
-    
-}
-    
     
     //-----------------REQUEST CLASS---------------------------//
-    //DONE
+    // DONE
     public static void addRequest(Request request) {
         Document document = new Document("ID", request.getID())
                 .append("ID", request.getID())
@@ -479,25 +484,26 @@ public class Database {
         collection.insertOne(document);
     }
     
-    //DONE
+    // DONE
     public static ArrayList<Request> viewRequest(Courier courier) {
         ArrayList<Request> result = new ArrayList();
         MongoCollection<Document> collection = instance.getCollection("Request");
-        ArrayList<Document> docs = collection.find(Filters.eq("location", courier.getAssignedLocation())).into(new ArrayList<Document>());
+        ArrayList<Document> docs =
+                collection.find(Filters.eq("location", courier.getAssignedLocation())).into(new ArrayList<Document>());
         for (Document document : docs) {
             result.add(gson.fromJson(document.toJson(), Request.class));
         }
         return result;
     }
     
-    //DONE
+    // DONE
     public static void deleteRequest(Request request) {
         MongoCollection<Document> collection = instance.getCollection("Request");
         collection.deleteOne(Filters.eq("ID", request.getID()));
     }
     
     //-----------Courier Class---------//
-    //DONE
+    // DONE
     public static void addCourier(Courier courier) {
         Document document = new Document("ID", courier.getID())
                 .append("ID", courier.getID())
@@ -516,7 +522,7 @@ public class Database {
         collection.insertOne(document);
     }
     
-    //DONE
+    // DONE
     public static Courier getAssignedCourier(String location) {
         MongoCollection<Document> collection = instance.getCollection("Courier");
         Document doc = collection.find(Filters.eq("assignedLocation", location)).first();
@@ -524,7 +530,7 @@ public class Database {
         return cour;
     }
     
-    //DONE
+    // DONE
     public static void updateCourierRequestNumber(Courier cour, int numOfRequests) {
         MongoCollection<Document> collection = instance.getCollection("Courier");
         collection.updateOne(Filters.eq("ID", cour.getID()), Updates.set("numberOfRequests", numOfRequests));
