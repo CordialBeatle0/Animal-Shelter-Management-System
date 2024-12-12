@@ -15,6 +15,12 @@ public class Doctor extends Employee implements DoctorRMI {
     }
     
     public ArrayList<Appointment> viewDoctorAppointments() throws RemoteException {
-        return null;
+        try {
+            ArrayList<Appointment>appointments = new ArrayList<>();
+            appointments = Database.viewDoctorAppointments(this.getID());
+            return appointments;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
