@@ -34,6 +34,8 @@ public class Database {
     static MongoCollection<Document> accountCollection;
     static MongoCollection<Document> animalCollection;
     static MongoCollection<Document> animal_UserCollection;
+    static MongoCollection<Document> bookingCollection;
+
 
     
     public Database() {
@@ -52,7 +54,7 @@ public class Database {
         accountCollection = instance.getCollection("Account");
         animalCollection = instance.getCollection("Animal");
         animal_UserCollection = instance.getCollection("Animal_User");
-
+        bookingCollection = instance.getCollection("Booking");
     }
 
     public void close() {
@@ -204,7 +206,40 @@ public class Database {
         Document document = new Document("animalID", animal.getID()).append("userID", user.getID())
                 .append("relationshipType", "sponsored");
         animal_UserCollection.insertOne(Document.parse(gson.toJson(document)));
-    
+
     }
+
+    // Booking functions 
+    public static void createBooking(Booking booking) {
+        Document document = Document.parse(gson.toJson(booking));
+        bookingCollection.insertOne(document);
+
+    }
+
+    public static void cancleBooking(int bookingID) {
+        bookingCollection.deleteOne(Filters.eq("bookingID", bookingID));
+    }
+    
+    public static Booking viewBooking(int bookingID) {
+        Document bookingDoc = bookingCollection.find(Filters.eq("bookingID", bookingID)).first();
+
+        if (bookingDoc != null) {
+            String json = bookingDoc.toJson();
+            return gson.fromJson(json, Booking.class);
+        }
+
+        return null;
+    }
+
+    public static ArrayList<Booking> viewAllBookings() {
+        ArrayList<Booking> allBookings = new ArrayList();
+        for (Document bookingDoc : bookingCollection.find()) {
+            String json = bookingDoc.toJson();
+            Booking booking = gson.fromJson(json, Booking.class);
+            allBookings.add(booking);
+        }
+        return allBookings;
+    }
+
     
 }

@@ -4,5 +4,5 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface AdminRMI extends Remote {
-    float calculateSalary() throws RemoteException;
+    void calculateSalary(int hours, float workingRate) throws RemoteException;
 }
