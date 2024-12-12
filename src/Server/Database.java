@@ -383,13 +383,14 @@ public class Database {
         .append("email", courier.getEmail())
         .append("phoneNumber", courier.getPhoneNumber())
         .append("address", courier.getAddress())
+        .append("account", courier.getAccount())
         .append("salary", courier.getSalary())
         .append("maxCapacity", Courier.getMaxCapacity())
         .append("assignedLocation", courier.getAssignedLocation())
         .append("numberOfRequests", courier.getNumberOfRequests());
 
         MongoCollection<Document> collection = instance.getCollection("Courier");
-        collection.insertOne(document);
+        collection.insertOne(Document.parse(gson.toJson(document)));
     }
 
     //DONE
@@ -467,10 +468,11 @@ public class Database {
         collection.deleteOne(Filters.eq("ID", doctor.getID()));
     }
 
-    public static ArrayList<Appointment> viewDoctorAppointments(int doctorID){
+    public static ArrayList<Appointment> viewDoctorAppointments(Doctor doctor){
         ArrayList<Appointment> appointments = new ArrayList();
         MongoCollection<Document> collection = instance.getCollection("Appointments");
-        ArrayList<Document> docs = collection.find(Filters.eq("doctorID", doctorID)).into(new ArrayList<Document>());
+        System.out.println(Document.parse(gson.toJson(doctor)));
+        ArrayList<Document> docs = collection.find(Filters.eq("doctorID", Document.parse(gson.toJson(doctor)))).into(new ArrayList<Document>());
         for (int i = 0; i < docs.size(); i++) {
             String jsonResult = docs.get(i).toJson();
             appointments.add(gson.fromJson(jsonResult, Appointment.class));
@@ -483,13 +485,13 @@ public class Database {
         Document document = new Document("ID",appointment.getID())
         .append("ID", appointment.getID())
         .append("date", appointment.getDate().toString())
-        .append("doctorID", appointment.getAssignedDoctor().getID())
+        .append("doctor", appointment.getDoctor())
         .append("price", appointment.getPrice())
         .append("description", appointment.getDescription())
-        .append("animalID", appointment.getAnimal().getID());
+        .append("animal", appointment.getAnimal() );
 
         MongoCollection<Document> collection = instance.getCollection("Appointments");
-        collection.insertOne(document);
+        collection.insertOne(Document.parse(gson.toJson(document)));
     }
 
     public static void deleteAppointment(Appointment appointment){
@@ -502,6 +504,7 @@ public class Database {
         MongoCollection<Document> collection = instance.getCollection("Appointments");
         Document document = collection.find(Filters.eq("ID", appointmentID)).first();
         Appointment appointment = gson.fromJson(document.toJson(), Appointment.class);
+        System.out.println(appointmentID);
         return appointment;
     }
 

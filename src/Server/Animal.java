@@ -141,4 +141,13 @@ public class Animal extends UnicastRemoteObject implements AnimalRMI {
     public void sponsorAnimal(User user) throws RemoteException {
     
     }
+
+    @Override
+    public String toString() {
+        return "Animal [ID=" + ID + ", name=" + name + ", animalType=" + animalType + ", breed=" + breed + ", age="
+                + age + ", lastFeedingTime=" + lastFeedingTime + ", adopted=" + adopted + ", sponsored=" + sponsored
+                + ", fostered=" + fostered + "]";
+    }
+
+    
 }
