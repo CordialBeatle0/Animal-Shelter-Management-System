@@ -44,22 +44,22 @@ public class Account extends UnicastRemoteObject implements AccountRMI {
     }
     
     public User userLogin(String username, String password) throws RemoteException {
-        return null;
+        return Database.userLogin(username, password);
     }
     
     public Employee empLogin(String username, String password) throws RemoteException {
-        return null;
+        return Database.empLogin(username, password);
     }
     
     public Volunteer volunteerLogin(String username, String password) throws RemoteException {
-        return null;
+        return Database.volunteerLogin(username, password);
     }
     
     public void updateUserAccount(User user, String username, String password) throws RemoteException {
-    
+        Database.updateUserAccount(user, username, password);
     }
     
     public void updateSpecialisedAccount(Specialised specialised, String username, String password) throws RemoteException {
-    
+        Database.updateSpecialisedAccount(specialised, username, password);
     }
 }

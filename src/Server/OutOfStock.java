@@ -10,7 +10,7 @@ public class OutOfStock extends UnicastRemoteObject implements StockStatus, OutO
     }
     
     @Override
-    public void buyItem() throws RemoteException {
-    
+    public void buyItem(int ID, int quantityNeeded) throws RemoteException, Exception {
+        throw new Exception(" is out of stock");
     }
 }

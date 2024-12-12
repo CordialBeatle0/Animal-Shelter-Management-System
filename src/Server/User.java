@@ -1,5 +1,6 @@
 package Server;
 
+import RMI.Observer;
 import RMI.UserRMI;
 
 import java.rmi.RemoteException;
@@ -111,11 +112,11 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     
     
     public void signUp(User user) throws RemoteException {
-    
+        Database.signUp(user);
     }
     
     @Override
     public void updateObserver(String message) {
-    
+        Database.addNotification(message);
     }
 }

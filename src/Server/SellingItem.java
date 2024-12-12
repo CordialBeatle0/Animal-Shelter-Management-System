@@ -3,7 +3,7 @@ package Server;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class SellingItem extends Item { //TODO: Class cant extend Unicast thing what do we do
+public class SellingItem extends Item {
     private StockStatus stockStatus;
     private float price;
     
@@ -29,15 +29,34 @@ public class SellingItem extends Item { //TODO: Class cant extend Unicast thing 
         this.price = price;
     }
     
-    public void buyItem() throws RemoteException {
+    @Override
+    public void addItem() throws RemoteException {
+        Database.addSellingItem(this);
+    }
     
+    @Override
+    public void removeItem() throws RemoteException {
+        Database.removeSellingItem(this);
+    }
+    
+    public void buyItem(int quantityRequired) throws RemoteException, Exception {
+        if (getQuantity() < quantityRequired) {
+            setStockStatus(new OutOfStock());
+        } else {
+            setStockStatus(new InStock());
+        }
+        try {
+            stockStatus.buyItem(getID(), quantityRequired);
+        } catch (Exception e) {
+            throw new Exception(getItemName() + e.getMessage());
+        }
     }
     
     public SellingItem viewSellingItem() throws RemoteException {
-        return null;
+        return Database.viewSellingItem(getID());
     }
     
     public ArrayList<SellingItem> viewAllSellingItems() throws RemoteException {
-        return null;
+        return Database.viewAllSellingItems();
     }
 }

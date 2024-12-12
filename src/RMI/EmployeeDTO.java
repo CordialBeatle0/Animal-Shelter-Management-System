@@ -7,6 +7,9 @@ public class EmployeeDTO implements Serializable {
     private String email;
     private String phoneNumber;
     
+    public EmployeeDTO() {
+    }
+    
     public EmployeeDTO(String name, String email, String phoneNumber) {
         this.name = name;
         this.email = email;
