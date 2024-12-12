@@ -10,7 +10,7 @@ public class InStock extends UnicastRemoteObject implements StockStatus, InStock
     }
     
     @Override
-    public void buyItem() throws RemoteException {
-    
+    public void buyItem(int ID, int quantityNeeded) throws RemoteException {
+        Database.buyItem(ID, quantityNeeded);
     }
 }

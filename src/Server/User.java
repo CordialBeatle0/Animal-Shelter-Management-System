@@ -1,5 +1,6 @@
 package Server;
 
+import RMI.Observer;
 import RMI.UserRMI;
 
 import java.rmi.RemoteException;
@@ -14,6 +15,9 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     private Payment paymentType;
     private Subscription subscription;
     private TrainingROI trainingVideos;
+    //SH added outstandingfees
+     private float outstandingFees;
+    
     
     public User() throws RemoteException {
     }
@@ -28,6 +32,7 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
         this.paymentType = paymentType;
         this.subscription = subscription;
         this.trainingVideos = trainingVideos;
+        this.outstandingFees = 0.0f;
     }
     
     public int getID() {
@@ -93,13 +98,25 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     public void setTrainingVideos(TrainingROI trainingVideos) {
         this.trainingVideos = trainingVideos;
     }
+
+    public float getOutstandingFees() {
+        return outstandingFees;
+    }
+
+    
+    
+    public void setOutstandingFees(float outstandingFees) {
+        this.outstandingFees = outstandingFees;
+    }
+    
+    
     
     public void signUp(User user) throws RemoteException {
-    
+        Database.signUp(user);
     }
     
     @Override
     public void updateObserver(String message) {
-    
+        Database.addNotification(message);
     }
 }

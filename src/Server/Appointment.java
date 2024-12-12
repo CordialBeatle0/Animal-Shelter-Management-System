@@ -2,16 +2,18 @@ package Server;
 
 import RMI.AppointmentRMI;
 
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     private int ID;
     private LocalDateTime date;
     private Doctor assignedDoctor;
     private int price;
-    private String description;
+    private String description = "";
     private Animal animal;
     
     public Appointment() throws RemoteException {
@@ -26,7 +28,17 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         this.description = description;
         this.animal = animal;
     }
+
     
+    
+    public Appointment(int iD, LocalDateTime date, Doctor assignedDoctor, int price, Animal animal) throws RemoteException {
+        ID = iD;
+        this.date = date;
+        this.assignedDoctor = assignedDoctor;
+        this.price = price;
+        this.animal = animal;
+    }
+
     public int getID() {
         return ID;
     }
@@ -75,19 +87,41 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         this.animal = animal;
     }
     
-    public void bookAppointment() throws RemoteException {
     
+    public void bookAppointment() throws RemoteException {
+       try {
+           Database.addAppointment(this);
+       } catch (Exception e) {
+        // TODO: handle exception
+       }
+       
     }
     
     public void cancelAppointment() throws RemoteException {
-    
+        try {
+            Database.deleteAppointment(this);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
     
     public Appointment viewAppointment() throws RemoteException {
-        return null;
+        try {
+            Appointment appointment = Database.viewAppointmentById(this.getID());
+            return appointment;
+        } catch (Exception e) {
+            return null;
+        }
+        
     }
     
     public void recordAppointmentDetail(String details) throws RemoteException {
-    
+        try {
+            Database.updateAppointmentDescription(this, details);
+            setDescription(details);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        
     }
 }
