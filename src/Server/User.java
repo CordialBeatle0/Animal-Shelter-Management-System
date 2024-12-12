@@ -1,6 +1,7 @@
 package Server;
 
 import RMI.Observer;
+import RMI.Payment;
 import RMI.UserRMI;
 
 import java.rmi.RemoteException;

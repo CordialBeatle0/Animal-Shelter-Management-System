@@ -1,6 +1,8 @@
 package Server;
 
 import RMI.Observer;
+import RMI.Specialised;
+import RMI.TrainingDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
@@ -11,13 +13,10 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 
-import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.print.Doc;
 
 public class Database {
     // Static instance variable to hold the single instance of the class
@@ -99,12 +98,12 @@ public class Database {
         return observers;
     }
     
-    public static Training getTrainingVideo(int ID) {
+    public static TrainingDTO getTrainingVideo(int ID) {
         Document document = trainingCollection.find(Filters.eq("ID", ID)).first();
         if (document == null) {
             return null;
         }
-        return gson.fromJson(document.toJson(), Training.class);
+        return gson.fromJson(document.toJson(), TrainingDTO.class);
     }
     
     public static ArrayList<Training> getAllTrainingVideos() {
@@ -332,6 +331,7 @@ public class Database {
         }
         return allTasks;
     }
+    
     // add this to the class diagram
     public static ArrayList<VolunteerTask> viewAssignedVolunteerTask(int volunteerID) {
         ArrayList<VolunteerTask> allMyTasks = new ArrayList();
@@ -513,22 +513,22 @@ public class Database {
     }
     
     //-----------Courier Class---------//
-    //DONE
-    public static void addCourier(Courier courier){
-        Document document = new Document("ID",courier.getID())
-        .append("ID", courier.getID())
-        .append("name", courier.getName())
-        .append("age", courier.getAge())
-        .append("gender", courier.getGender())
-        .append("email", courier.getEmail())
-        .append("phoneNumber", courier.getPhoneNumber())
-        .append("address", courier.getAddress())
-        .append("account", courier.getAccount())
-        .append("salary", courier.getSalary())
-        .append("maxCapacity", Courier.getMaxCapacity())
-        .append("assignedLocation", courier.getAssignedLocation())
-        .append("numberOfRequests", courier.getNumberOfRequests());
-
+    // DONE
+    public static void addCourier(Courier courier) {
+        Document document = new Document("ID", courier.getID())
+                .append("ID", courier.getID())
+                .append("name", courier.getName())
+                .append("age", courier.getAge())
+                .append("gender", courier.getGender())
+                .append("email", courier.getEmail())
+                .append("phoneNumber", courier.getPhoneNumber())
+                .append("address", courier.getAddress())
+                .append("account", courier.getAccount())
+                .append("salary", courier.getSalary())
+                .append("maxCapacity", Courier.getMaxCapacity())
+                .append("assignedLocation", courier.getAssignedLocation())
+                .append("numberOfRequests", courier.getNumberOfRequests());
+        
         MongoCollection<Document> collection = instance.getCollection("Courier");
         collection.insertOne(Document.parse(gson.toJson(document)));
     }
@@ -608,11 +608,12 @@ public class Database {
         collection.deleteOne(Filters.eq("ID", doctor.getID()));
     }
     
-    public static ArrayList<Appointment> viewDoctorAppointments(Doctor doctor){
+    public static ArrayList<Appointment> viewDoctorAppointments(Doctor doctor) {
         ArrayList<Appointment> appointments = new ArrayList();
         MongoCollection<Document> collection = instance.getCollection("Appointments");
         System.out.println(Document.parse(gson.toJson(doctor)));
-        ArrayList<Document> docs = collection.find(Filters.eq("doctorID", Document.parse(gson.toJson(doctor)))).into(new ArrayList<Document>());
+        ArrayList<Document> docs =
+                collection.find(Filters.eq("doctorID", Document.parse(gson.toJson(doctor)))).into(new ArrayList<Document>());
         for (int i = 0; i < docs.size(); i++) {
             String jsonResult = docs.get(i).toJson();
             appointments.add(gson.fromJson(jsonResult, Appointment.class));
@@ -621,15 +622,15 @@ public class Database {
     }
     
     //-----------APPOINTMENT--------------//
-    public static void addAppointment(Appointment appointment){
-        Document document = new Document("ID",appointment.getID())
-        .append("ID", appointment.getID())
-        .append("date", appointment.getDate().toString())
-        .append("doctor", appointment.getDoctor())
-        .append("price", appointment.getPrice())
-        .append("description", appointment.getDescription())
-        .append("animal", appointment.getAnimal() );
-
+    public static void addAppointment(Appointment appointment) {
+        Document document = new Document("ID", appointment.getID())
+                .append("ID", appointment.getID())
+                .append("date", appointment.getDate().toString())
+                .append("doctor", appointment.getDoctor())
+                .append("price", appointment.getPrice())
+                .append("description", appointment.getDescription())
+                .append("animal", appointment.getAnimal());
+        
         MongoCollection<Document> collection = instance.getCollection("Appointments");
         collection.insertOne(Document.parse(gson.toJson(document)));
     }

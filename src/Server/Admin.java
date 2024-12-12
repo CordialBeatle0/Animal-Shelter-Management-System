@@ -1,6 +1,7 @@
 package Server;
 
 import RMI.AdminRMI;
+import RMI.Specialised;
 
 import java.rmi.RemoteException;
 
@@ -16,6 +17,6 @@ public class Admin extends Specialised implements AdminRMI {
     public void calculateSalary(int hours, float workingRate) throws RemoteException {
         float employeeSalary = hours * workingRate;
         setSalary(employeeSalary);
-    
+        
     }
 }

@@ -1,4 +1,5 @@
 package Server;
+
 import java.rmi.RemoteException;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ public class Request {
     private int ID;
     private int userID;
     private String userName;
-    //private String requestType;
+    // private String requestType;
     private String location;
     private LocalDateTime date;
     
@@ -29,7 +30,7 @@ public class Request {
         this.ID = ID;
         this.userID = userID;
         this.userName = userName;
-        //this.requestType = requestType;
+        // this.requestType = requestType;
         this.location = location;
         this.date = date;
     }
@@ -38,7 +39,7 @@ public class Request {
         this.ID = ID;
         this.userID = userID;
         this.location = location;
-        //this.requestType = requestType;
+        // this.requestType = requestType;
     }
     
     public int getID() {
@@ -54,7 +55,6 @@ public class Request {
     }
     
     
-    
     public String getLocation() {
         return location;
     }
@@ -63,46 +63,46 @@ public class Request {
         return date;
     }
     
-    //DONE
-    public static ArrayList<Request> viewRequest(Courier courier) {
-         ArrayList<Request> requests = new ArrayList();
-         try{
-             //viewRequest should all the courier's requests from the database
-             requests = Database.viewRequest(courier);
-             for (Request request : requests) {
+    // DONE
+    public static ArrayList<Request> viewRequest(Courier courier) throws RemoteException {
+        ArrayList<Request> requests = new ArrayList<>();
+        try {
+            // viewRequest should all the courier's requests from the database
+            requests = Database.viewRequest(courier);
+            for (Request request : requests) {
                 System.out.println(request.toString());
-             }
-         }catch(Exception e){
-            //TODO: send message to controller that an error has occured
+            }
+        } catch (Exception e) {
+            // TODO: send message to controller that an error has occured
             System.out.println("An Error has occurred");
-         }
-         return requests;
+        }
+        return requests;
     }
     
-    //TODO: TEST
-    public void requestHomeService() throws RemoteException{
+    // TODO: TEST
+    public void requestHomeService() throws RemoteException {
         Courier cour = new Courier();
         cour.assignCourier(this);
     }
     
-    //DONE
+    // DONE
     public void addRequestToDB() {
-     try {
-        Database.addRequest(this);
-        System.out.println("Request added to database");
-        
-     } catch (Exception e) {
-        // TODO: handle exception
-        System.out.println("An Error Occurred");
-
-     }
+        try {
+            Database.addRequest(this);
+            System.out.println("Request added to database");
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("An Error Occurred");
+            
+        }
     }
-
+    
     @Override
     public String toString() {
         return "Request [ID=" + ID + ", userID=" + userID + ", userName=" + userName + ", location=" + location
                 + ", date=" + date + "]";
     }
-
+    
     
 }

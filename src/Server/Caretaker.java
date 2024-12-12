@@ -1,5 +1,7 @@
 package Server;
 
+import RMI.Specialised;
+
 import java.rmi.RemoteException;
 
 public class Caretaker extends Specialised {
