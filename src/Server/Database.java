@@ -455,7 +455,7 @@ public class Database {
         
     }
     
-    public static void cancleBooking(int bookingID) {
+    public static void cancelBooking(int bookingID) {
         bookingCollection.deleteOne(Filters.eq("bookingID", bookingID));
     }
     
@@ -661,7 +661,7 @@ public class Database {
     
     public static void removeSubscription(Subscription subscription, User user) {
         subscriptionCollection.deleteOne(Filters.eq("ID", subscription.getID()));
-        userCollection.updateOne(Filters.eq("ID", user.getID()), Updates.set("subscription", null));
+        userCollection.updateOne(Filters.eq("ID", user.getID()), Updates.set("subscription.status", false));
     }
     
     // might change, actually might not be needed

@@ -1,5 +1,6 @@
 package Server;
 
+import RMI.Payment;
 import RMI.SubscriptionRMI;
 import RMI.UserDTO;
 
@@ -55,16 +56,18 @@ public class Subscription extends UnicastRemoteObject implements SubscriptionRMI
         this.date = date;
     }
     
-    public void subscribeToTraining(UserDTO user, float amountPaid, String paymentType) throws RemoteException {
+    public void subscribeToTraining(User user, float amountPaid, Payment paymentType) throws RemoteException {
         paymentType.makePayment(user, amountPaid);
         Database.addSubscription(this, user);
     }
     
-    public void unsubscribeFromTraining() throws RemoteException {
-        setStatus(false);
+    // this one is done by the user
+    public void unsubscribeFromTraining(User user) throws RemoteException {
+        Database.removeSubscription(this, user);
     }
     
-    public void endSubscription(UserDTO user) throws RemoteException {
+    // this one is done by the system
+    public void endSubscription(User user) throws RemoteException {
         Database.removeSubscription(this, user);
     }
 }
