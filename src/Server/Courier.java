@@ -19,14 +19,6 @@ public class Courier extends Employee {
         this.assignedLocation = assignedLocation;
     }
 
-    
-    
-    public Courier(int iD, String name, int age, char gender, String email, String phoneNumber, String address,
-            float salary, String assignedLocation, int numberOfRequests) throws RemoteException {
-        super(iD, name, age, gender, email, phoneNumber, address, salary);
-        this.assignedLocation = assignedLocation;
-        this.numberOfRequests = numberOfRequests;
-    }
 
     public static int getMaxCapacity() {
         return maxCapacity;
