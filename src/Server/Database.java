@@ -324,6 +324,16 @@ public class Database {
         }
         return allTasks;
     }
+    // add this to the class diagram
+    public static ArrayList<VolunteerTask> viewAssignedVolunteerTask(int volunteerID) {
+        ArrayList<VolunteerTask> allMyTasks = new ArrayList();
+        for (Document taskDoc : volunteerTaskCollection.find(Filters.eq("assignedVolunteer", volunteerID))) {
+            String json = taskDoc.toJson();
+            VolunteerTask task = gson.fromJson(json, VolunteerTask.class);
+            allMyTasks.add(task);
+        }
+        return allMyTasks;
+    }
     
     public static void recordTaskCompletion(int volenteerID) {
         volunteerTaskCollection.updateOne(Filters.eq("ID", volenteerID), Updates.set("completionStatus", true));
