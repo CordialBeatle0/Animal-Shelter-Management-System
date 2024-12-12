@@ -11,5 +11,5 @@ public interface SubscriptionRMI extends Remote {
     
     void unsubscribeFromTraining() throws RemoteException;
     
-    void endSubscription() throws RemoteException;
+    void endSubscription(User user) throws RemoteException;
 }

@@ -41,7 +41,8 @@ public class Database {
     private static MongoCollection<Document> requestCollection;
     private static MongoCollection<Document> doctorCollection;
     private static MongoCollection<Document> courierCollection;
-
+    private static MongoCollection<Document> subscriptionCollection;
+    
     public Database() {
         // Disables Mongo Logs
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
@@ -65,6 +66,7 @@ public class Database {
         requestCollection = instance.getCollection("Request");
         doctorCollection = instance.getCollection("Doctor");
         courierCollection = instance.getCollection("Courier");
+        subscriptionCollection = instance.getCollection("Subscription");
     }
     
     public void close() {
@@ -282,29 +284,29 @@ public class Database {
         
         sellingItemCollection.updateOne(Filters.eq("ID", item.getID()), updateOperation);
     }
-
+    
     // VolunteerTask Class functions
     public static void addVolunteerTask(VolunteerTask task) {
         Document document = Document.parse(gson.toJson(task));
         volunteerTaskCollection.insertOne(document);
     }
-
+    
     public static void removeVolunteerTask(int taskID) {
         volunteerTaskCollection.deleteOne(Filters.eq("ID", taskID));
     }
-
+    
     public static VolunteerTask viewVolunteerTask(int taskID) {
         Document task = volunteerTaskCollection.find(Filters.eq("ID", taskID)).first();
-
+        
         if (task != null) {
             String json = task.toJson();
             Gson gson = new Gson();
             return gson.fromJson(json, VolunteerTask.class);
         }
-
+        
         return null;
     }
-
+    
     // add this to the class diagram
     public static ArrayList<VolunteerTask> viewAllVolunteerTask() {
         ArrayList<VolunteerTask> allTasks = new ArrayList();
@@ -315,159 +317,158 @@ public class Database {
         }
         return allTasks;
     }
-
+    
     public static void recordTaskCompletion(int volenteerID) {
         volunteerTaskCollection.updateOne(Filters.eq("ID", volenteerID), Updates.set("completionStatus", true));
     }
-
+    
     // Volunteer Class functions
     public static void signUpToVolunteering(Volunteer vol) {
         Document document = Document.parse(gson.toJson(vol));
         volunteerCollection.insertOne(document);
-
+        
         Document document1 = Document.parse(gson.toJson(vol.getAccount()));
         accountCollection.insertOne(document1);
     }
-
+    
     public static void removeVolunteer(int volunteerID) {
         volunteerCollection.deleteOne(Filters.eq("ID", volunteerID));
     }
-
+    
     public static void assignVolunteer(int taskID, int volunteerID) {
         volunteerTaskCollection.updateOne(
                 Filters.eq("ID", taskID),
                 Updates.set("assignedVolunteer", volunteerID));
     }
-
-
-
+    
+    
     //-----------------REQUEST CLASS---------------------------//
-   //DONE
-    public static void addRequest(Request request){
-        Document document = new Document("ID",request.getID())
-        .append("ID", request.getID())
-        .append("userID", request.getuserID())
-        .append("userName", request.getuserName())
-        .append("location",request.getLocation())
-        .append("date", request.getDate().toString());
-
+    //DONE
+    public static void addRequest(Request request) {
+        Document document = new Document("ID", request.getID())
+                .append("ID", request.getID())
+                .append("userID", request.getuserID())
+                .append("userName", request.getuserName())
+                .append("location", request.getLocation())
+                .append("date", request.getDate().toString());
+        
         MongoCollection<Document> collection = instance.getCollection("Request");
         collection.insertOne(document);
     }
-
+    
     //DONE
-    public static ArrayList<Request> viewRequest(Courier courier){
-       ArrayList <Request> result = new ArrayList();
-       MongoCollection<Document> collection = instance.getCollection("Request");
-       ArrayList<Document> docs = collection.find(Filters.eq("location", courier.getAssignedLocation())).into(new ArrayList<Document>());
-       for (Document document : docs) {
-        result.add(gson.fromJson(document.toJson(), Request.class));
-       }
-       return result;
+    public static ArrayList<Request> viewRequest(Courier courier) {
+        ArrayList<Request> result = new ArrayList();
+        MongoCollection<Document> collection = instance.getCollection("Request");
+        ArrayList<Document> docs = collection.find(Filters.eq("location", courier.getAssignedLocation())).into(new ArrayList<Document>());
+        for (Document document : docs) {
+            result.add(gson.fromJson(document.toJson(), Request.class));
+        }
+        return result;
     }
-
+    
     //DONE
-    public static void deleteRequest(Request request){
-       MongoCollection<Document> collection = instance.getCollection("Request");
-       collection.deleteOne(Filters.eq("ID",request.getID()));
+    public static void deleteRequest(Request request) {
+        MongoCollection<Document> collection = instance.getCollection("Request");
+        collection.deleteOne(Filters.eq("ID", request.getID()));
     }
-
+    
     //-----------Courier Class---------//
     //DONE
-    public static void addCourier(Courier courier){
-        Document document = new Document("ID",courier.getID())
-        .append("ID", courier.getID())
-        .append("name", courier.getName())
-        .append("age",courier.getAge())
-        .append("gender", courier.getGender())
-        .append("email", courier.getEmail())
-        .append("phoneNumber", courier.getPhoneNumber())
-        .append("address", courier.getAddress())
-        .append("salary", courier.getSalary())
-        .append("maxCapacity", Courier.getMaxCapacity())
-        .append("assignedLocation", courier.getAssignedLocation())
-        .append("numberOfRequests", courier.getNumberOfRequests());
-
+    public static void addCourier(Courier courier) {
+        Document document = new Document("ID", courier.getID())
+                .append("ID", courier.getID())
+                .append("name", courier.getName())
+                .append("age", courier.getAge())
+                .append("gender", courier.getGender())
+                .append("email", courier.getEmail())
+                .append("phoneNumber", courier.getPhoneNumber())
+                .append("address", courier.getAddress())
+                .append("salary", courier.getSalary())
+                .append("maxCapacity", Courier.getMaxCapacity())
+                .append("assignedLocation", courier.getAssignedLocation())
+                .append("numberOfRequests", courier.getNumberOfRequests());
+        
         MongoCollection<Document> collection = instance.getCollection("Courier");
         collection.insertOne(document);
     }
-
+    
     //DONE
-    public static Courier getAssignedCourier(String location){
+    public static Courier getAssignedCourier(String location) {
         MongoCollection<Document> collection = instance.getCollection("Courier");
         Document doc = collection.find(Filters.eq("assignedLocation", location)).first();
         Courier cour = gson.fromJson(doc.toJson(), Courier.class);
         return cour;
     }
-
+    
     //DONE
-    public static void updateCourierRequestNumber(Courier cour, int numOfRequests){
+    public static void updateCourierRequestNumber(Courier cour, int numOfRequests) {
         MongoCollection<Document> collection = instance.getCollection("Courier");
-        collection.updateOne(Filters.eq("ID", cour.getID()),Updates.set("numberOfRequests", numOfRequests));
+        collection.updateOne(Filters.eq("ID", cour.getID()), Updates.set("numberOfRequests", numOfRequests));
     }
-
-    public static void deleteCourier(Courier courier){
+    
+    public static void deleteCourier(Courier courier) {
         MongoCollection<Document> collection = instance.getCollection("Courier");
         collection.deleteOne(Filters.eq("ID", courier.getID()));
     }
-   
-
+    
+    
     //---------------USER--------------//
-    public static void addUser(User user){
-        Document document = new Document("ID",user.getID())
-        .append("ID", user.getID())
-        .append("name", user.getName())
-        .append("phoneNumber", user.getPhoneNumber())
-        .append("address", user.getAddress())
-        .append("outstandingFees", user.getOutstandingFees());
-
+    public static void addUser(User user) {
+        Document document = new Document("ID", user.getID())
+                .append("ID", user.getID())
+                .append("name", user.getName())
+                .append("phoneNumber", user.getPhoneNumber())
+                .append("address", user.getAddress())
+                .append("outstandingFees", user.getOutstandingFees());
+        
         MongoCollection<Document> collection = instance.getCollection("User");
         collection.insertOne(document);
     }
-
-    public static User getUserByID(int userID){
+    
+    public static User getUserByID(int userID) {
         MongoCollection<Document> collection = instance.getCollection("User");
         Document document = collection.find(Filters.eq("ID", userID)).first();
         User user = gson.fromJson(document.toJson(), User.class);
         return user;
     }
-
-    public static void updateUserOutstandingFees(User user, float outstandingFees){
+    
+    public static void updateUserOutstandingFees(User user, float outstandingFees) {
         MongoCollection<Document> collection = instance.getCollection("User");
-        collection.updateOne(Filters.eq("ID", user.getID()),Updates.set("outstandingFees", outstandingFees));
+        collection.updateOne(Filters.eq("ID", user.getID()), Updates.set("outstandingFees", outstandingFees));
     }
-
-
+    
+    
     //-----------DOCTOR---------------//
-    public static void addDoctor(Doctor doctor){
-        Document document = new Document("ID",doctor.getID())
-        .append("ID", doctor.getID())
-        .append("name", doctor.getName())
-        .append("age",doctor.getAge())
-        .append("gender", doctor.getGender())
-        .append("email", doctor.getEmail())
-        .append("phoneNumber", doctor.getPhoneNumber())
-        .append("address", doctor.getAddress())
-        .append("salary", doctor.getSalary());
-
+    public static void addDoctor(Doctor doctor) {
+        Document document = new Document("ID", doctor.getID())
+                .append("ID", doctor.getID())
+                .append("name", doctor.getName())
+                .append("age", doctor.getAge())
+                .append("gender", doctor.getGender())
+                .append("email", doctor.getEmail())
+                .append("phoneNumber", doctor.getPhoneNumber())
+                .append("address", doctor.getAddress())
+                .append("salary", doctor.getSalary());
+        
         MongoCollection<Document> collection = instance.getCollection("Doctor");
         collection.insertOne(document);
-    
+        
     }
-
-    public static Doctor getDoctorByID(int doctorID){
+    
+    public static Doctor getDoctorByID(int doctorID) {
         MongoCollection<Document> collection = instance.getCollection("Doctor");
         Document document = collection.find(Filters.eq("ID", doctorID)).first();
         Doctor doctor = gson.fromJson(document.toJson(), Doctor.class);
         return doctor;
     }
-
-    public static void deleteDoctor(Doctor doctor){
+    
+    public static void deleteDoctor(Doctor doctor) {
         MongoCollection<Document> collection = instance.getCollection("Doctor");
         collection.deleteOne(Filters.eq("ID", doctor.getID()));
     }
-
-    public static ArrayList<Appointment> viewDoctorAppointments(int doctorID){
+    
+    public static ArrayList<Appointment> viewDoctorAppointments(int doctorID) {
         ArrayList<Appointment> appointments = new ArrayList();
         MongoCollection<Document> collection = instance.getCollection("Appointments");
         ArrayList<Document> docs = collection.find(Filters.eq("doctorID", doctorID)).into(new ArrayList<Document>());
@@ -477,39 +478,55 @@ public class Database {
         }
         return appointments;
     }
-
+    
     //-----------APPOINTMENT--------------//
-    public static void addAppointment(Appointment appointment){
-        Document document = new Document("ID",appointment.getID())
-        .append("ID", appointment.getID())
-        .append("date", appointment.getDate().toString())
-        .append("doctorID", appointment.getAssignedDoctor().getID())
-        .append("price", appointment.getPrice())
-        .append("description", appointment.getDescription())
-        .append("animalID", appointment.getAnimal().getID());
-
+    public static void addAppointment(Appointment appointment) {
+        Document document = new Document("ID", appointment.getID())
+                .append("ID", appointment.getID())
+                .append("date", appointment.getDate().toString())
+                .append("doctorID", appointment.getAssignedDoctor().getID())
+                .append("price", appointment.getPrice())
+                .append("description", appointment.getDescription())
+                .append("animalID", appointment.getAnimal().getID());
+        
         MongoCollection<Document> collection = instance.getCollection("Appointments");
         collection.insertOne(document);
     }
-
-    public static void deleteAppointment(Appointment appointment){
+    
+    public static void deleteAppointment(Appointment appointment) {
         MongoCollection<Document> collection = instance.getCollection("Appointments");
         collection.deleteOne(Filters.eq("ID", appointment.getID()));
     }
-
-
-    public static Appointment viewAppointmentById(int appointmentID){
+    
+    
+    public static Appointment viewAppointmentById(int appointmentID) {
         MongoCollection<Document> collection = instance.getCollection("Appointments");
         Document document = collection.find(Filters.eq("ID", appointmentID)).first();
         Appointment appointment = gson.fromJson(document.toJson(), Appointment.class);
         return appointment;
     }
-
-    public static void updateAppointmentDescription(Appointment appointment, String description){
-        MongoCollection<Document> collection = instance.getCollection("Appointments");
-        collection.updateOne(Filters.eq("ID", appointment.getID()),Updates.set("description", description));
-    }
-
     
+    public static void updateAppointmentDescription(Appointment appointment, String description) {
+        MongoCollection<Document> collection = instance.getCollection("Appointments");
+        collection.updateOne(Filters.eq("ID", appointment.getID()), Updates.set("description", description));
+    }
+    
+    public static void addSubscription(Subscription subscription, User user) {
+        subscriptionCollection.insertOne(Document.parse(gson.toJson(subscription)));
+        userCollection.updateOne(Filters.eq("ID", user.getID()), Updates.set("subscription", subscription));
+    }
+    
+    public static void removeSubscription(Subscription subscription, User user) {
+        subscriptionCollection.deleteOne(Filters.eq("ID", subscription.getID()));
+        userCollection.updateOne(Filters.eq("ID", user.getID()), Updates.set("subscription", null));
+    }
+    
+    // might change, actually might not be needed
+    public static Subscription getSubscriptionByID(int subscriptionID) {
+        MongoCollection<Document> collection = instance.getCollection("Subscription");
+        Document document = collection.find(Filters.eq("ID", subscriptionID)).first();
+        Subscription subscription = gson.fromJson(document.toJson(), Subscription.class);
+        return subscription;
+    }
 }
 
