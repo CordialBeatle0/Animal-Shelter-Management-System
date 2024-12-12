@@ -12,17 +12,17 @@ public interface AnimalRMI extends Remote {
     
     void removeAnimal(int ID) throws RemoteException;
     
-    void updateAnimal(Animal animal) throws RemoteException;
-    
     Animal viewAnimal(Animal animal) throws RemoteException;
     
     ArrayList<Animal> viewAllAnimals() throws RemoteException;
+
+    ArrayList<Animal> viewAllConditionedAnimals(String animalStatus) throws RemoteException;
     
-    void recordFeeding() throws RemoteException;
+    void recordFeeding(Animal animal) throws RemoteException;
     
-    void adoptAnimal(User user) throws RemoteException;
+    void adoptAnimal(Animal animal, User user) throws RemoteException;
     
-    void fosterAnimal(User user) throws RemoteException;
+    void fosterAnimal(Animal animal, User user) throws RemoteException;
     
-    void sponsorAnimal(User user) throws RemoteException;
+    void sponsorAnimal(Animal animal, User user) throws RemoteException;
 }

@@ -4,12 +4,14 @@ import RMI.Observer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -42,6 +44,9 @@ public class Database {
     private static MongoCollection<Document> doctorCollection;
     private static MongoCollection<Document> courierCollection;
     private static MongoCollection<Document> subscriptionCollection;
+    static MongoCollection<Document> animalCollection;
+    static MongoCollection<Document> animal_UserCollection;
+    static MongoCollection<Document> bookingCollection;
     
     public Database() {
         // Disables Mongo Logs
@@ -67,6 +72,9 @@ public class Database {
         doctorCollection = instance.getCollection("Doctor");
         courierCollection = instance.getCollection("Courier");
         subscriptionCollection = instance.getCollection("Subscription");
+        animalCollection = instance.getCollection("Animal");
+        animal_UserCollection = instance.getCollection("Animal_User");
+        bookingCollection = instance.getCollection("Booking");
     }
     
     public void close() {
@@ -300,7 +308,6 @@ public class Database {
         
         if (task != null) {
             String json = task.toJson();
-            Gson gson = new Gson();
             return gson.fromJson(json, VolunteerTask.class);
         }
         
@@ -340,6 +347,122 @@ public class Database {
                 Filters.eq("ID", taskID),
                 Updates.set("assignedVolunteer", volunteerID));
     }
+
+
+    // Animnal database functions
+    public static void registerAnimal(Animal animal) {
+        Document document = Document.parse(gson.toJson(animal));
+        animalCollection.insertOne(document);
+    }
+    
+    public static void removeAnimal(int animalID) {
+        animalCollection.deleteOne(Filters.eq("ID", animalID));
+    }
+    
+    public static Animal viewAnimal(Animal animal) {
+        Document animalDoc = animalCollection.find(Filters.eq("ID", animal.getID())).first();
+
+        if (animalDoc != null) {
+            String json = animalDoc.toJson();
+            return gson.fromJson(json, Animal.class);
+        }
+
+        return null;
+    }
+    
+    // this function retrieves all animals. will be used by the admin
+    public static ArrayList<Animal> viewAllAnimals() {
+        ArrayList<Animal> allAnimals = new ArrayList();
+        for (Document animalDoc : animalCollection.find()) {
+            String json = animalDoc.toJson();
+            Animal animal = gson.fromJson(json, Animal.class);
+            allAnimals.add(animal);
+        }
+        return allAnimals;
+    }
+
+    //if the animalStatus is "adopted" return animals that are not adopted bas
+    //if the animalStatus is "fostered" or "sponsored" return animals that are not fostered or adopted
+
+    public static ArrayList<Animal> viewAllConditionedAnimals(String animalStatus) {
+        ArrayList<Animal> allAnimals = new ArrayList();
+        FindIterable<Document> animalDocs = animalCollection.find(Filters.eq("adopted", false));
+        
+        if (animalStatus == "fostered" || animalStatus == "sponsored") {
+            animalDocs= animalCollection.find(Filters.and(Filters.eq("adopted", false), Filters.eq("fostered", false)));
+        }
+
+        for (Document animalDoc : animalDocs) {
+            String json = animalDoc.toJson();
+            Animal animal = gson.fromJson(json, Animal.class);
+            allAnimals.add(animal);
+        }
+        return allAnimals;
+    }
+
+   
+    public static void recordFeeding(Animal animal) {
+        animalCollection.updateOne(Filters.eq("ID", animal.getID()),
+                Updates.set("lastFeedingTime", LocalDateTime.now().toString()));
+    }
+    
+    public static void adoptAnimal(Animal animal, User user) {
+        animalCollection.updateOne(Filters.eq("ID", animal.getID()), Updates.set("adopted", true));
+        Document document = new Document("animalID", animal.getID()).append("userID", user.getID())
+                .append("relationshipType", "adopted");
+        animal_UserCollection.insertOne(Document.parse(gson.toJson(document)));
+    }
+    
+    public static void fosterAnimal(Animal animal, User user) {
+        animalCollection.updateOne(Filters.eq("ID", animal.getID()), Updates.set("fostered", true));
+        Document document = new Document("animalID", animal.getID()).append("userID", user.getID())
+                .append("relationshipType", "fostered");
+        animal_UserCollection.insertOne(Document.parse(gson.toJson(document)));
+   
+    }
+    
+    public static void sponsorAnimal(Animal animal, User user) {
+        animalCollection.updateOne(Filters.eq("ID", animal.getID()), Updates.set("sponsored", true));
+        Document document = new Document("animalID", animal.getID()).append("userID", user.getID())
+                .append("relationshipType", "sponsored");
+        animal_UserCollection.insertOne(Document.parse(gson.toJson(document)));
+
+    }
+
+    // Booking functions 
+    public static void createBooking(Booking booking) {
+        Document document = Document.parse(gson.toJson(booking));
+        bookingCollection.insertOne(document);
+
+    }
+
+    public static void cancleBooking(int bookingID) {
+        bookingCollection.deleteOne(Filters.eq("bookingID", bookingID));
+    }
+    
+    public static Booking viewBooking(int bookingID) {
+        Document bookingDoc = bookingCollection.find(Filters.eq("bookingID", bookingID)).first();
+
+        if (bookingDoc != null) {
+            String json = bookingDoc.toJson();
+            return gson.fromJson(json, Booking.class);
+        }
+
+        return null;
+    }
+
+    public static ArrayList<Booking> viewAllBookings() {
+        ArrayList<Booking> allBookings = new ArrayList();
+        for (Document bookingDoc : bookingCollection.find()) {
+            String json = bookingDoc.toJson();
+            Booking booking = gson.fromJson(json, Booking.class);
+            allBookings.add(booking);
+        }
+        return allBookings;
+    }
+
+    
+}
     
     
     //-----------------REQUEST CLASS---------------------------//
