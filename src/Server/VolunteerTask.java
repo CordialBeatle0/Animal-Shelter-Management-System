@@ -84,4 +84,8 @@ public class VolunteerTask extends UnicastRemoteObject implements VolunteerTaskR
     public void recordTaskCompletion() throws RemoteException {
         Database.recordTaskCompletion(ID);
     }
+
+    public ArrayList<VolunteerTask> viewAssignedVolunteerTask(int volunteerID) throws RemoteException {
+        return Database.viewAssignedVolunteerTask(volunteerID);
+    }
 }
