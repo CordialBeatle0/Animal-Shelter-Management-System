@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     private int ID;
     private LocalDateTime date;
-    private Doctor assignedDoctor;
+    private Doctor doctor;
     private int price;
     private String description = "";
     private Animal animal;
@@ -23,19 +23,9 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
                        Animal animal) throws RemoteException {
         this.ID = ID;
         this.date = date;
-        this.assignedDoctor = assignedDoctor;
+        this.doctor = assignedDoctor;
         this.price = price;
         this.description = description;
-        this.animal = animal;
-    }
-
-    
-    
-    public Appointment(int iD, LocalDateTime date, Doctor assignedDoctor, int price, Animal animal) throws RemoteException {
-        ID = iD;
-        this.date = date;
-        this.assignedDoctor = assignedDoctor;
-        this.price = price;
         this.animal = animal;
     }
 
@@ -55,12 +45,12 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         this.date = date;
     }
     
-    public Doctor getAssignedDoctor() {
-        return assignedDoctor;
+    public Doctor getDoctor() {
+        return doctor;
     }
     
-    public void setAssignedDoctor(Doctor assignedDoctor) {
-        this.assignedDoctor = assignedDoctor;
+    public void setDoctor(Doctor assignedDoctor) {
+        this.doctor = assignedDoctor;
     }
     
     public int getPrice() {
@@ -105,11 +95,14 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         }
     }
     
+    //TODO: make it read the doctor from the database
     public Appointment viewAppointment() throws RemoteException {
         try {
             Appointment appointment = Database.viewAppointmentById(this.getID());
+            System.out.println(appointment.toString());
             return appointment;
         } catch (Exception e) {
+            System.out.println("Could not view appointment");
             return null;
         }
         
@@ -122,6 +115,14 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         } catch (Exception e) {
             // TODO: handle exception
         }
-        
+
     }
+
+    @Override
+    public String toString() {
+        return "Appointment [ID=" + ID + ", date=" + date + ", assignedDoctor=" + doctor + ", price=" + price
+                + ", description=" + description + ", animal=" + animal + "]";
+    }
+
+    
 }
