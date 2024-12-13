@@ -317,10 +317,10 @@ public class Database {
         return gson.fromJson(document.toJson(), UtilityItem.class);
     }
     
-    public static ArrayList<UtilityItem> viewAllUtilityItems() {
-        ArrayList<UtilityItem> utilityItems = new ArrayList<>();
+    public static ArrayList<UtilityItemDTO> viewAllUtilityItems() {
+        ArrayList<UtilityItemDTO> utilityItems = new ArrayList<>();
         for (Document document : utilityItemCollection.find()) {
-            utilityItems.add(gson.fromJson(document.toJson(), UtilityItem.class));
+            utilityItems.add(gson.fromJson(document.toJson(), UtilityItemDTO.class));
         }
         return utilityItems;
     }
