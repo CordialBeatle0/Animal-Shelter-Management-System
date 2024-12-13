@@ -15,6 +15,16 @@ public class AppointmentDTO implements Serializable {
     public AppointmentDTO() {
     }
     
+    public AppointmentDTO(LocalDateTime date, String assignedDoctorName, int price, String description,
+                          String animalName, String animalType) {
+        this.date = date;
+        this.assignedDoctorName = assignedDoctorName;
+        this.price = price;
+        this.description = description;
+        this.animalName = animalName;
+        this.animalType = animalType;
+    }
+    
     public AppointmentDTO(int ID, LocalDateTime date, String assignedDoctorName, int price, String description,
                           String animalName, String animalType) {
         this.ID = ID;

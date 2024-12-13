@@ -15,7 +15,7 @@ public class Visa extends UnicastRemoteObject implements Payment, VisaRMI {
     @Override
     public void makePayment(UserDTO user, float amount) throws RemoteException {
         try {
-            Database.updateUserOutstandingFees(user, user.getOutstandingFees() - amount);
+            Database.updateUserOutstandingFees(user.getID(), user.getOutstandingFees() - amount);
             user.setOutstandingFees(user.getOutstandingFees() - amount);
         } catch (Exception e) {
             // TODO: handle exception

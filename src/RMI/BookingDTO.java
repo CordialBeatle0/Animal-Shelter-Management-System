@@ -10,6 +10,11 @@ public class BookingDTO implements Serializable {
     public BookingDTO() {
     }
     
+    public BookingDTO(String bookingDate, int visitorID) {
+        this.bookingDate = bookingDate;
+        this.visitorID = visitorID;
+    }
+    
     public BookingDTO(int bookingID, int visitorID, String bookingDate) {
         this.bookingID = bookingID;
         this.visitorID = visitorID;

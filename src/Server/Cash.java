@@ -1,9 +1,6 @@
 package Server;
 
-import RMI.CashRMI;
-import RMI.CourierDTO;
-import RMI.Payment;
-import RMI.UserDTO;
+import RMI.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -23,9 +20,10 @@ public class Cash extends UnicastRemoteObject implements Payment, CashRMI {
     
     
     // TODO: TEST
+    @Override
     public String confirmCashPayment(CourierDTO courier, RequestDTO request, float amount) throws RemoteException {
         try {
-            int userID = request.getuserID();
+            int userID = request.getUserID();
             // TODO: make DB function return user for this to work
             User user = Database.getUserByID(userID);
             if (user.getOutstandingFees() == 0.0) {
@@ -37,7 +35,7 @@ public class Cash extends UnicastRemoteObject implements Payment, CashRMI {
                 Database.updateCourierRequestNumber(courier, courier.getNumberOfRequests() - 1);
                 courier.setNumberOfRequests(courier.getNumberOfRequests() - 1);
                 // update the outstanding fees of user
-                Database.updateUserOutstandingFees(user, user.getOutstandingFees() - amount);
+                Database.updateUserOutstandingFees(user.getID(), user.getOutstandingFees() - amount);
                 user.setOutstandingFees(user.getOutstandingFees() - amount);
                 Database.deleteRequest(request);
                 return ("Payment Processed");

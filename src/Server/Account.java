@@ -44,6 +44,9 @@ public class Account extends UnicastRemoteObject implements AccountRMI {
     }
     
     public UserDTO userLogin(String username, String password) throws RemoteException {
+        // User user = Database.userLogin(username, password);
+        // return new UserDTO(user.getID(), user.getName(), user.getPhoneNumber(), user.getAddress(),
+        //         user.getOutstandingFees());
         return Database.userLogin(username, password);
     }
     
@@ -59,7 +62,7 @@ public class Account extends UnicastRemoteObject implements AccountRMI {
         Database.updateUserAccount(user, username, password);
     }
     
-    public void updateSpecialisedAccount(Specialised specialised, String username, String password) throws RemoteException {
-        Database.updateSpecialisedAccount(specialised, username, password);
+    public void updateSpecialisedAccount(int specialisedID, String username, String password) throws RemoteException {
+        Database.updateSpecialisedAccount(specialisedID, username, password);
     }
 }

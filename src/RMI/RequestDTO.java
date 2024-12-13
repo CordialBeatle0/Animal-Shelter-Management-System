@@ -34,19 +34,39 @@ public class RequestDTO implements Serializable {
         return ID;
     }
     
-    public int getuserID() {
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+    
+    public int getUserID() {
         return userID;
     }
     
-    public String getuserName() {
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+    
+    public String getUserName() {
         return userName;
+    }
+    
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
     
     public String getLocation() {
         return location;
     }
     
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    
     public String getDate() {
         return date;
+    }
+    
+    public void setDate(String date) {
+        this.date = date;
     }
 }

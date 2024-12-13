@@ -1,7 +1,4 @@
-package RMI;
-
-import Server.Account;
-import Server.Employee;
+package Server;
 
 import java.rmi.RemoteException;
 

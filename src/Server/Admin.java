@@ -1,7 +1,6 @@
 package Server;
 
 import RMI.AdminRMI;
-import RMI.Specialised;
 
 import java.rmi.RemoteException;
 

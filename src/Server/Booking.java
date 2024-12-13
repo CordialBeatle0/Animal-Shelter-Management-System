@@ -50,11 +50,11 @@ public class Booking implements BookingRMI {
     }
     
     public void cancelBooking(int bookingID) throws RemoteException {
-        Database.cancleBooking(bookingID);
+        Database.cancelBooking(bookingID);
     }
     
     
-    public Booking viewBooking(int bookingID) throws RemoteException {
+    public BookingDTO viewBooking(int bookingID) throws RemoteException {
         return Database.viewBooking(bookingID);
     }
     

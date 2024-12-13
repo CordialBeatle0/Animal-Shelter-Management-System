@@ -118,7 +118,6 @@ public class Animal extends UnicastRemoteObject implements AnimalRMI {
     
     public AnimalDTO viewAnimal(AnimalDTO animal) throws RemoteException {
         return Database.viewAnimal(animal);
-        
     }
     
     public ArrayList<AnimalDTO> viewAllAnimals() throws RemoteException {

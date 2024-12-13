@@ -56,18 +56,30 @@ public class Subscription extends UnicastRemoteObject implements SubscriptionRMI
         this.date = date;
     }
     
-    public void subscribeToTraining(User user, float amountPaid, Payment paymentType) throws RemoteException {
-        paymentType.makePayment(user, amountPaid);
+    @Override
+    public void subscribeToTraining(UserDTO user, float amountPaid, String paymentType) throws RemoteException {
+        Payment payment = switch (paymentType) {
+            case "Cash" -> new Cash();
+            case "Visa" -> new Visa();
+            default -> null;
+        };
+        
+        User user1 = Database.getUserByID(user.getID());
+        user1.setPaymentType(payment);
+        
+        user1.getPaymentType().makePayment(user, amountPaid);
         Database.addSubscription(this, user);
     }
     
     // this one is done by the user
-    public void unsubscribeFromTraining(User user) throws RemoteException {
+    @Override
+    public void unsubscribeFromTraining(UserDTO user) throws RemoteException {
         Database.removeSubscription(this, user);
     }
     
     // this one is done by the system
-    public void endSubscription(User user) throws RemoteException {
+    @Override
+    public void endSubscription(UserDTO user) throws RemoteException {
         Database.removeSubscription(this, user);
     }
 }

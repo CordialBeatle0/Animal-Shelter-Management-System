@@ -3,7 +3,7 @@ package RMI;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class AnimalDTO implements Serializable {
+public class AnimalDTO extends SpecialisedDTO implements Serializable {
     private int ID;
     private String name;
     private String animalType;

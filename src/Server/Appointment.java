@@ -83,7 +83,6 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         } catch (Exception e) {
             // TODO: handle exception
         }
-        
     }
     
     public void cancelAppointment() throws RemoteException {
@@ -97,7 +96,7 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     // TODO: make it read the doctor from the database
     public AppointmentDTO viewAppointment() throws RemoteException {
         try {
-            Appointment appointment = Database.viewAppointmentById(this.getID());
+            AppointmentDTO appointment = Database.viewAppointmentById(this.getID());
             System.out.println(appointment.toString());
             return appointment;
         } catch (Exception e) {

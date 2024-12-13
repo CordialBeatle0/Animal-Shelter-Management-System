@@ -87,7 +87,7 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
     
     @Override
     public TrainingDTO viewTrainingVideo() throws RemoteException {
-        return Database.getTrainingVideo(this.ID);
+        return Database.viewTrainingVideo(this.ID);
     }
     
     @Override

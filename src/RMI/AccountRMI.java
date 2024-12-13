@@ -12,5 +12,5 @@ public interface AccountRMI extends Remote {
     
     void updateUserAccount(UserDTO user, String username, String password) throws RemoteException;
     
-    void updateSpecialisedAccount(Specialised specialised, String username, String password) throws RemoteException;
+    void updateSpecialisedAccount(int specialisedID, String username, String password) throws RemoteException;
 }
