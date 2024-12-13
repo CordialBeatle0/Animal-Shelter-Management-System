@@ -1,5 +1,7 @@
 package Server;
 
+import RMI.UtilityItemDTO;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -8,6 +10,9 @@ public abstract class Item extends UnicastRemoteObject {
     private String itemName;
     private int quantity;
     private String type;
+    
+    public Item() throws RemoteException {
+    }
     
     public Item(int ID, String itemName, int quantity, String type) throws RemoteException {
         this.ID = ID;
@@ -48,7 +53,7 @@ public abstract class Item extends UnicastRemoteObject {
         this.type = type;
     }
     
-    public abstract void addItem() throws RemoteException;
+    public abstract void addItem(UtilityItemDTO utilityItemDTO) throws RemoteException;
     
     public abstract void removeItem() throws RemoteException;
 }

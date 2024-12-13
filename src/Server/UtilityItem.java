@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class UtilityItem extends Item implements UtilityItemRMI {
     private int restockThreshold;
     
+    public UtilityItem() throws RemoteException {
+    }
+    
     public UtilityItem(int ID, String itemName, int quality, String type, int restockThreshold) throws RemoteException {
         super(ID, itemName, quality, type);
         this.restockThreshold = restockThreshold;
@@ -23,8 +26,8 @@ public class UtilityItem extends Item implements UtilityItemRMI {
     }
     
     @Override
-    public void addItem() throws RemoteException {
-        Database.addUtilityItem(this);
+    public void addItem(UtilityItemDTO utilityItemDTO) throws RemoteException {
+        Database.addUtilityItem(utilityItemDTO);
     }
     
     @Override

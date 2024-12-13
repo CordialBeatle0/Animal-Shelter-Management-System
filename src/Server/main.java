@@ -30,6 +30,7 @@ public class main {
             VisaRMI visaRMI = new Visa();
             VolunteerRMI volunteerRMI = new Volunteer();
             VolunteerTaskRMI volunteerTaskRMI = new VolunteerTask();
+            UtilityItemRMI utilityItemRMI = new UtilityItem();
             
             // Binding the objects
             registry.rebind("Account", accountRMI);
@@ -46,6 +47,7 @@ public class main {
             registry.rebind("Visa", visaRMI);
             registry.rebind("Volunteer", volunteerRMI);
             registry.rebind("VolunteerTask", volunteerTaskRMI);
+            registry.rebind("UtilityItem", utilityItemRMI);
             
             System.out.println("Server is running...");
         } catch (Exception e) {

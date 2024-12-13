@@ -287,15 +287,15 @@ public class Database {
     }
     
     // Utility item methods
-    public static void addUtilityItem(UtilityItem item) {
+    public static void addUtilityItem(UtilityItemDTO item) {
         // if item already exists
-        Document document = utilityItemCollection.find(Filters.eq("itemName", item.getItemName())).first();
+        Document document = utilityItemCollection.find(Filters.eq("itemName", item.getName())).first();
         if (document != null) {
             // add the quantity of the current item with the new item
             UtilityItem existingItem = gson.fromJson(document.toJson(), UtilityItem.class);
             int existingQuantity = existingItem.getQuantity();
             int newQuantity = existingQuantity + item.getQuantity();
-            utilityItemCollection.updateOne(Filters.eq("itemName", item.getItemName()),
+            utilityItemCollection.updateOne(Filters.eq("itemName", item.getName()),
                     Updates.set("quantity", newQuantity));
             return;
         }
