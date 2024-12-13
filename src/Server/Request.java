@@ -1,4 +1,9 @@
 package Server;
+
+import RMI.CourierDTO;
+import RMI.RequestDTO;
+import RMI.RequestRMI;
+
 import java.rmi.RemoteException;
 
 import javax.swing.*;
@@ -10,11 +15,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
-public class Request {
+public class Request implements RequestRMI {
     private int ID;
     private int userID;
     private String userName;
-    //private String requestType;
     private String location;
     private LocalDateTime date;
     
@@ -29,7 +33,6 @@ public class Request {
         this.ID = ID;
         this.userID = userID;
         this.userName = userName;
-        //this.requestType = requestType;
         this.location = location;
         this.date = date;
     }
@@ -38,71 +41,90 @@ public class Request {
         this.ID = ID;
         this.userID = userID;
         this.location = location;
-        //this.requestType = requestType;
     }
     
     public int getID() {
         return ID;
     }
     
-    public int getuserID() {
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+    
+    public int getUserID() {
         return userID;
     }
     
-    public String getuserName() {
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+    
+    public String getUserName() {
         return userName;
     }
     
-    
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
     
     public String getLocation() {
         return location;
+    }
+    
+    public void setLocation(String location) {
+        this.location = location;
     }
     
     public LocalDateTime getDate() {
         return date;
     }
     
-    //DONE
-    public static ArrayList<Request> viewRequest(Courier courier) {
-         ArrayList<Request> requests = new ArrayList();
-         try{
-             //viewRequest should all the courier's requests from the database
-             requests = Database.viewRequest(courier);
-             for (Request request : requests) {
-                System.out.println(request.toString());
-             }
-         }catch(Exception e){
-            //TODO: send message to controller that an error has occured
-            System.out.println("An Error has occurred");
-         }
-         return requests;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
     
-    //TODO: TEST
-    public void requestHomeService() throws RemoteException{
+    // DONE
+    @Override
+    public ArrayList<RequestDTO> viewRequest(CourierDTO courier) throws RemoteException {
+        ArrayList<RequestDTO> requests = new ArrayList<>();
+        try {
+            // viewRequest should all the courier's requests from the database
+            requests = Database.viewRequest(courier);
+            for (RequestDTO request : requests) {
+                System.out.println(request.toString());
+            }
+        } catch (Exception e) {
+            // TODO: send message to controller that an error has occurred
+            System.out.println("An Error has occurred");
+        }
+        return requests;
+    }
+    
+    // TODO: TEST
+    public void requestHomeService() throws RemoteException {
         Courier cour = new Courier();
         cour.assignCourier(this);
     }
     
-    //DONE
+    // DONE
     public void addRequestToDB() {
-     try {
-        Database.addRequest(this);
-        System.out.println("Request added to database");
-        
-     } catch (Exception e) {
-        // TODO: handle exception
-        System.out.println("An Error Occurred");
-
-     }
+        try {
+            RequestDTO request = new RequestDTO(getID(), getUserID(), getUserName(), getLocation(),
+                    getDate().toString());
+            Database.addRequest(request);
+            System.out.println("Request added to database");
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("An Error Occurred");
+        }
     }
-
+    
     @Override
     public String toString() {
         return "Request [ID=" + ID + ", userID=" + userID + ", userName=" + userName + ", location=" + location
                 + ", date=" + date + "]";
     }
-
+    
     
 }

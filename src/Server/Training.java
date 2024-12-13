@@ -1,6 +1,7 @@
 package Server;
 
 import RMI.Observer;
+import RMI.TrainingDTO;
 import RMI.TrainingRMI;
 
 import java.rmi.RemoteException;
@@ -85,12 +86,12 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
     }
     
     @Override
-    public Training viewTrainingVideo() throws RemoteException {
-        return Database.getTrainingVideo(this.ID);
+    public TrainingDTO viewTrainingVideo() throws RemoteException {
+        return Database.viewTrainingVideo(this.ID);
     }
     
     @Override
-    public ArrayList<Training> viewAllTrainingVideos() throws RemoteException {
+    public ArrayList<TrainingDTO> viewAllTrainingVideos() throws RemoteException {
         return Database.getAllTrainingVideos();
     }
     

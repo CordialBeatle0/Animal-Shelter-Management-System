@@ -12,6 +12,13 @@ public class TrainingDTO implements Serializable {
     public TrainingDTO() {
     }
     
+    public TrainingDTO(String url, String uploadedDate, float runtime, String description) {
+        this.url = url;
+        this.uploadedDate = uploadedDate;
+        this.runtime = runtime;
+        this.description = description;
+    }
+    
     public TrainingDTO(int ID, String url, String uploadedDate, float runtime, String description) {
         this.ID = ID;
         this.url = url;

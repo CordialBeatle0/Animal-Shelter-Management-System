@@ -1,11 +1,11 @@
 package Server;
 
+import RMI.AnimalDTO;
 import RMI.AnimalRMI;
+import RMI.UserDTO;
 
-import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Animal extends UnicastRemoteObject implements AnimalRMI {
@@ -107,51 +107,50 @@ public class Animal extends UnicastRemoteObject implements AnimalRMI {
         this.fostered = fostered;
     }
     
-    public void registerAnimal(Animal animal) throws RemoteException {
-        Database.registerAnimal(animal);   
+    public void registerAnimal(AnimalDTO animal) throws RemoteException {
+        Database.registerAnimal(animal);
     }
     
     public void removeAnimal(int animalID) throws RemoteException {
-    Database.removeAnimal(animalID);
+        Database.removeAnimal(animalID);
     }
     
     
-    public Animal viewAnimal(Animal animal) throws RemoteException {
-         return Database.viewAnimal(animal);
-        
+    public AnimalDTO viewAnimal(AnimalDTO animal) throws RemoteException {
+        return Database.viewAnimal(animal);
     }
     
-    public ArrayList<Animal> viewAllAnimals() throws RemoteException {
+    public ArrayList<AnimalDTO> viewAllAnimals() throws RemoteException {
         return Database.viewAllAnimals();
     }
-
-    public ArrayList<Animal> viewAllConditionedAnimals(String animalStatus) throws RemoteException {
-        return Database.viewAllConditionedAnimals(animalStatus);  
+    
+    public ArrayList<AnimalDTO> viewAllConditionedAnimals(String animalStatus) throws RemoteException {
+        return Database.viewAllConditionedAnimals(animalStatus);
     }
-
-
-    public void recordFeeding(Animal animal) throws RemoteException {
+    
+    
+    public void recordFeeding(AnimalDTO animal) throws RemoteException {
         Database.recordFeeding(animal);
     }
     
-    public void adoptAnimal(Animal animal, User user) throws RemoteException {
+    public void adoptAnimal(AnimalDTO animal, UserDTO user) throws RemoteException {
         Database.adoptAnimal(animal, user);
     }
     
-    public void fosterAnimal(Animal animal,User user) throws RemoteException {
+    public void fosterAnimal(AnimalDTO animal, UserDTO user) throws RemoteException {
         Database.fosterAnimal(animal, user);
     }
     
-    public void sponsorAnimal( Animal animal, User user) throws RemoteException {
+    public void sponsorAnimal(AnimalDTO animal, UserDTO user) throws RemoteException {
         Database.sponsorAnimal(animal, user);
     }
-
+    
     @Override
     public String toString() {
         return "Animal [ID=" + ID + ", name=" + name + ", animalType=" + animalType + ", breed=" + breed + ", age="
                 + age + ", lastFeedingTime=" + lastFeedingTime + ", adopted=" + adopted + ", sponsored=" + sponsored
                 + ", fostered=" + fostered + "]";
     }
-
+    
     
 }

@@ -1,12 +1,11 @@
 package Server;
 
+import RMI.AppointmentDTO;
 import RMI.AppointmentRMI;
 
-import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     private int ID;
@@ -28,7 +27,7 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         this.description = description;
         this.animal = animal;
     }
-
+    
     public int getID() {
         return ID;
     }
@@ -79,12 +78,11 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     
     
     public void bookAppointment() throws RemoteException {
-       try {
-           Database.addAppointment(this);
-       } catch (Exception e) {
-        // TODO: handle exception
-       }
-       
+        try {
+            Database.addAppointment(this);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
     
     public void cancelAppointment() throws RemoteException {
@@ -95,10 +93,10 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         }
     }
     
-    //TODO: make it read the doctor from the database
-    public Appointment viewAppointment() throws RemoteException {
+    // TODO: make it read the doctor from the database
+    public AppointmentDTO viewAppointment() throws RemoteException {
         try {
-            Appointment appointment = Database.viewAppointmentById(this.getID());
+            AppointmentDTO appointment = Database.viewAppointmentById(this.getID());
             System.out.println(appointment.toString());
             return appointment;
         } catch (Exception e) {
@@ -115,14 +113,14 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         } catch (Exception e) {
             // TODO: handle exception
         }
-
+        
     }
-
+    
     @Override
     public String toString() {
         return "Appointment [ID=" + ID + ", date=" + date + ", assignedDoctor=" + doctor + ", price=" + price
                 + ", description=" + description + ", animal=" + animal + "]";
     }
-
+    
     
 }

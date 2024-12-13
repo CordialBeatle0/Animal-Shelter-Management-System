@@ -1,10 +1,13 @@
 package RMI;
 
-import Server.User;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface UserRMI extends Remote {
-    void signUp(User user) throws RemoteException;
+    void signUp(UserDTO user) throws RemoteException;
+    
+    void removeNotification(UserDTO user) throws RemoteException;
+    
+    ArrayList<String> getNotifications(UserDTO user) throws RemoteException;
 }
