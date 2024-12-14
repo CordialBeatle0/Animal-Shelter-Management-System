@@ -13,9 +13,15 @@ public class SellingItem extends Item implements SellingItemRMI {
     public SellingItem() throws RemoteException {
     }
 
+    public SellingItem(String itemName, int quantity, StockStatus stockStatus, float price) throws RemoteException {
+        super(itemName, quantity);
+        this.stockStatus = stockStatus;
+        this.price = price;
+    }
+
     public SellingItem(int ID, String itemName, int quality, String type, StockStatus stockStatus, float price)
             throws RemoteException {
-        super(ID, itemName, quality, type);
+        super(ID, itemName, quality);
         this.stockStatus = stockStatus;
         this.price = price;
     }
