@@ -9,16 +9,28 @@ public class CaretakerDTO extends SpecialisedDTO implements Serializable {
     }
     
     public CaretakerDTO(String name, int age, char gender, String email, String phoneNumber, String address,
-                        AccountDTO account, float salary, String shift) {
-        super(name, age, gender, email, phoneNumber, address, account, salary);
+                        String username, String password, float salary, String type, String shift) {
+        super(name, age, gender, email, phoneNumber, address, username, password, salary, type);
         this.shift = shift;
     }
     
-    public CaretakerDTO(int ID, String name, int age, char gender, String email, String phoneNumber, String address,
-                        AccountDTO account, float salary, String shift) {
-        super(ID, name, age, gender, email, phoneNumber, address, account, salary);
+    public CaretakerDTO(String name, int age, char gender, String email, String phoneNumber, String address,
+                        String username, String password, float salary, String shift) {
+        super(name, age, gender, email, phoneNumber, address, username, password, salary);
         this.shift = shift;
     }
+    
+    // public CaretakerDTO(String name, int age, char gender, String email, String phoneNumber, String address,
+    //                     AccountDTO account, float salary, String shift) {
+    //     super(name, age, gender, email, phoneNumber, address, account, salary);
+    //     this.shift = shift;
+    // }
+    //
+    // public CaretakerDTO(int ID, String name, int age, char gender, String email, String phoneNumber, String address,
+    //                     AccountDTO account, float salary, String shift) {
+    //     super(ID, name, age, gender, email, phoneNumber, address, account, salary);
+    //     this.shift = shift;
+    // }
     
     public String getShift() {
         return shift;

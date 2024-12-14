@@ -732,4 +732,13 @@ public class Database {
         employeeCollection.insertOne(Document.parse(gson.toJson(employee)));
         accountCollection.insertOne(Document.parse(gson.toJson(employee.getAccount())));
     }
+    
+    public static void addEmployeeDTO(EmployeeDTO employee) {
+        int ID = getPrimaryKey();
+        employee.setID(ID);
+        AccountDTO account = new AccountDTO(ID, employee.getUsername(), employee.getPassword());
+        
+        employeeCollection.insertOne(Document.parse(gson.toJson(employee)));
+        accountCollection.insertOne(Document.parse(gson.toJson(account)));
+    }
 }
