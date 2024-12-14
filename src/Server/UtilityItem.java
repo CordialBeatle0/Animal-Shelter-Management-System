@@ -12,8 +12,13 @@ public class UtilityItem extends Item implements UtilityItemRMI {
     public UtilityItem() throws RemoteException {
     }
     
-    public UtilityItem(int ID, String itemName, int quality, String type, int restockThreshold) throws RemoteException {
-        super(ID, itemName, quality, type);
+    public UtilityItem(String itemName, int quantity, int restockThreshold) throws RemoteException {
+        super(itemName, quantity);
+        this.restockThreshold = restockThreshold;
+    }
+    
+    public UtilityItem(int ID, String itemName, int quantity, int restockThreshold) throws RemoteException {
+        super(ID, itemName, quantity);
         this.restockThreshold = restockThreshold;
     }
     

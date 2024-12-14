@@ -13,8 +13,15 @@ public class SellingItem extends Item implements SellingItemRMI {
     public SellingItem() throws RemoteException {
     }
     
-    public SellingItem(int ID, String itemName, int quality, String type, StockStatus stockStatus, float price) throws RemoteException {
-        super(ID, itemName, quality, type);
+    public SellingItem(String itemName, int quantity, StockStatus stockStatus, float price) throws RemoteException {
+        super(itemName, quantity);
+        this.stockStatus = stockStatus;
+        this.price = price;
+    }
+    
+    public SellingItem(int ID, String itemName, int quality, String type, StockStatus stockStatus, float price)
+            throws RemoteException {
+        super(ID, itemName, quality);
         this.stockStatus = stockStatus;
         this.price = price;
     }
@@ -43,21 +50,28 @@ public class SellingItem extends Item implements SellingItemRMI {
         Database.removeSellingItem(sellingItemDTO);
     }
     
-    public void buyItem(int quantityRequired) throws RemoteException, Exception {
+    public void buyItem(int itemID, int quantityRequired, int userID, String payment) throws RemoteException,
+            Exception {
+        Payment paymentType = switch (payment) {
+            case "Cash" -> new Cash();
+            case "Visa" -> new Visa();
+            default -> null;
+        };
+        
         if (getQuantity() < quantityRequired) {
             setStockStatus(new OutOfStock());
         } else {
             setStockStatus(new InStock());
         }
         try {
-            stockStatus.buyItem(getID(), quantityRequired);
+            stockStatus.buyItem(itemID, quantityRequired, userID, paymentType);
         } catch (Exception e) {
             throw new Exception(getItemName() + e.getMessage());
         }
     }
     
-    public SellingItemDTO viewSellingItem() throws RemoteException {
-        return Database.viewSellingItem(getID());
+    public SellingItemDTO viewSellingItem(int ID) throws RemoteException {
+        return Database.viewSellingItem(ID);
     }
     
     public ArrayList<SellingItemDTO> viewAllSellingItems() throws RemoteException {
