@@ -96,7 +96,7 @@ public class Database {
     }
     
     // Training methods
-    public static void uploadTrainingVideo(Training training) {
+    public static void uploadTrainingVideo(TrainingDTO training) {
         training.setID(getPrimaryKey("Training"));
         trainingCollection.insertOne(Document.parse(gson.toJson(training)));
     }

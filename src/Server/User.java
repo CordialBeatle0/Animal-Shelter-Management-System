@@ -1,7 +1,6 @@
 package Server;
 
 import RMI.Observer;
-import RMI.Payment;
 import RMI.UserDTO;
 import RMI.UserRMI;
 
