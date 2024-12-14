@@ -1,25 +1,29 @@
 package Server;
 
+import RMI.AnimalDTO;
 import RMI.AppointmentDTO;
 import RMI.AppointmentRMI;
+import RMI.DoctorDTO;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 
+import javax.xml.crypto.Data;
+
 public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     private int ID;
-    private LocalDateTime date;
-    private Doctor doctor;
+    private String date;
+    private DoctorDTO doctor;
     private int price;
     private String description = "";
-    private Animal animal;
-    
+    private AnimalDTO animal;
+
     public Appointment() throws RemoteException {
     }
-    
-    public Appointment(int ID, LocalDateTime date, Doctor assignedDoctor, int price, String description,
-                       Animal animal) throws RemoteException {
+
+    public Appointment(int ID, String date, DoctorDTO assignedDoctor, int price, String description,
+            AnimalDTO animal) throws RemoteException {
         this.ID = ID;
         this.date = date;
         this.doctor = assignedDoctor;
@@ -27,100 +31,109 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         this.description = description;
         this.animal = animal;
     }
-    
+
     public int getID() {
         return ID;
     }
-    
+
     public void setID(int ID) {
         this.ID = ID;
     }
-    
-    public LocalDateTime getDate() {
+
+    public String getDate() {
         return date;
     }
-    
-    public void setDate(LocalDateTime date) {
+
+    public void setDate(String date) {
         this.date = date;
     }
-    
-    public Doctor getDoctor() {
+
+    public DoctorDTO getDoctor() {
         return doctor;
     }
-    
-    public void setDoctor(Doctor assignedDoctor) {
+
+    public void setDoctor(DoctorDTO assignedDoctor) {
         this.doctor = assignedDoctor;
     }
-    
+
     public int getPrice() {
         return price;
     }
-    
+
     public void setPrice(int price) {
         this.price = price;
     }
-    
+
     public String getDescription() {
         return description;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    public Animal getAnimal() {
+
+    public AnimalDTO getAnimal() {
         return animal;
     }
-    
-    public void setAnimal(Animal animal) {
+
+    public void setAnimal(AnimalDTO animal) {
         this.animal = animal;
     }
-    
-    
-    public void bookAppointment() throws RemoteException {
+
+    public void bookAppointment(int ID, String date, DoctorDTO assignedDoctor, int price, String description,
+            AnimalDTO animal) throws RemoteException {
+        Appointment appointment = new Appointment(ID, date, assignedDoctor, price, description, animal);
         try {
-            Database.addAppointment(this);
+            Database.addAppointment(appointment);
         } catch (Exception e) {
             // TODO: handle exception
         }
     }
-    
-    public void cancelAppointment() throws RemoteException {
+
+    public void cancelAppointment(int ID) throws RemoteException {
         try {
-            Database.deleteAppointment(this);
+            Appointment appointment = Database.vAppointment(ID);
+            Database.deleteAppointment(appointment);
         } catch (Exception e) {
             // TODO: handle exception
         }
     }
-    
-    // TODO: make it read the doctor from the database
-    public AppointmentDTO viewAppointment() throws RemoteException {
+
+    public AppointmentDTO viewAppointment(int ID) throws RemoteException {
         try {
-            AppointmentDTO appointment = Database.viewAppointmentById(this.getID());
-            System.out.println(appointment.toString());
+            AppointmentDTO appointment = Database.viewAppointmentById(ID);
             return appointment;
         } catch (Exception e) {
             System.out.println("Could not view appointment");
             return null;
         }
-        
+
     }
-    
-    public void recordAppointmentDetail(String details) throws RemoteException {
+
+    public void recordAppointmentDetail(int ID, String details) throws RemoteException {
         try {
-            Database.updateAppointmentDescription(this, details);
-            setDescription(details);
+            Appointment appointment = Database.vAppointment(ID);
+            Database.updateAppointmentDescription(appointment, details);
+            appointment.setDescription(details);
         } catch (Exception e) {
             // TODO: handle exception
         }
-        
+
     }
-    
+
+    public AppointmentDTO getAppointment(int ID) throws RemoteException {
+        try {
+            return Database.viewAppointmentById(ID);
+        } catch (Exception e) {
+            System.out.println("Could not view appointment");
+            return null;
+        }
+    }
+
     @Override
     public String toString() {
         return "Appointment [ID=" + ID + ", date=" + date + ", assignedDoctor=" + doctor + ", price=" + price
                 + ", description=" + description + ", animal=" + animal + "]";
     }
-    
-    
+
 }
