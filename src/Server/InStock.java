@@ -13,12 +13,11 @@ public class InStock extends UnicastRemoteObject implements StockStatus {
     
     @Override
     public void buyItem(int ID, int quantityNeeded, int userID, Payment payment) throws RemoteException {
-        User user = Database.getUserByID(userID);
-        user.setPaymentType(payment);
+        UserDTO user = Database.getUserByID(userID);
         
-        AccountDTO account = new AccountDTO(userID, user.getAccount().getUsername(), user.getAccount().getPassword());
-        UserDTO userDTO = new UserDTO(user.getID(), account, user.getName(), user.getPhoneNumber(), user.getAddress(),
-                user.getOutstandingFees());
+        
+        UserDTO userDTO = new UserDTO(user.getID(), user.getID(), user.getName(), user.getPhoneNumber(),
+                user.getAddress(), user.getOutstandingFees());
         
         SellingItemDTO sellingItemDTO = Database.viewSellingItem(ID);
         float price = sellingItemDTO.getPrice() * quantityNeeded;
@@ -26,7 +25,7 @@ public class InStock extends UnicastRemoteObject implements StockStatus {
         userDTO.setOutstandingFees(price + userDTO.getOutstandingFees());
         Database.updateUserOutstandingFees(userDTO.getID(), userDTO.getOutstandingFees());
         
-        user.getPaymentType().makePayment(userDTO, price);
+        payment.makePayment(userDTO, price);
         
         Database.buyItem(ID, quantityNeeded);
     }

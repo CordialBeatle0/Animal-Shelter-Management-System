@@ -3,17 +3,24 @@ package Server;
 import RMI.SubscriptionRMI;
 import RMI.UserDTO;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 
-public class Subscription extends UnicastRemoteObject implements SubscriptionRMI {
+public class Subscription extends UnicastRemoteObject implements SubscriptionRMI, Serializable {
     private int ID;
     private boolean status;
     private float price;
     private LocalDateTime date;
     
     public Subscription() throws RemoteException {
+    }
+    
+    public Subscription(boolean status, float price, LocalDateTime date) throws RemoteException {
+        this.status = status;
+        this.price = price;
+        this.date = date;
     }
     
     public Subscription(int ID, boolean status, float price, LocalDateTime date) throws RemoteException {
@@ -63,11 +70,16 @@ public class Subscription extends UnicastRemoteObject implements SubscriptionRMI
             default -> null;
         };
         
-        User user1 = Database.getUserByID(user.getID());
-        user1.setPaymentType(payment);
+        UserDTO user1 = Database.getUserByID(user.getID());
+        User newUser = new User(user1.getID(), user1.getName(), user1.getUsername(), user.getPassword(),
+                user1.getPhoneNumber(), user1.getAddress(), null, new Subscription(true, 10, LocalDateTime.now()),
+                new Training(), user1.getOutstandingFees());
+        newUser.setPaymentType(payment);
         
-        user1.getPaymentType().makePayment(user, amountPaid);
-        Database.addSubscription(this, user);
+        newUser.getPaymentType().makePayment(user, amountPaid);
+        Database.addSubscription(new Subscription(newUser.getSubscription().isStatus(),
+                        newUser.getSubscription().getPrice(), newUser.getSubscription().getDate()),
+                user);
     }
     
     // this one is done by the user

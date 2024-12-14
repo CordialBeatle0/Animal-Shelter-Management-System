@@ -25,7 +25,7 @@ public class Cash extends UnicastRemoteObject implements Payment, CashRMI {
         try {
             int userID = request.getUserID();
             // TODO: make DB function return user for this to work
-            User user = Database.getUserByID(userID);
+            UserDTO user = Database.getUserByID(userID);
             if (user.getOutstandingFees() == 0.0) {
                 return ("User has no outstanding fees");
             } else if (amount > user.getOutstandingFees()) {
