@@ -50,8 +50,7 @@ public class SellingItem extends Item implements SellingItemRMI {
         Database.removeSellingItem(sellingItemDTO);
     }
     
-    public void buyItem(int itemID, int quantityRequired, int userID, String payment) throws RemoteException,
-            Exception {
+    public void buyItem(int itemID, int quantityRequired, int userID, String payment) throws RemoteException {
         Payment paymentType = switch (payment) {
             case "Cash" -> new Cash();
             case "Visa" -> new Visa();
@@ -68,7 +67,7 @@ public class SellingItem extends Item implements SellingItemRMI {
         try {
             stockStatus.buyItem(itemID, quantityRequired, userID, paymentType);
         } catch (Exception e) {
-            throw new Exception(getItemName() + e.getMessage());
+            e.printStackTrace();
         }
     }
     
