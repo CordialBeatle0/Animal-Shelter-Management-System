@@ -114,7 +114,7 @@ public class main {
             Database.signUpToVolunteering(volunteer1);
             
             VolunteerTaskDTO volunteerTask1 = new VolunteerTaskDTO("Clean the cages", "Clean the cages",
-                    LocalDateTime.now().toString(), false, "Clean the cages");
+                    LocalDateTime.now().toString(), false, "Clean the cages", -1);
             Database.addVolunteerTask(volunteerTask1);
             
             DoctorDTO doctorDTO = new DoctorDTO("Amira Doe", 23, 'F', "Amira@email.com", "0123456789", "Nasr City",
