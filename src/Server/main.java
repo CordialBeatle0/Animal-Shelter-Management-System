@@ -68,8 +68,8 @@ public class main {
                     "St", new Account("amir21", "2121"), 2345.0f, "Night shift");
             Database.addEmployee(caretaker2);
             
-            Courier courier1 = new Courier("Loli Doe", 21, 'F', "loli@test.com", "0987654321", "1234 Main St",
-                    new Account("loli", "2121"), 235678, "Nasr City", 2);
+            CourierDTO courier1 = new CourierDTO("Loli Doe", 21, 'F', "loli@test.com", "0987654321", "1234 Main St",
+                    "loli", "2121", 235678, "Nasr City", 2);
             Database.addEmployee(courier1);
             Courier courier2 = new Courier("Laila Doe", 23, 'F', "laila@test.com", "0987654321", "1234 Main St",
                     new Account("laila", "2121"), 235678, "Heliopolis", 10);
@@ -122,6 +122,10 @@ public class main {
             Appointment appointment1 = new Appointment(LocalDateTime.now().toString(), doctorDTO, 2300, "Checking " +
                     "up on an animal", animalDTO);
             Database.addAppointment(appointment1);
+            
+            BookingDTO booking1 = new BookingDTO(LocalDateTime.now().toString(), 0);
+            Database.createBooking(booking1);
+            Database.viewAllBookings();
             
             ArrayList<BookingDTO> bookings = Database.viewAllBookings();
             for (BookingDTO booking : bookings) {

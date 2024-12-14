@@ -10,26 +10,40 @@ public class EmployeeDTO implements Serializable {
     private String email;
     private String phoneNumber;
     private String address;
-    private AccountDTO account;
+    //    private AccountDTO account;
+    private String username;
+    private String password;
     private float salary;
     
     public EmployeeDTO() {
     }
     
-    public EmployeeDTO(String name, int age, char gender, String email, String phoneNumber, String address,
-                       AccountDTO account, float salary) {
+    public EmployeeDTO(String name, int age, char gender, String email, String phoneNumber, String address, String username, String password, float salary) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.account = account;
+        this.username = username;
+        this.password = password;
+        this.salary = salary;
+    }
+    
+    public EmployeeDTO(String name, int age, char gender, String email, String phoneNumber, String address,
+                       float salary) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+//        this.account = account;
         this.salary = salary;
     }
     
     public EmployeeDTO(int ID, String name, int age, char gender, String email, String phoneNumber, String address,
-                       AccountDTO account, float salary) {
+                       float salary) {
         this.ID = ID;
         this.name = name;
         this.age = age;
@@ -37,7 +51,6 @@ public class EmployeeDTO implements Serializable {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.account = account;
         this.salary = salary;
     }
     
@@ -96,14 +109,14 @@ public class EmployeeDTO implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
-    
-    public AccountDTO getAccount() {
-        return account;
-    }
-    
-    public void setAccount(AccountDTO account) {
-        this.account = account;
-    }
+
+//    public AccountDTO getAccount() {
+//        return account;
+//    }
+//
+//    public void setAccount(AccountDTO account) {
+//        this.account = account;
+//    }
     
     public float getSalary() {
         return salary;
@@ -111,5 +124,21 @@ public class EmployeeDTO implements Serializable {
     
     public void setSalary(float salary) {
         this.salary = salary;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
