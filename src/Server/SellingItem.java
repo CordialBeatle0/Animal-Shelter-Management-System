@@ -58,7 +58,9 @@ public class SellingItem extends Item implements SellingItemRMI {
             default -> null;
         };
         
-        if (getQuantity() < quantityRequired) {
+        SellingItemDTO sellingItemDTO = Database.viewSellingItem(itemID);
+        
+        if (sellingItemDTO.getQuantity() < quantityRequired) {
             setStockStatus(new OutOfStock());
         } else {
             setStockStatus(new InStock());

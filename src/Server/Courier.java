@@ -15,6 +15,13 @@ public class Courier extends Employee {
         
     }
     
+    public Courier(String name, int age, char gender, String email, String phoneNumber, String address,
+                   Account account, float salary, String assignedLocation, int numberOfRequests) throws RemoteException {
+        super(name, age, gender, email, phoneNumber, address, account, salary);
+        this.assignedLocation = assignedLocation;
+        this.numberOfRequests = numberOfRequests;
+    }
+    
     public Courier(int ID, String name, int age, char gender, String email, String phoneNumber, String address,
                    Account account, float salary, String assignedLocation) throws RemoteException {
         super(ID, name, age, gender, email, phoneNumber, address, account, salary);

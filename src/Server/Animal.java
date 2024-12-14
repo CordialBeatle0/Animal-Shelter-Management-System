@@ -22,6 +22,18 @@ public class Animal extends UnicastRemoteObject implements AnimalRMI {
     public Animal() throws RemoteException {
     }
     
+    public Animal(String name, String animalType, String breed, int age, String lastFeedingTime, boolean adopted,
+                  boolean sponsored, boolean fostered) throws RemoteException {
+        this.name = name;
+        this.animalType = animalType;
+        this.breed = breed;
+        this.age = age;
+        this.lastFeedingTime = lastFeedingTime;
+        this.adopted = adopted;
+        this.sponsored = sponsored;
+        this.fostered = fostered;
+    }
+    
     public Animal(int ID, String name, String animalType, String breed, int age, String lastFeedingTime,
                   boolean adopted, boolean sponsored, boolean fostered) throws RemoteException {
         this.ID = ID;

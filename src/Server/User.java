@@ -11,7 +11,9 @@ import java.util.ArrayList;
 public class User extends UnicastRemoteObject implements Observer, UserRMI {
     private int ID;
     private String name;
-    private Account account;
+    private int account;
+    private String username;
+    private String password;
     private String phoneNumber;
     private String address;
     private Payment paymentType;
@@ -23,7 +25,76 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     public User() throws RemoteException {
     }
     
-    public User(int ID, String name, Account account, String phoneNumber, String address, Payment paymentType,
+    public User(int ID, String name, String username, String password, String phoneNumber, String address,
+                Payment paymentType, Subscription subscription, TrainingROI trainingVideos, float outstandingFees) throws RemoteException {
+        this.ID = ID;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.paymentType = paymentType;
+        this.subscription = subscription;
+        this.trainingVideos = trainingVideos;
+        this.outstandingFees = outstandingFees;
+    }
+    
+    public User(String name, String username, String password, String phoneNumber, String address,
+                Payment paymentType, Subscription subscription, TrainingROI trainingVideos, float outstandingFees) throws RemoteException {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.paymentType = paymentType;
+        this.subscription = subscription;
+        this.trainingVideos = trainingVideos;
+        this.outstandingFees = outstandingFees;
+    }
+    
+    public User(int ID, String name, int account, String username, String password, String phoneNumber,
+                String address, Payment paymentType, Subscription subscription, TrainingROI trainingVideos,
+                float outstandingFees) throws RemoteException {
+        this.ID = ID;
+        this.name = name;
+        this.account = account;
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.paymentType = paymentType;
+        this.subscription = subscription;
+        this.trainingVideos = trainingVideos;
+        this.outstandingFees = outstandingFees;
+    }
+    
+    public User(String name, int account, String username, String password, String phoneNumber, String address,
+                Payment paymentType, Subscription subscription, TrainingROI trainingVideos, float outstandingFees) throws RemoteException {
+        this.name = name;
+        this.account = account;
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.paymentType = paymentType;
+        this.subscription = subscription;
+        this.trainingVideos = trainingVideos;
+        this.outstandingFees = outstandingFees;
+    }
+    
+    public User(String name, int account, String phoneNumber, String address, Payment paymentType,
+                Subscription subscription, TrainingROI trainingVideos, float outstandingFees) throws RemoteException {
+        this.name = name;
+        this.account = account;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.paymentType = paymentType;
+        this.subscription = subscription;
+        this.trainingVideos = trainingVideos;
+        this.outstandingFees = outstandingFees;
+    }
+    
+    public User(int ID, String name, int account, String phoneNumber, String address, Payment paymentType,
                 Subscription subscription, TrainingROI trainingVideos) throws RemoteException {
         this.ID = ID;
         this.name = name;
@@ -52,11 +123,11 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
         this.name = name;
     }
     
-    public Account getAccount() {
+    public int getAccount() {
         return account;
     }
     
-    public void setAccount(Account account) {
+    public void setAccount(int account) {
         this.account = account;
     }
     
@@ -111,10 +182,7 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     
     
     public void signUp(UserDTO userDTO) throws RemoteException {
-        User user = new User(userDTO.getID(), userDTO.getName(), new Account(userDTO.getAccount().getID(),
-                userDTO.getAccount().getUsername(), userDTO.getAccount().getPassword()), userDTO.getPhoneNumber(),
-                userDTO.getAddress(), new Cash(), new Subscription(), null);
-        Database.signUp(user);
+        Database.signUp(userDTO);
     }
     
     @Override

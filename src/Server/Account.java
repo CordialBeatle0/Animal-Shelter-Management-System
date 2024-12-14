@@ -2,15 +2,21 @@ package Server;
 
 import RMI.*;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class Account extends UnicastRemoteObject implements AccountRMI {
+public class Account extends UnicastRemoteObject implements AccountRMI, Serializable {
     private int ID;
     private String username;
     private String password;
     
     public Account() throws RemoteException {
+    }
+    
+    public Account(String username, String password) throws RemoteException {
+        this.username = username;
+        this.password = password;
     }
     
     public Account(int ID, String username, String password) throws RemoteException {
@@ -47,6 +53,7 @@ public class Account extends UnicastRemoteObject implements AccountRMI {
         // User user = Database.userLogin(username, password);
         // return new UserDTO(user.getID(), user.getName(), user.getPhoneNumber(), user.getAddress(),
         //         user.getOutstandingFees());
+        // return null;
         return Database.userLogin(username, password);
     }
     

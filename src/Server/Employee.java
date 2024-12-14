@@ -17,6 +17,18 @@ public class Employee extends UnicastRemoteObject {
     public Employee() throws RemoteException {
     }
     
+    public Employee(String name, int age, char gender, String email, String phoneNumber, String address,
+                    Account account, float salary) throws RemoteException {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.account = account;
+        this.salary = salary;
+    }
+    
     public Employee(int ID, String name, int age, char gender, String email, String phoneNumber, String address,
                     Account account, float salary) throws RemoteException {
         this.ID = ID;
@@ -29,7 +41,7 @@ public class Employee extends UnicastRemoteObject {
         this.account = account;
         this.salary = salary;
     }
-
+    
     public int getID() {
         return ID;
     }
@@ -91,7 +103,7 @@ public class Employee extends UnicastRemoteObject {
     }
     
     public void setAccount(Account account) {
-       this.account = account;
+        this.account = account;
     }
     
     public float getSalary() {
@@ -101,12 +113,12 @@ public class Employee extends UnicastRemoteObject {
     public void setSalary(float salary) {
         this.salary = salary;
     }
-
+    
     @Override
     public String toString() {
         return "Employee [ID=" + ID + ", name=" + name + ", age=" + age + ", gender=" + gender + ", email=" + email
                 + ", phoneNumber=" + phoneNumber + ", address=" + address + ", salary=" + salary + "]";
     }
-
+    
     
 }

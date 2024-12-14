@@ -3,10 +3,11 @@ package Server;
 import RMI.BookingDTO;
 import RMI.BookingRMI;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class Booking implements BookingRMI {
+public class Booking implements BookingRMI, Serializable {
     private int bookingID;
     private String bookingDate;
     private int visitorID;
