@@ -7,16 +7,14 @@ public class Item extends UnicastRemoteObject {
     private int ID;
     private String itemName;
     private int quantity;
-    private String type;
     
     public Item() throws RemoteException {
     }
     
-    public Item(int ID, String itemName, int quantity, String type) throws RemoteException {
+    public Item(int ID, String itemName, int quantity) throws RemoteException {
         this.ID = ID;
         this.itemName = itemName;
         this.quantity = quantity;
-        this.type = type;
     }
     
     public int getID() {
@@ -41,13 +39,5 @@ public class Item extends UnicastRemoteObject {
     
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-    
-    public String getType() {
-        return type;
-    }
-    
-    public void setType(String type) {
-        this.type = type;
     }
 }
