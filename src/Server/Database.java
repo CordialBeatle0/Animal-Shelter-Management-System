@@ -712,18 +712,27 @@ public class Database {
         subscriptionCollection.insertOne(Document.parse(gson.toJson(subscription)));
         userCollection.updateOne(Filters.eq("ID", user.getID()), Updates.set("subscription",
                 Document.parse(gson.toJson(subscription))));
+                user.setSubscribed(true);
     }
     
     public static void removeSubscription(Subscription subscription, UserDTO user) {
         subscriptionCollection.deleteOne(Filters.eq("ID", subscription.getID()));
         userCollection.updateOne(Filters.eq("ID", user.getID()), Updates.set("subscription.status", false));
+        user.setSubscribed(false);
     }
     
     // might change, actually might not be needed
-    public static Subscription getSubscriptionByID(int subscriptionID) {
-        Document document = subscriptionCollection.find(Filters.eq("ID", subscriptionID)).first();
-        return gson.fromJson(document.toJson(), Subscription.class);
+    public static boolean isSubscribed(UserDTO user) {
+        if(user.isSubscribed()) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    public static void subscribeToTraining(UserDTO user, float amountPaid, String paymentType) {
+      
+    }   
     
     public static void addEmployee(Employee employee) {
         int ID = getPrimaryKey();
