@@ -428,6 +428,7 @@ public class Database {
         volunteerTaskCollection.updateOne(
                 Filters.eq("ID", taskID),
                 Updates.set("assignedVolunteer", volunteerID));
+        
     }
     
     // Animal database functions

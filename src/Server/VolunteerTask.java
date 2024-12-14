@@ -14,17 +14,19 @@ public class VolunteerTask extends UnicastRemoteObject implements VolunteerTaskR
     private String type;
     private String date;
     private boolean completionStatus;
+    private int assignedVolunteer;
 
     public VolunteerTask() throws RemoteException {
     }
 
-    public VolunteerTask(int ID, String taskName, String type, String date, boolean completionStatus)
+    public VolunteerTask(int ID, String taskName, String type, String date, boolean completionStatus, int assignedVolunteer)
             throws RemoteException {
         this.ID = ID;
         this.taskName = taskName;
         this.type = type;
         this.date = date;
         this.completionStatus = completionStatus;
+        this.assignedVolunteer= assignedVolunteer;
     }
 
     public int getID() {
@@ -66,6 +68,18 @@ public class VolunteerTask extends UnicastRemoteObject implements VolunteerTaskR
     public void setCompletionStatus(boolean completionStatus) {
         this.completionStatus = completionStatus;
     }
+
+    public int getAssignedVolunteer() {
+        return assignedVolunteer;
+    }
+
+    public void setAssignedVolunteer(int assignedVolunteer) {
+        this.assignedVolunteer = assignedVolunteer;
+    }
+
+  
+    
+    
 
     public void addVolunteerTask(VolunteerTaskDTO task) throws RemoteException {
         Database.addVolunteerTask(task);
