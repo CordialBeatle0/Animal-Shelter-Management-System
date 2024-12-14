@@ -64,22 +64,16 @@ public class Subscription extends UnicastRemoteObject implements SubscriptionRMI
     
     @Override
     public void subscribeToTraining(UserDTO user, float amountPaid, String paymentType) throws RemoteException {
-        Payment payment = switch (paymentType) {
-            case "Cash" -> new Cash();
-            case "Visa" -> new Visa();
-            default -> null;
-        };
-        
-        UserDTO user1 = Database.getUserByID(user.getID());
-        User newUser = new User(user1.getID(), user1.getName(), user1.getUsername(), user.getPassword(),
-                user1.getPhoneNumber(), user1.getAddress(), null, new Subscription(true, 10, LocalDateTime.now()),
-                new Training(), user1.getOutstandingFees());
-        newUser.setPaymentType(payment);
-        
-        newUser.getPaymentType().makePayment(user, amountPaid);
-        Database.addSubscription(new Subscription(newUser.getSubscription().isStatus(),
-                        newUser.getSubscription().getPrice(), newUser.getSubscription().getDate()),
-                user);
+        Payment payment=switch(paymentType){case"Cash"->new Cash();case"Visa"->new Visa();default->null;};
+
+        UserDTO user1=Database.getUserByID(user.getID());
+        User newUser=new User(user1.getID(),user1.getName(),user1.getUsername(),user.getPassword(),user1.getPhoneNumber(),user1.getAddress(),null,new Subscription(true,10,LocalDateTime.now()),new Training(),user1.getOutstandingFees());newUser.setPaymentType(payment);
+
+        newUser.getPaymentType().makePayment(user,amountPaid);Database.addSubscription(new Subscription(newUser.getSubscription().isStatus(),newUser.getSubscription().getPrice(),newUser.getSubscription().getDate()),user);
+    }
+    
+    public boolean isSubscribed(UserDTO user) throws RemoteException {
+        return Database.isSubscribed(user);   
     }
     
     // this one is done by the user
