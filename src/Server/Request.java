@@ -98,6 +98,15 @@ public class Request {
      }
     }
 
+    public void deleteRequest() {
+        try {
+            Database.deleteRequest(this);
+            System.out.println("Request deleted from database");
+        } catch (Exception e) {
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return "Request [ID=" + ID + ", userID=" + userID + ", userName=" + userName + ", location=" + location
