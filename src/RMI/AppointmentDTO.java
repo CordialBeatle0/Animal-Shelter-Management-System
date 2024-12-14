@@ -1,11 +1,10 @@
 package RMI;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 public class AppointmentDTO implements Serializable {
     private int ID;
-    private LocalDateTime date;
+    private String date;
     private String assignedDoctorName;
     private int price;
     private String description;
@@ -15,7 +14,7 @@ public class AppointmentDTO implements Serializable {
     public AppointmentDTO() {
     }
     
-    public AppointmentDTO(LocalDateTime date, String assignedDoctorName, int price, String description,
+    public AppointmentDTO(String date, String assignedDoctorName, int price, String description,
                           String animalName, String animalType) {
         this.date = date;
         this.assignedDoctorName = assignedDoctorName;
@@ -25,7 +24,7 @@ public class AppointmentDTO implements Serializable {
         this.animalType = animalType;
     }
     
-    public AppointmentDTO(int ID, LocalDateTime date, String assignedDoctorName, int price, String description,
+    public AppointmentDTO(int ID, String date, String assignedDoctorName, int price, String description,
                           String animalName, String animalType) {
         this.ID = ID;
         this.date = date;
@@ -44,11 +43,11 @@ public class AppointmentDTO implements Serializable {
         this.ID = ID;
     }
     
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
     
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
     

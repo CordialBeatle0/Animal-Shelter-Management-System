@@ -10,6 +10,12 @@ public class UtilityItemDTO {
     public UtilityItemDTO() {
     }
     
+    public UtilityItemDTO(int ID, String name, int quantity) {
+        this.ID = ID;
+        this.name = name;
+        this.quantity = quantity;
+    }
+    
     public UtilityItemDTO(int ID, String name, float price, int quantity, int restockThreshold) {
         this.ID = ID;
         this.name = name;

@@ -8,5 +8,4 @@ public interface DoctorRMI extends Remote {
     ArrayList<AppointmentDTO> viewDoctorAppointments() throws RemoteException;
 
     DoctorDTO getDoctorByID(int ID) throws RemoteException;
-
 }
