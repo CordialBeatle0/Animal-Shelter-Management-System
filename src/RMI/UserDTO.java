@@ -11,6 +11,7 @@ public class UserDTO implements Serializable { // TODO: I want this to implement
     private String phoneNumber;
     private String address;
     private float outstandingFees;
+    private boolean isSubscribed;
     
     public UserDTO(String username, String password, String name, String phoneNumber, String address,
                    float outstandingFees) {
@@ -94,6 +95,14 @@ public class UserDTO implements Serializable { // TODO: I want this to implement
     public void setOutstandingFees(float outstandingFees) {
         this.outstandingFees = outstandingFees;
     }
+
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+    
+    public void setSubscribed(boolean subscribed) {
+        isSubscribed = subscribed;
+    }   
     
     @Override
     public String toString() {
