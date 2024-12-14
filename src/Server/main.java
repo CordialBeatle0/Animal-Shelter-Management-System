@@ -61,34 +61,34 @@ public class main {
                     "St", 2f);
             Database.signUp(user4);
             
-            Caretaker caretaker1 = new Caretaker("John Doe", 21, 'M', "amir@test.com", "0987654321", "1234 Main " +
-                    "St", new Account("amir", "2121"), 2345.0f, "Night shift");
-            Database.addEmployee(caretaker1);
-            Caretaker caretaker2 = new Caretaker("Jane Doe", 23, 'F', "amir2@test.com", "0987231321", "1234 Main " +
-                    "St", new Account("amir21", "2121"), 2345.0f, "Night shift");
-            Database.addEmployee(caretaker2);
+            CaretakerDTO caretaker1 = new CaretakerDTO("John Doe", 21, 'M', "amir@test.com", "0987654321", "1234 Main" +
+                    " " + "St", "amir", "2121", 2345.0f, "Caretaker", "Night shift");
+            Database.addEmployeeDTO(caretaker1);
+            CaretakerDTO caretaker2 = new CaretakerDTO("Jane Doe", 23, 'F', "amir2@test.com", "0987231321", "1234 " +
+                    "Main " + "St", "amir21", "2121", 2345.0f, "Caretaker", "Night shift");
+            Database.addEmployeeDTO(caretaker2);
             
             CourierDTO courier1 = new CourierDTO("Loli Doe", 21, 'F', "loli@test.com", "0987654321", "1234 Main St",
-                    "loli", "2121", 235678, "Nasr City", 2);
-            Database.addEmployee(courier1);
-            Courier courier2 = new Courier("Laila Doe", 23, 'F', "laila@test.com", "0987654321", "1234 Main St",
-                    new Account("laila", "2121"), 235678, "Heliopolis", 10);
-            Database.addEmployee(courier2);
+                    "loli", "2121", 235678, "Courier", "Nasr City", 2);
+            Database.addEmployeeDTO(courier1);
+            CourierDTO courier2 = new CourierDTO("Laila Doe", 23, 'F', "laila@test.com", "0987654321", "1234 Main St",
+                    "laila", "2121", 235678, "Courier", "Heliopolis", 10);
+            Database.addEmployeeDTO(courier2);
             
-            Doctor doctor1 = new Doctor("Amira Doe", 23, 'F', "amira@test.com", "0987654321", "1234 Main St",
-                    new Account("amira", "2121"), 235678);
-            Database.addEmployee(doctor1);
+            DoctorDTO doctor1 = new DoctorDTO("Amira Doe", 23, 'F', "amira@test.com", "0987654321", "1234 Main St",
+                    "amira", "2121", 235678, "Doctor");
+            Database.addEmployeeDTO(doctor1);
             // DoctorDTO doctorDTO = new DoctorDTO(88, "Amira Doe", 23, 'F', "amira@test.com", "0987654321", "1234
             // Main " +
             //         "St", new AccountDTO(77, "amira", "2121"), 235678);
             
             
-            Admin admin1 = new Admin("John Smith", 21, 'M', "john@test.com", "0987654321", "1234 Main St",
-                    new Account("jane", "2121"), 2345.0f);
-            Database.addEmployee(admin1);
-            Admin admin2 = new Admin("Janna Smith", 21, 'F', "Janna@test.com", "098761284321", "1234 Main St",
-                    new Account("janna", "2121"), 2345.0f);
-            Database.addEmployee(admin2);
+            AdminDTO admin1 = new AdminDTO("John Smith", 21, 'M', "john@test.com", "0987654321", "1234 Main St",
+                    "jane", "2121", 2345.0f, "Admin");
+            Database.addEmployeeDTO(admin1);
+            AdminDTO admin2 = new AdminDTO("Janna Smith", 21, 'F', "Janna@test.com", "098761284321", "1234 Main St",
+                    "janna", "2121", 2345.0f, "Admin");
+            Database.addEmployeeDTO(admin2);
             
             // Animal animal1 = new Animal("Felfel", "Dog", "Golden Retriever", 2, "Yesterday", true, true, false);
             AnimalDTO animalDTO = new AnimalDTO("Felfel", "Dog", "Golden Retriever", 2, "Yesterday", true, true,
@@ -118,7 +118,7 @@ public class main {
             Database.addVolunteerTask(volunteerTask1);
             
             DoctorDTO doctorDTO = new DoctorDTO("Amira Doe", 23, 'F', "Amira@email.com", "0123456789", "Nasr City",
-                    new AccountDTO("amira", "2121"), 2310);
+                    "amira", "2121", 2310, "Doctor");
             Appointment appointment1 = new Appointment(LocalDateTime.now().toString(), doctorDTO, 2300, "Checking " +
                     "up on an animal", animalDTO);
             Database.addAppointment(appointment1);
@@ -127,10 +127,10 @@ public class main {
             Database.createBooking(booking1);
             Database.viewAllBookings();
             
-            ArrayList<BookingDTO> bookings = Database.viewAllBookings();
-            for (BookingDTO booking : bookings) {
-                System.out.println(booking.toString());
-            }
+            // ArrayList<BookingDTO> bookings = Database.viewAllBookings();
+            // for (BookingDTO booking : bookings) {
+            //     System.out.println(booking.toString());
+            // }
             
             System.out.println("Server is running...");
         } catch (Exception e) {
