@@ -638,6 +638,9 @@ public class Database {
     
     public static UserDTO getUserByID(int userID) {
         Document document = userCollection.find(Filters.eq("ID", userID)).first();
+        if (document == null) {
+            return null;
+        }
         return gson.fromJson(document.toJson(), UserDTO.class);
     }
     
@@ -704,6 +707,9 @@ public class Database {
     
     public static Appointment vAppointment(int appointmentID) {
         Document document = appointmentCollection.find(Filters.eq("ID", appointmentID)).first();
+        if (document == null) {
+            return null;
+        }
         return gson.fromJson(document.toJson(), Appointment.class);
     }
     

@@ -13,8 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CancelAppointmentTest {
     @Test
     public void testCancelAppointment() throws RemoteException {
+        Database database = new Database();
         // Create a mock appointment
-        DoctorDTO doctor = new DoctorDTO("Amir Doc", 21, 'M', "amirdoc@test.com", "1234567890", "123 Main St", new AccountDTO("amir", "2121"), 123123123);
+        DoctorDTO doctor = new DoctorDTO("Amir Doc", 21, 'M', "amirdoc@test.com", "1234567890", "123 Main St", "amir"
+                , "2121", 123123123);
         AnimalDTO animal = new AnimalDTO("Felfel", "Dog", "Golden Retriever", 2, "Yesterday", true, true,
                 false);
         Appointment appointment = new Appointment(LocalDateTime.now().toString(), doctor, 2400, "Checkup on Animal", animal);
