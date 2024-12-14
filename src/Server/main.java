@@ -60,17 +60,19 @@ public class main {
             Courier courier2 = new Courier(77, "Laila Doe", 23, 'F', "laila@test.com", "0987654321", "1234 Main St", new Account(77, "laila", "2121"), 235678, "Heliopolis");
             
             Doctor doctor1 = new Doctor(88, "Amira Doe", 23, 'F', "amira@test.com", "0987654321", "1234 Main St", new Account(77, "amira", "2121"), 235678);
+            DoctorDTO doctorDTO = new DoctorDTO(88, "Amira Doe", 23, 'F', "amira@test.com", "0987654321", "1234 Main St", new AccountDTO(77, "amira", "2121"), 235678);
             
             Admin admin1 = new Admin(22, "John Smith", 21, 'M', "john@test.com", "0987654321", "1234 Main St", new Account(3, "jane", "2121"), 2345.0f);
             Admin admin2 = new Admin(23, "Janna Smith", 21, 'F', "Janna@test.com", "098761284321", "1234 Main St", new Account(4, "janna", "2121"), 2345.0f);
             
             Animal animal1 = new Animal(1, "Felfel", "Dog", "Golden Retriever", 2, "Yesterday", true, true, false);
+            AnimalDTO animalDTO = new AnimalDTO(1, "Felfel", "Dog", "Golden Retriever", 2, "Yesterday", true, true, false);
             
             SellingItem sellingItem1 = new SellingItem(1, "Fotaa", 2, "Tools", new InStock(), 200);
             SellingItem sellingItem2 = new SellingItem(2, "Tooo2", 4, "Tools", new InStock(), 200);
             
-            UtilityItem utilityItem1 = new UtilityItem(4, "Dry Food", 5, "Food", 2);
-            UtilityItem utilityItem2 = new UtilityItem(5, "Ball", 5, "Toys", 2);
+            UtilityItem utilityItem1 = new UtilityItem(4, "Dry Food", 5, 2);
+            UtilityItem utilityItem2 = new UtilityItem(5, "Ball", 5, 2);
             
             Training training1 = new Training(1, "<URL_HERE>", LocalDateTime.now(), 2.5f, "Training 1");
             
@@ -78,7 +80,7 @@ public class main {
             
             VolunteerTask volunteerTask1 = new VolunteerTask(1, "Clean the cages", "Clean the cages", LocalDateTime.now().toString(), false);
             
-            Appointment appointment1 = new Appointment(1, LocalDateTime.now(), doctor1, 2300, "Checking up on an animal", animal1);
+            Appointment appointment1 = new Appointment(1, LocalDateTime.now().toString(), doctorDTO, 2300, "Checking up on an animal", animalDTO);
             
             
             System.out.println("Server is running...");
