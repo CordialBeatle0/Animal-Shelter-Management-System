@@ -625,9 +625,9 @@ public class Database {
         doctorCollection.insertOne(Document.parse(gson.toJson(document)));
     }
 
-    public static Doctor getDoctorByID(int doctorID) {
+    public static DoctorDTO getDoctorByID(int doctorID) {
         Document document = doctorCollection.find(Filters.eq("ID", doctorID)).first();
-        return gson.fromJson(document.toJson(), Doctor.class);
+        return gson.fromJson(document.toJson(), DoctorDTO.class);
     }
 
     public static void deleteDoctor(int doctorID) {

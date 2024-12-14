@@ -1,7 +1,9 @@
 package Server;
 
+import RMI.AnimalDTO;
 import RMI.AppointmentDTO;
 import RMI.AppointmentRMI;
+import RMI.DoctorDTO;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -11,17 +13,17 @@ import javax.xml.crypto.Data;
 
 public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     private int ID;
-    private LocalDateTime date;
-    private Doctor doctor;
+    private String date;
+    private DoctorDTO doctor;
     private int price;
     private String description = "";
-    private Animal animal;
+    private AnimalDTO animal;
 
     public Appointment() throws RemoteException {
     }
 
-    public Appointment(int ID, LocalDateTime date, Doctor assignedDoctor, int price, String description,
-            Animal animal) throws RemoteException {
+    public Appointment(int ID, String date, DoctorDTO assignedDoctor, int price, String description,
+            AnimalDTO animal) throws RemoteException {
         this.ID = ID;
         this.date = date;
         this.doctor = assignedDoctor;
@@ -38,19 +40,19 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         this.ID = ID;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public Doctor getDoctor() {
+    public DoctorDTO getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(Doctor assignedDoctor) {
+    public void setDoctor(DoctorDTO assignedDoctor) {
         this.doctor = assignedDoctor;
     }
 
@@ -70,25 +72,28 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
         this.description = description;
     }
 
-    public Animal getAnimal() {
+    public AnimalDTO getAnimal() {
         return animal;
     }
 
-    public void setAnimal(Animal animal) {
+    public void setAnimal(AnimalDTO animal) {
         this.animal = animal;
     }
 
-    public void bookAppointment() throws RemoteException {
+    public void bookAppointment(int ID, String date, DoctorDTO assignedDoctor, int price, String description,
+            AnimalDTO animal) throws RemoteException {
+        Appointment appointment = new Appointment(ID, date, assignedDoctor, price, description, animal);
         try {
-            Database.addAppointment(this);
+            Database.addAppointment(appointment);
         } catch (Exception e) {
             // TODO: handle exception
         }
     }
 
-    public void cancelAppointment() throws RemoteException {
+    public void cancelAppointment(int ID) throws RemoteException {
         try {
-            Database.deleteAppointment(this);
+            Appointment appointment = Database.vAppointment(ID);
+            Database.deleteAppointment(appointment);
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -97,7 +102,6 @@ public class Appointment extends UnicastRemoteObject implements AppointmentRMI {
     public AppointmentDTO viewAppointment(int ID) throws RemoteException {
         try {
             AppointmentDTO appointment = Database.viewAppointmentById(ID);
-            System.out.println(appointment.toString());
             return appointment;
         } catch (Exception e) {
             System.out.println("Could not view appointment");

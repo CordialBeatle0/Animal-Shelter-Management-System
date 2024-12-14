@@ -2,11 +2,16 @@ package RMI;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
+
+import Server.Animal;
+import Server.Doctor;
 
 public interface AppointmentRMI extends Remote {
-    void bookAppointment() throws RemoteException;
+    void bookAppointment(int ID, String date, DoctorDTO assignedDoctor, int price, String description,
+            AnimalDTO animal) throws RemoteException;
 
-    void cancelAppointment() throws RemoteException;
+    void cancelAppointment(int ID) throws RemoteException;
 
     AppointmentDTO viewAppointment(int ID) throws RemoteException;
 
