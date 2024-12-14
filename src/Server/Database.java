@@ -246,15 +246,15 @@ public class Database {
     }
 
     // Selling item methods
-    public static void addSellingItem(SellingItem item) {
+    public static void addSellingItem(SellingItemDTO item) {
         // if item already exists
-        Document document = sellingItemCollection.find(Filters.eq("itemName", item.getItemName())).first();
+        Document document = sellingItemCollection.find(Filters.eq("itemName", item.getName())).first();
         if (document != null) {
             // add the quantity of the current item with the new item
-            SellingItem existingItem = gson.fromJson(document.toJson(), SellingItem.class);
+            SellingItemDTO existingItem = gson.fromJson(document.toJson(), SellingItemDTO.class);
             int existingQuantity = existingItem.getQuantity();
             int newQuantity = existingQuantity + item.getQuantity();
-            sellingItemCollection.updateOne(Filters.eq("itemName", item.getItemName()),
+            sellingItemCollection.updateOne(Filters.eq("itemName", item.getName()),
                     Updates.set("quantity", newQuantity));
             return;
         }
@@ -264,36 +264,36 @@ public class Database {
         sellingItemCollection.insertOne(Document.parse(gson.toJson(item)));
     }
 
-    public static void removeSellingItem(Item item) {
-        sellingItemCollection.deleteOne(Filters.eq("ID", item.getID()));
+    public static void removeSellingItem(SellingItemDTO sellingItemDTO) {
+        sellingItemCollection.deleteOne(Filters.eq("ID", sellingItemDTO.getID()));
     }
 
-    public static SellingItem viewSellingItem(int ID) {
+    public static SellingItemDTO viewSellingItem(int ID) {
         Document document = sellingItemCollection.find(Filters.eq("ID", ID)).first();
         if (document == null) {
             return null;
         }
-        return gson.fromJson(document.toJson(), SellingItem.class);
+        return gson.fromJson(document.toJson(), SellingItemDTO.class);
     }
 
-    public static ArrayList<SellingItem> viewAllSellingItems() {
-        ArrayList<SellingItem> sellingItems = new ArrayList<>();
+    public static ArrayList<SellingItemDTO> viewAllSellingItems() {
+        ArrayList<SellingItemDTO> sellingItems = new ArrayList<>();
         for (Document document : sellingItemCollection.find()) {
-            sellingItems.add(gson.fromJson(document.toJson(), SellingItem.class));
+            sellingItems.add(gson.fromJson(document.toJson(), SellingItemDTO.class));
         }
         return sellingItems;
     }
 
     // Utility item methods
-    public static void addUtilityItem(UtilityItem item) {
+    public static void addUtilityItem(UtilityItemDTO item) {
         // if item already exists
-        Document document = utilityItemCollection.find(Filters.eq("itemName", item.getItemName())).first();
+        Document document = utilityItemCollection.find(Filters.eq("itemName", item.getName())).first();
         if (document != null) {
             // add the quantity of the current item with the new item
             UtilityItem existingItem = gson.fromJson(document.toJson(), UtilityItem.class);
             int existingQuantity = existingItem.getQuantity();
             int newQuantity = existingQuantity + item.getQuantity();
-            utilityItemCollection.updateOne(Filters.eq("itemName", item.getItemName()),
+            utilityItemCollection.updateOne(Filters.eq("itemName", item.getName()),
                     Updates.set("quantity", newQuantity));
             return;
         }
@@ -303,16 +303,16 @@ public class Database {
         utilityItemCollection.insertOne(Document.parse(gson.toJson(item)));
     }
 
-    public static void removeUtilityItem(Item item) {
-        utilityItemCollection.deleteOne(Filters.eq("ID", item.getID()));
+    public static void removeUtilityItem(UtilityItemDTO utilityItemDTO) {
+        utilityItemCollection.deleteOne(Filters.eq("ID", utilityItemDTO.getID()));
     }
 
-    public static UtilityItem viewUtilityItem(int ID) {
+    public static UtilityItemDTO viewUtilityItem(int ID) {
         Document document = utilityItemCollection.find(Filters.eq("ID", ID)).first();
         if (document == null) {
             return null;
         }
-        return gson.fromJson(document.toJson(), UtilityItem.class);
+        return gson.fromJson(document.toJson(), UtilityItemDTO.class);
     }
 
     public static ArrayList<UtilityItemDTO> viewAllUtilityItems() {
@@ -335,7 +335,7 @@ public class Database {
     }
 
     // VolunteerTask Class functions
-    public static void addVolunteerTask(VolunteerTask task) {
+    public static void addVolunteerTask(VolunteerTaskDTO task) {
         task.setID(getPrimaryKey("VolunteerTask"));
         Document document = Document.parse(gson.toJson(task));
         volunteerTaskCollection.insertOne(document);
@@ -356,12 +356,11 @@ public class Database {
         return null;
     }
 
-    // add this to the class diagram
-    public static ArrayList<VolunteerTask> viewAllVolunteerTask() {
-        ArrayList<VolunteerTask> allTasks = new ArrayList<>();
+    public static ArrayList<VolunteerTaskDTO> viewAllVolunteerTask() {
+        ArrayList<VolunteerTaskDTO> allTasks = new ArrayList<>();
         for (Document taskDoc : volunteerTaskCollection.find()) {
             String json = taskDoc.toJson();
-            VolunteerTask task = gson.fromJson(json, VolunteerTask.class);
+            VolunteerTaskDTO task = gson.fromJson(json, VolunteerTaskDTO.class);
             allTasks.add(task);
         }
         return allTasks;
@@ -370,7 +369,12 @@ public class Database {
     // add this to the class diagram
     public static ArrayList<VolunteerTaskDTO> viewAssignedVolunteerTask(int volunteerID) {
         ArrayList<VolunteerTaskDTO> allMyTasks = new ArrayList<>();
-        for (Document taskDoc : volunteerTaskCollection.find(Filters.eq("assignedVolunteer", volunteerID))) {
+        // Adding a filter to only find tasks that are not completed
+        for (Document taskDoc : volunteerTaskCollection.find(
+                Filters.and(
+                        Filters.eq("assignedVolunteer", volunteerID),
+                        Filters.eq("completionStatus", false) // Filter to get tasks that are not completed
+                ))) {
             String json = taskDoc.toJson();
             VolunteerTaskDTO task = gson.fromJson(json, VolunteerTaskDTO.class);
             allMyTasks.add(task);
@@ -378,12 +382,12 @@ public class Database {
         return allMyTasks;
     }
 
-    public static void recordTaskCompletion(int volunteerID) {
-        volunteerTaskCollection.updateOne(Filters.eq("ID", volunteerID), Updates.set("completionStatus", true));
+    public static void recordTaskCompletion(int taskID) {
+        volunteerTaskCollection.updateOne(Filters.eq("ID", taskID), Updates.set("completionStatus", true));
     }
 
     // Volunteer Class functions
-    public static void signUpToVolunteering(Volunteer vol) {
+    public static void signUpToVolunteering(VolunteerDTO vol) {
         vol.setID(getPrimaryKey("Volunteer"));
         Document document = Document.parse(gson.toJson(vol));
         volunteerCollection.insertOne(document);
