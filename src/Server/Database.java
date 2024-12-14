@@ -102,8 +102,8 @@ public class Database {
     }
 
     // returns true if the training video was removed successfully
-    public static void removeTrainingVideo(Training training) {
-        trainingCollection.deleteOne(Filters.eq("ID", training.getID()));
+    public static void removeTrainingVideo(int trainingID) {
+        trainingCollection.deleteOne(Filters.eq("ID", trainingID));
     }
 
     public static ArrayList<Observer> getAllObservers() {
