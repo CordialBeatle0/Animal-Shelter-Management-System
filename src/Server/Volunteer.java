@@ -1,10 +1,10 @@
 package Server;
 
+import RMI.VolunteerDTO;
 import RMI.VolunteerRMI;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 
 public class Volunteer extends UnicastRemoteObject implements VolunteerRMI {
 
@@ -65,15 +65,15 @@ public class Volunteer extends UnicastRemoteObject implements VolunteerRMI {
         Address = address;
     }
 
-    public void assignVolunteer(int taskID) {
-        Database.assignVolunteer(taskID, ID);
+    public void assignVolunteer(int taskID, int volunteerID) throws RemoteException {
+        Database.assignVolunteer(taskID, volunteerID);
     }
 
-    public void signUpToVolunteering() throws RemoteException {
-        Database.signUpToVolunteering(this);
+    public void signUpToVolunteering(VolunteerDTO vol) throws RemoteException {
+        Database.signUpToVolunteering(vol);
     }
 
-    public void removeVolunteer() throws RemoteException {
-        Database.removeVolunteer(ID);
+    public void removeVolunteer(int volunteerID) throws RemoteException {
+        Database.removeVolunteer(volunteerID);
     }
 }
