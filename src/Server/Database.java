@@ -416,8 +416,8 @@ public class Database {
         animalCollection.deleteOne(Filters.eq("ID", animalID));
     }
     
-    public static AnimalDTO viewAnimal(AnimalDTO animal) {
-        Document animalDoc = animalCollection.find(Filters.eq("ID", animal.getID())).first();
+    public static AnimalDTO viewAnimal(int animalID) {
+        Document animalDoc = animalCollection.find(Filters.eq("ID", animalID)).first();
         
         if (animalDoc != null) {
             String json = animalDoc.toJson();
