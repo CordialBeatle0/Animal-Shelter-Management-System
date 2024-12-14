@@ -1,4 +1,6 @@
-package RMI;
+package Server;
+
+import RMI.UserDTO;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

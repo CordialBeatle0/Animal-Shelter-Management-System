@@ -23,8 +23,6 @@ public class main {
             AppointmentRMI appointmentRMI = new Appointment();
             CashRMI cashRMI = new Cash();
             DoctorRMI doctorRMI = new Doctor();
-            InStockRMI inStockRMI = new InStock();
-            OutOfStockRMI outOfStockRMI = new OutOfStock();
             SubscriptionRMI subscriptionRMI = new Subscription();
             TrainingRMI trainingRMI = new Training();
             UserRMI userRMI = new User();
@@ -41,8 +39,6 @@ public class main {
             registry.rebind("Appointment", appointmentRMI);
             registry.rebind("Cash", cashRMI);
             registry.rebind("Doctor", doctorRMI);
-            registry.rebind("InStock", inStockRMI);
-            registry.rebind("OutOfStock", outOfStockRMI);
             registry.rebind("Subscription", subscriptionRMI);
             registry.rebind("Training", trainingRMI);
             registry.rebind("User", userRMI);

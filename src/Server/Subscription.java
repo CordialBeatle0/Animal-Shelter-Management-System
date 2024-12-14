@@ -1,6 +1,5 @@
 package Server;
 
-import RMI.Payment;
 import RMI.SubscriptionRMI;
 import RMI.UserDTO;
 

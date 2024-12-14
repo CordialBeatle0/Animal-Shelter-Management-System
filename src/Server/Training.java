@@ -76,8 +76,8 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
         this.description = description;
     }
     
-    public void uploadTrainingVideo() throws RemoteException {
-        Database.uploadTrainingVideo(this);
+    public void uploadTrainingVideo(TrainingDTO trainingDTO) throws RemoteException {
+        Database.uploadTrainingVideo(trainingDTO);
         notifySubscriber("A new video has been uploaded");
     }
     

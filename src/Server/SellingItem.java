@@ -43,14 +43,20 @@ public class SellingItem extends Item implements SellingItemRMI {
         Database.removeSellingItem(sellingItemDTO);
     }
     
-    public void buyItem(int quantityRequired) throws RemoteException, Exception {
+    public void buyItem(int quantityRequired, int userID, String payment) throws RemoteException, Exception {
+        Payment paymentType = switch (payment) {
+            case "Cash" -> new Cash();
+            case "Visa" -> new Visa();
+            default -> null;
+        };
+        
         if (getQuantity() < quantityRequired) {
             setStockStatus(new OutOfStock());
         } else {
             setStockStatus(new InStock());
         }
         try {
-            stockStatus.buyItem(getID(), quantityRequired);
+            stockStatus.buyItem(getID(), quantityRequired, userID, paymentType);
         } catch (Exception e) {
             throw new Exception(getItemName() + e.getMessage());
         }

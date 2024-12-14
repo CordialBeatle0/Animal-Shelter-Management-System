@@ -9,7 +9,7 @@ public interface SellingItemRMI extends Remote {
     
     void removeSellingItem(SellingItemDTO sellingItemDTO) throws RemoteException;
     
-    void buyItem(int quantityRequired) throws RemoteException, Exception;
+    void buyItem(int quantityRequired, int userID, String payment) throws RemoteException, Exception;
     
     SellingItemDTO viewSellingItem() throws RemoteException;
     
