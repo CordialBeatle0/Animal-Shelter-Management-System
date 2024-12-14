@@ -1,6 +1,8 @@
 package RMI;
 
-public class UtilityItemDTO {
+import java.io.Serializable;
+
+public class UtilityItemDTO implements Serializable {
     private int ID;
     private String name;
     private float price;

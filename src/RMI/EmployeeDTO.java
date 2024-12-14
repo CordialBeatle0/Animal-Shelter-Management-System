@@ -19,6 +19,20 @@ public class EmployeeDTO implements Serializable {
     public EmployeeDTO() {
     }
     
+    public EmployeeDTO(int ID, String name, int age, char gender, String email, String phoneNumber, String address, String username, String password, float salary, String type) {
+        this.ID = ID;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.username = username;
+        this.password = password;
+        this.salary = salary;
+        this.type = type;
+    }
+    
     public EmployeeDTO(String name, int age, char gender, String email, String phoneNumber, String address,
                        String username, String password, float salary, String type) {
         this.name = name;
@@ -164,5 +178,22 @@ public class EmployeeDTO implements Serializable {
     
     public void setType(String type) {
         this.type = type;
+    }
+    
+    @Override
+    public String toString() {
+        return "EmployeeDTO{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", gender=" + gender +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", salary=" + salary +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

@@ -69,4 +69,15 @@ public class RequestDTO implements Serializable {
     public void setDate(String date) {
         this.date = date;
     }
+    
+    @Override
+    public String toString() {
+        return "RequestDTO{" +
+                "ID=" + ID +
+                ", userID=" + userID +
+                ", userName='" + userName + '\'' +
+                ", location='" + location + '\'' +
+                ", date='" + date + '\'' +
+                '}';
+    }
 }

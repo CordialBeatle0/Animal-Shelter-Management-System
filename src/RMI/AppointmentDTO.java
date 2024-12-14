@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class AppointmentDTO implements Serializable {
     private int ID;
     private String date;
+    private int doctorID;
     private String assignedDoctorName;
     private int price;
     private String description;
@@ -24,10 +25,11 @@ public class AppointmentDTO implements Serializable {
         this.animalType = animalType;
     }
     
-    public AppointmentDTO(int ID, String date, String assignedDoctorName, int price, String description,
+    public AppointmentDTO(int ID, String date, int doctorID, String assignedDoctorName, int price, String description,
                           String animalName, String animalType) {
         this.ID = ID;
         this.date = date;
+        this.doctorID = doctorID;
         this.assignedDoctorName = assignedDoctorName;
         this.price = price;
         this.description = description;
@@ -89,5 +91,19 @@ public class AppointmentDTO implements Serializable {
     
     public void setAnimalType(String animalType) {
         this.animalType = animalType;
+    }
+    
+    @Override
+    public String toString() {
+        return "AppointmentDTO{" +
+                "ID=" + ID +
+                ", date='" + date + '\'' +
+                ", doctorID=" + doctorID +
+                ", assignedDoctorName='" + assignedDoctorName + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", animalName='" + animalName + '\'' +
+                ", animalType='" + animalType + '\'' +
+                '}';
     }
 }
