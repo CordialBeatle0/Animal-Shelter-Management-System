@@ -10,6 +10,14 @@ public class CourierDTO extends EmployeeDTO implements Serializable {
     public CourierDTO() {
     }
     
+    public CourierDTO(int ID, String name, int age, char gender, String email, String phoneNumber, String address,
+                      String username, String password, float salary, String type, String assignedLocation,
+                      int numberOfRequests) {
+        super(ID, name, age, gender, email, phoneNumber, address, username, password, salary, type);
+        this.assignedLocation = assignedLocation;
+        this.numberOfRequests = numberOfRequests;
+    }
+    
     public CourierDTO(String name, int age, char gender, String email, String phoneNumber, String address,
                       String username, String password, float salary, String type, String assignedLocation,
                       int numberOfRequests) {
@@ -62,5 +70,13 @@ public class CourierDTO extends EmployeeDTO implements Serializable {
     
     public void setNumberOfRequests(int numberOfRequests) {
         this.numberOfRequests = numberOfRequests;
+    }
+    
+    @Override
+    public String toString() {
+        return "CourierDTO{" +
+                "assignedLocation='" + assignedLocation + '\'' +
+                ", numberOfRequests=" + numberOfRequests +
+                '}';
     }
 }

@@ -579,6 +579,14 @@ public class Database {
         return gson.fromJson(requestDoc.toJson(), RequestDTO.class);
     }
     
+    public static CourierDTO viewCourier(int courierID) {
+        Document courierDoc = employeeCollection.find(Filters.eq("ID", courierID)).first();
+        if (courierDoc == null) {
+            return null;
+        }
+        return gson.fromJson(courierDoc.toJson(), CourierDTO.class);
+    }
+    
     // -----------Courier Class---------//
     // DONE
     public static void addCourier(Courier courier) {
@@ -662,12 +670,10 @@ public class Database {
         doctorCollection.deleteOne(Filters.eq("ID", doctorID));
     }
     
-    public static ArrayList<AppointmentDTO> viewDoctorAppointments(Doctor doctor) {
+    public static ArrayList<AppointmentDTO> viewDoctorAppointments(int doctorID) {
         ArrayList<AppointmentDTO> appointments = new ArrayList<>();
-        System.out.println(Document.parse(gson.toJson(doctor)));
-        for (Document document : appointmentCollection.find(Filters.eq("doctor",
-                Document.parse(gson.toJson(doctor))))) {
-            String jsonResult = gson.toJson(doctor);
+        for (Document document : appointmentCollection.find(Filters.eq("doctorID", doctorID))) {
+            String jsonResult = gson.toJson(document);
             appointments.add(gson.fromJson(jsonResult, AppointmentDTO.class));
         }
         return appointments;
@@ -676,15 +682,13 @@ public class Database {
     // -----------APPOINTMENT--------------//
     public static void addAppointment(Appointment appointment) {
         appointment.setID(getPrimaryKey());
-        Document document = new Document("ID", appointment.getID())
-                .append("ID", appointment.getID())
-                .append("date", appointment.getDate().toString())
-                .append("doctor", appointment.getDoctor())
-                .append("price", appointment.getPrice())
-                .append("description", appointment.getDescription())
-                .append("animal", appointment.getAnimal());
         
-        appointmentCollection.insertOne(Document.parse(gson.toJson(document)));
+        AppointmentDTO appointmentDTO = new AppointmentDTO(appointment.getID(), appointment.getDate(),
+                appointment.getDoctor().getID(), appointment.getDoctor().getName(), appointment.getPrice(),
+                appointment.getDescription(), appointment.getAnimal().getName(),
+                appointment.getAnimal().getAnimalType());
+        
+        appointmentCollection.insertOne(Document.parse(gson.toJson(appointmentDTO)));
     }
     
     public static void deleteAppointment(Appointment appointment) {

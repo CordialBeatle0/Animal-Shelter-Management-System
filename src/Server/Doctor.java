@@ -22,9 +22,9 @@ public class Doctor extends Employee implements DoctorRMI {
     // }
     
     // TODO: make it read the doctor from the database
-    public ArrayList<AppointmentDTO> viewDoctorAppointments() throws RemoteException {
+    public ArrayList<AppointmentDTO> viewDoctorAppointments(int doctorID) throws RemoteException {
         try {
-            return Database.viewDoctorAppointments(this);
+            return Database.viewDoctorAppointments(doctorID);
         } catch (Exception e) {
             return null;
         }

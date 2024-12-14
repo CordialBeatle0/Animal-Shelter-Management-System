@@ -30,6 +30,7 @@ public class main {
             UtilityItemRMI utilityItemRMI = new UtilityItem();
             SellingItemRMI sellingItemRMI = new SellingItem();
             BookingRMI bookingRMI = new Booking();
+            RequestRMI requestRMI = new Request();
             
             // Binding the objects
             registry.rebind("Account", accountRMI);
@@ -47,35 +48,38 @@ public class main {
             registry.rebind("UtilityItem", utilityItemRMI);
             registry.rebind("SellingItem", sellingItemRMI);
             registry.rebind("Booking", bookingRMI);
+            registry.rebind("Request", requestRMI);
             
             Database database = new Database();
             
-            UserDTO user1 = new UserDTO("johndoe", "johndoe", "John Doe", "1234567890", "1234 Main St", 0.0f);
+            UserDTO user1 = new UserDTO("johndoe", "johndoe", "John Doe", "1234567890", "Nasr City", 0.0f);
             Database.signUp(user1);
-            UserDTO user2 = new UserDTO("janedoe", "janedoe", "0987654321", "Jane Doe", "5678 Elm St", 10f);
+            UserDTO user2 = new UserDTO("janedoe", "janedoe", "0987654321", "Jane Doe", "Heliopolis", 10f);
             Database.signUp(user2);
-            UserDTO user3 = new UserDTO("johnsmith", "johnsmith", "John Smith", "1234567890", "1234 Main" +
-                    " St", 12f);
+            UserDTO user3 = new UserDTO("johnsmith", "johnsmith", "John Smith", "1234567890", "Nasr City", 12f);
             Database.signUp(user3);
-            UserDTO user4 = new UserDTO("janesmith", "janesmith", "Jane Smith", "0987654321", "5678 Elm " +
-                    "St", 2f);
+            UserDTO user4 = new UserDTO("janesmith", "janesmith", "Jane Smith", "0987654321", "Heliopolis", 2f);
             Database.signUp(user4);
             
-            CaretakerDTO caretaker1 = new CaretakerDTO("John Doe", 21, 'M', "amir@test.com", "0987654321", "1234 Main" +
-                    " " + "St", "amir", "2121", 2345.0f, "Caretaker", "Night shift");
+            CaretakerDTO caretaker1 = new CaretakerDTO("John Doe", 21, 'M', "amir@test.com", "0987654321",
+                    "Heliopolis", "amir", "2121", 2345.0f, "Caretaker", "Night shift");
             Database.addEmployeeDTO(caretaker1);
-            CaretakerDTO caretaker2 = new CaretakerDTO("Jane Doe", 23, 'F', "amir2@test.com", "0987231321", "1234 " +
-                    "Main " + "St", "amir21", "2121", 2345.0f, "Caretaker", "Night shift");
+            CaretakerDTO caretaker2 = new CaretakerDTO("Jane Doe", 23, 'F', "amir2@test.com", "0987231321", "El " +
+                    "Rehab", "amir21", "2121", 2345.0f, "Caretaker", "Night shift");
             Database.addEmployeeDTO(caretaker2);
             
-            CourierDTO courier1 = new CourierDTO("Loli Doe", 21, 'F', "loli@test.com", "0987654321", "1234 Main St",
+            CourierDTO courier1 = new CourierDTO("Loli Doe", 21, 'F', "loli@test.com", "0987654321", "Nasr City",
                     "loli", "2121", 235678, "Courier", "Nasr City", 2);
             Database.addEmployeeDTO(courier1);
-            CourierDTO courier2 = new CourierDTO("Laila Doe", 23, 'F', "laila@test.com", "0987654321", "1234 Main St",
+            CourierDTO courier2 = new CourierDTO("Laila Doe", 23, 'F', "laila@test.com", "0987654321", "El Rehab",
                     "laila", "2121", 235678, "Courier", "Heliopolis", 10);
             Database.addEmployeeDTO(courier2);
             
-            DoctorDTO doctor1 = new DoctorDTO("Amira Doe", 23, 'F', "amira@test.com", "0987654321", "1234 Main St",
+            RequestDTO request1 = new RequestDTO(user1.getID(), user1.getName(), "Nasr City",
+                    LocalDateTime.now().toString());
+            Database.addRequest(request1);
+            
+            DoctorDTO doctor1 = new DoctorDTO("Amira Doe", 23, 'F', "amira@test.com", "0987654321", "El Rehab",
                     "amira", "2121", 235678, "Doctor");
             Database.addEmployeeDTO(doctor1);
             // DoctorDTO doctorDTO = new DoctorDTO(88, "Amira Doe", 23, 'F', "amira@test.com", "0987654321", "1234
@@ -83,10 +87,10 @@ public class main {
             //         "St", new AccountDTO(77, "amira", "2121"), 235678);
             
             
-            AdminDTO admin1 = new AdminDTO("John Smith", 21, 'M', "john@test.com", "0987654321", "1234 Main St",
+            AdminDTO admin1 = new AdminDTO("John Smith", 21, 'M', "john@test.com", "0987654321", "El Rehab",
                     "jane", "2121", 2345.0f, "Admin");
             Database.addEmployeeDTO(admin1);
-            AdminDTO admin2 = new AdminDTO("Janna Smith", 21, 'F', "Janna@test.com", "098761284321", "1234 Main St",
+            AdminDTO admin2 = new AdminDTO("Janna Smith", 21, 'F', "Janna@test.com", "098761284321", "Nasr City",
                     "janna", "2121", 2345.0f, "Admin");
             Database.addEmployeeDTO(admin2);
             
@@ -117,9 +121,9 @@ public class main {
                     LocalDateTime.now().toString(), false, "Clean the cages", -1);
             Database.addVolunteerTask(volunteerTask1);
             
-            DoctorDTO doctorDTO = new DoctorDTO("Amira Doe", 23, 'F', "Amira@email.com", "0123456789", "Nasr City",
+            DoctorDTO doctorDTO = new DoctorDTO("Amira Doe", 23, 'F', "Amira@email.com", "0123456789", "Heliopolis",
                     "amira", "2121", 2310, "Doctor");
-            Appointment appointment1 = new Appointment(LocalDateTime.now().toString(), doctorDTO, 2300, "Checking " +
+            Appointment appointment1 = new Appointment(LocalDateTime.now().toString(), doctor1, 2300, "Checking " +
                     "up on an animal", animalDTO);
             Database.addAppointment(appointment1);
             
@@ -131,6 +135,17 @@ public class main {
             // for (BookingDTO booking : bookings) {
             //     System.out.println(booking.toString());
             // }
+            
+            // ArrayList<RequestDTO> requests = Database.viewRequest(courier1);
+            // for (RequestDTO request : requests) {
+            //     System.out.println(request.toString());
+            // }
+            // System.out.println(courier1);
+            
+            ArrayList<AppointmentDTO> appointmentDTOS = Database.viewDoctorAppointments(doctor1.getID());
+            for (AppointmentDTO appointmentDTO : appointmentDTOS) {
+                System.out.println(appointmentDTO.toString());
+            }
             
             System.out.println("Server is running...");
         } catch (Exception e) {
