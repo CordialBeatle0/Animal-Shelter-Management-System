@@ -9,26 +9,29 @@ public class VolunteerTaskDTO implements Serializable {
     private String date;
     private boolean completionStatus;
     private String description;
+    private int assignedVolunteer;
 
     public VolunteerTaskDTO() {
     }
 
-    public VolunteerTaskDTO(String taskName, String type, String date, boolean completionStatus, String description) {
+    public VolunteerTaskDTO(String taskName, String type, String date, boolean completionStatus, String description, int assignedVolunteer) {
         this.taskName = taskName;
         this.type = type;
         this.date = date;
         this.completionStatus = completionStatus;
         this.description = description;
+        this.assignedVolunteer= assignedVolunteer;
     }
 
     public VolunteerTaskDTO(int ID, String taskName, String type, String date, boolean completionStatus,
-            String description) {
+            String description, int assignedVolunteer) {
         this.ID = ID;
         this.taskName = taskName;
         this.type = type;
         this.date = date;
         this.completionStatus = completionStatus;
         this.description = description;
+        this.assignedVolunteer= assignedVolunteer;
     }
 
     public int getID() {
@@ -78,4 +81,17 @@ public class VolunteerTaskDTO implements Serializable {
     public String getDescription() {
         return description;
     }
+
+    public int getAssignedVolunteer() {
+        return assignedVolunteer;
+    }
+
+    public void setAssignedVolunteer(int assignedVolunteer) {
+        this.assignedVolunteer = assignedVolunteer;
+    }
+   
+
+
+    
+    
 }
