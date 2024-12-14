@@ -351,12 +351,10 @@ public class Database {
     // InStock methods
     public static void buyItem(int ID, int quantityNeeded) {
         Document document = sellingItemCollection.find(Filters.eq("ID", ID)).first();
-        SellingItem item = gson.fromJson(document.toJson(), SellingItem.class);
+        SellingItemDTO item = gson.fromJson(document.toJson(), SellingItemDTO.class);
         
-        Document updatedDocument = new Document("quantity", item.getQuantity() - quantityNeeded);
-        Document updateOperation = new Document("$set", updatedDocument);
-        
-        sellingItemCollection.updateOne(Filters.eq("ID", item.getID()), updateOperation);
+        sellingItemCollection.updateOne(Filters.eq("ID", item.getID()), Updates.set("quantity",
+                item.getQuantity() - quantityNeeded));
     }
     
     // VolunteerTask Class functions
