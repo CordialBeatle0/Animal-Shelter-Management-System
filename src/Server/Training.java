@@ -81,8 +81,8 @@ public class Training extends UnicastRemoteObject implements TrainingROI, Publis
         notifySubscriber("A new video has been uploaded");
     }
     
-    public void removeTrainingVideo() throws RemoteException {
-        Database.removeTrainingVideo(this);
+    public void removeTrainingVideo(int trainingID) throws RemoteException {
+        Database.removeTrainingVideo(trainingID);
     }
     
     @Override

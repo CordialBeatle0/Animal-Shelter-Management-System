@@ -20,6 +20,7 @@ public class main {
             AdminRMI adminRMI = new Admin();
             AnimalRMI animalRMI = new Animal();
             AppointmentRMI appointmentRMI = new Appointment();
+            BookingRMI bookingRMI = new Booking();
             CashRMI cashRMI = new Cash();
             DoctorRMI doctorRMI = new Doctor();
             InStockRMI inStockRMI = new InStock();
@@ -36,6 +37,7 @@ public class main {
             registry.rebind("Account", accountRMI);
             registry.rebind("Admin", adminRMI);
             registry.rebind("Animal", animalRMI);
+            registry.rebind("Booking", bookingRMI);
             registry.rebind("Appointment", appointmentRMI);
             registry.rebind("Cash", cashRMI);
             registry.rebind("Doctor", doctorRMI);

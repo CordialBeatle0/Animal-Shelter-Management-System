@@ -9,7 +9,7 @@ public interface AnimalRMI extends Remote {
     
     void removeAnimal(int ID) throws RemoteException;
     
-    AnimalDTO viewAnimal(AnimalDTO animal) throws RemoteException;
+    AnimalDTO viewAnimal(int animalID) throws RemoteException;
     
     ArrayList<AnimalDTO> viewAllAnimals() throws RemoteException;
     

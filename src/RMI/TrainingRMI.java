@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public interface TrainingRMI extends Remote {
     void uploadTrainingVideo() throws RemoteException;
     
-    void removeTrainingVideo() throws RemoteException;
+    void removeTrainingVideo(int trainingID) throws RemoteException;
     
     TrainingDTO viewTrainingVideo() throws RemoteException;
     

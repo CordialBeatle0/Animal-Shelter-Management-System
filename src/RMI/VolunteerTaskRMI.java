@@ -4,14 +4,18 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import Server.VolunteerTask;
+
 public interface VolunteerTaskRMI extends Remote {
-    void addVolunteerTask() throws RemoteException;
-    
-    void removeVolunteerTask() throws RemoteException;
-    
-    VolunteerTaskDTO viewVolunteerTask() throws RemoteException;
-    
-    void recordTaskCompletion() throws RemoteException;
-    
+    void addVolunteerTask(VolunteerTaskDTO task) throws RemoteException;
+
+    void removeVolunteerTask(int taskID) throws RemoteException;
+
+    VolunteerTaskDTO viewVolunteerTask(int taskID) throws RemoteException;
+
+    void recordTaskCompletion(int taskID) throws RemoteException;
+
+    public ArrayList<VolunteerTaskDTO> viewAllVolunteerTask() throws RemoteException;
+
     ArrayList<VolunteerTaskDTO> viewAssignedVolunteerTask(int volunteerID) throws RemoteException;
 }
