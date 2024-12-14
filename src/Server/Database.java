@@ -727,7 +727,7 @@ public class Database {
     public static void addEmployee(Employee employee) {
         int ID = getPrimaryKey();
         employee.setID(ID);
-        employee.getAccount().setID(ID);
+        employee.setAccount(ID);
         
         employeeCollection.insertOne(Document.parse(gson.toJson(employee)));
         accountCollection.insertOne(Document.parse(gson.toJson(employee.getAccount())));

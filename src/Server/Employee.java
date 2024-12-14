@@ -11,26 +11,28 @@ public class Employee extends UnicastRemoteObject {
     private String email;
     private String phoneNumber;
     private String address;
-    private Account account;
     private float salary;
+    private int account;
+    private String username;
+    private String password;
     
     public Employee() throws RemoteException {
     }
     
     public Employee(String name, int age, char gender, String email, String phoneNumber, String address,
-                    Account account, float salary) throws RemoteException {
+                    float salary) throws RemoteException {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.account = account;
+        
         this.salary = salary;
     }
     
     public Employee(int ID, String name, int age, char gender, String email, String phoneNumber, String address,
-                    Account account, float salary) throws RemoteException {
+                    float salary) throws RemoteException {
         this.ID = ID;
         this.name = name;
         this.age = age;
@@ -38,8 +40,21 @@ public class Employee extends UnicastRemoteObject {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.account = account;
+        
         this.salary = salary;
+    }
+    
+    public Employee(String name, int age, char gender, String email, String phoneNumber, String address, float salary, int account, String username, String password) throws RemoteException {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.salary = salary;
+        this.account = account;
+        this.username = username;
+        this.password = password;
     }
     
     public int getID() {
@@ -98,13 +113,6 @@ public class Employee extends UnicastRemoteObject {
         this.address = address;
     }
     
-    public Account getAccount() {
-        return account;
-    }
-    
-    public void setAccount(Account account) {
-        this.account = account;
-    }
     
     public float getSalary() {
         return salary;
@@ -112,6 +120,30 @@ public class Employee extends UnicastRemoteObject {
     
     public void setSalary(float salary) {
         this.salary = salary;
+    }
+    
+    public int getAccount() {
+        return account;
+    }
+    
+    public void setAccount(int account) {
+        this.account = account;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     @Override
