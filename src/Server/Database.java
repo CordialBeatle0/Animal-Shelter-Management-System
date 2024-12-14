@@ -314,11 +314,11 @@ public class Database {
         }
         return gson.fromJson(document.toJson(), UtilityItem.class);
     }
-
-    public static ArrayList<UtilityItem> viewAllUtilityItems() {
-        ArrayList<UtilityItem> utilityItems = new ArrayList<>();
+    
+    public static ArrayList<UtilityItemDTO> viewAllUtilityItems() {
+        ArrayList<UtilityItemDTO> utilityItems = new ArrayList<>();
         for (Document document : utilityItemCollection.find()) {
-            utilityItems.add(gson.fromJson(document.toJson(), UtilityItem.class));
+            utilityItems.add(gson.fromJson(document.toJson(), UtilityItemDTO.class));
         }
         return utilityItems;
     }
@@ -416,10 +416,10 @@ public class Database {
     public static void removeAnimal(int animalID) {
         animalCollection.deleteOne(Filters.eq("ID", animalID));
     }
-
-    public static AnimalDTO viewAnimal(AnimalDTO animal) {
-        Document animalDoc = animalCollection.find(Filters.eq("ID", animal.getID())).first();
-
+    
+    public static AnimalDTO viewAnimal(int animalID) {
+        Document animalDoc = animalCollection.find(Filters.eq("ID", animalID)).first();
+        
         if (animalDoc != null) {
             String json = animalDoc.toJson();
             return gson.fromJson(json, AnimalDTO.class);
