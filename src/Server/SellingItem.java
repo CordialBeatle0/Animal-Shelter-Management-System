@@ -1,11 +1,17 @@
 package Server;
 
+import RMI.SellingItemDTO;
+import RMI.SellingItemRMI;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class SellingItem extends Item {
+public class SellingItem extends Item implements SellingItemRMI {
     private StockStatus stockStatus;
     private float price;
+    
+    public SellingItem() throws RemoteException {
+    }
     
     public SellingItem(int ID, String itemName, int quality, String type, StockStatus stockStatus, float price) throws RemoteException {
         super(ID, itemName, quality, type);
@@ -29,14 +35,12 @@ public class SellingItem extends Item {
         this.price = price;
     }
     
-    @Override
-    public void addItem() throws RemoteException {
-        Database.addSellingItem(this);
+    public void addSellingItem(SellingItemDTO sellingItemDTO) throws RemoteException {
+        Database.addSellingItem(sellingItemDTO);
     }
     
-    @Override
-    public void removeItem() throws RemoteException {
-        Database.removeSellingItem(this);
+    public void removeSellingItem(SellingItemDTO sellingItemDTO) throws RemoteException {
+        Database.removeSellingItem(sellingItemDTO);
     }
     
     public void buyItem(int quantityRequired) throws RemoteException, Exception {
@@ -52,11 +56,11 @@ public class SellingItem extends Item {
         }
     }
     
-    public SellingItem viewSellingItem() throws RemoteException {
+    public SellingItemDTO viewSellingItem() throws RemoteException {
         return Database.viewSellingItem(getID());
     }
     
-    public ArrayList<SellingItem> viewAllSellingItems() throws RemoteException {
+    public ArrayList<SellingItemDTO> viewAllSellingItems() throws RemoteException {
         return Database.viewAllSellingItems();
     }
 }

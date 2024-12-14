@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class UtilityItem extends Item implements UtilityItemRMI {
     private int restockThreshold;
     
+    public UtilityItem() throws RemoteException {
+    }
+    
     public UtilityItem(int ID, String itemName, int quality, String type, int restockThreshold) throws RemoteException {
         super(ID, itemName, quality, type);
         this.restockThreshold = restockThreshold;
@@ -22,14 +25,12 @@ public class UtilityItem extends Item implements UtilityItemRMI {
         this.restockThreshold = restockThreshold;
     }
     
-    @Override
-    public void addItem() throws RemoteException {
-        Database.addUtilityItem(this);
+    public void addItem(UtilityItemDTO utilityItemDTO) throws RemoteException {
+        Database.addUtilityItem(utilityItemDTO);
     }
     
-    @Override
-    public void removeItem() throws RemoteException {
-        Database.removeUtilityItem(this);
+    public void removeItem(UtilityItemDTO utilityItemDTO) throws RemoteException {
+        Database.removeUtilityItem(utilityItemDTO);
     }
     
     public ArrayList<UtilityItemDTO> purchaseInventory() throws RemoteException {
@@ -42,17 +43,12 @@ public class UtilityItem extends Item implements UtilityItemRMI {
         return itemsThatNeedRestocking;
     }
     
-    public UtilityItem viewUtilityItem() throws RemoteException {
+    public UtilityItemDTO viewUtilityItem() throws RemoteException {
         return Database.viewUtilityItem(getID());
     }
     
     public ArrayList<UtilityItemDTO> viewAllUtilityItems() throws RemoteException {
         return Database.viewAllUtilityItems();
-    }
-    
-    // TODO: We can remove this function
-    public void donateSupplies() throws RemoteException {
-        addItem();
     }
     
     public String restockAlert() throws RemoteException {
