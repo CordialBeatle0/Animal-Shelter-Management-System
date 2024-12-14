@@ -5,17 +5,18 @@ import RMI.BookingRMI;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Booking implements BookingRMI, Serializable {
+public class Booking extends UnicastRemoteObject implements BookingRMI, Serializable {
     private int bookingID;
     private String bookingDate;
     private int visitorID;
     
-    public Booking() {
+    public Booking() throws RemoteException {
     }
     
-    public Booking(int bookingID, int visitorID, String bookingDate) {
+    public Booking(int bookingID, int visitorID, String bookingDate) throws RemoteException {
         this.bookingID = bookingID;
         this.visitorID = visitorID;
         this.bookingDate = bookingDate;
