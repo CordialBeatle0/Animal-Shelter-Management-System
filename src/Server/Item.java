@@ -11,6 +11,11 @@ public class Item extends UnicastRemoteObject {
     public Item() throws RemoteException {
     }
     
+    public Item(String itemName, int quantity) throws RemoteException {
+        this.itemName = itemName;
+        this.quantity = quantity;
+    }
+    
     public Item(int ID, String itemName, int quantity) throws RemoteException {
         this.ID = ID;
         this.itemName = itemName;
