@@ -16,6 +16,6 @@ public class Admin extends Specialised implements AdminRMI {
     public void calculateSalary(int hours, float workingRate) throws RemoteException {
         float employeeSalary = hours * workingRate;
         setSalary(employeeSalary);
-    
+        
     }
 }

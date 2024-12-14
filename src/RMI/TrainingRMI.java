@@ -1,7 +1,5 @@
 package RMI;
 
-import Server.Training;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -9,9 +7,9 @@ import java.util.ArrayList;
 public interface TrainingRMI extends Remote {
     void uploadTrainingVideo() throws RemoteException;
     
-    void removeTrainingVideo() throws RemoteException;
+    void removeTrainingVideo(int trainingID) throws RemoteException;
     
-    Training viewTrainingVideo() throws RemoteException;
+    TrainingDTO viewTrainingVideo() throws RemoteException;
     
-    ArrayList<Training> viewAllTrainingVideos() throws RemoteException;
+    ArrayList<TrainingDTO> viewAllTrainingVideos() throws RemoteException;
 }

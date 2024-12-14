@@ -11,6 +11,12 @@ public class VolunteerDTO implements Serializable {
     public VolunteerDTO() {
     }
     
+    public VolunteerDTO(String name, String phoneNumber, String address) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        Address = address;
+    }
+    
     public VolunteerDTO(int ID, String name, String phoneNumber, String address) {
         this.ID = ID;
         this.name = name;

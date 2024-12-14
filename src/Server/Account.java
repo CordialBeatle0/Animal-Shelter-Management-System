@@ -1,6 +1,6 @@
 package Server;
 
-import RMI.AccountRMI;
+import RMI.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -43,23 +43,26 @@ public class Account extends UnicastRemoteObject implements AccountRMI {
         this.password = password;
     }
     
-    public User userLogin(String username, String password) throws RemoteException {
+    public UserDTO userLogin(String username, String password) throws RemoteException {
+        // User user = Database.userLogin(username, password);
+        // return new UserDTO(user.getID(), user.getName(), user.getPhoneNumber(), user.getAddress(),
+        //         user.getOutstandingFees());
         return Database.userLogin(username, password);
     }
     
-    public Employee empLogin(String username, String password) throws RemoteException {
+    public EmployeeDTO empLogin(String username, String password) throws RemoteException {
         return Database.empLogin(username, password);
     }
     
-    public Volunteer volunteerLogin(String username, String password) throws RemoteException {
+    public VolunteerDTO volunteerLogin(String username, String password) throws RemoteException {
         return Database.volunteerLogin(username, password);
     }
     
-    public void updateUserAccount(User user, String username, String password) throws RemoteException {
+    public void updateUserAccount(UserDTO user, String username, String password) throws RemoteException {
         Database.updateUserAccount(user, username, password);
     }
     
-    public void updateSpecialisedAccount(Specialised specialised, String username, String password) throws RemoteException {
-        Database.updateSpecialisedAccount(specialised, username, password);
+    public void updateSpecialisedAccount(int specialisedID, String username, String password) throws RemoteException {
+        Database.updateSpecialisedAccount(specialisedID, username, password);
     }
 }

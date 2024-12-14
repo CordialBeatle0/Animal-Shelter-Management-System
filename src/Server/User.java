@@ -1,10 +1,13 @@
 package Server;
 
 import RMI.Observer;
+import RMI.Payment;
+import RMI.UserDTO;
 import RMI.UserRMI;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 public class User extends UnicastRemoteObject implements Observer, UserRMI {
     private int ID;
@@ -15,7 +18,6 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     private Payment paymentType;
     private Subscription subscription;
     private TrainingROI trainingVideos;
-    // SH added outstandingfees
     private float outstandingFees;
     
     
@@ -109,12 +111,25 @@ public class User extends UnicastRemoteObject implements Observer, UserRMI {
     }
     
     
-    public void signUp(User user) throws RemoteException {
+    public void signUp(UserDTO userDTO) throws RemoteException {
+        User user = new User(userDTO.getID(), userDTO.getName(), new Account(userDTO.getAccount().getID(),
+                userDTO.getAccount().getUsername(), userDTO.getAccount().getPassword()), userDTO.getPhoneNumber(),
+                userDTO.getAddress(), new Cash(), new Subscription(), null);
         Database.signUp(user);
     }
     
     @Override
     public void updateObserver(String message) throws RemoteException {
-        Database.addNotification(message);
+        Database.addNotification(getID(), message);
+    }
+    
+    @Override
+    public void removeNotification(UserDTO user) throws RemoteException {
+        Database.removeNotification(user.getID());
+    }
+    
+    @Override
+    public ArrayList<String> getNotifications(UserDTO user) throws RemoteException {
+        return Database.getNotifications(user.getID());
     }
 }
