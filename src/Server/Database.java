@@ -47,6 +47,7 @@ public class Database {
     private static MongoCollection<Document> bookingCollection;
     private static MongoCollection<Document> appointmentCollection;
     private static MongoCollection<Document> primaryKeysCollection;
+    private static MongoCollection<Document> notificationCollection;
     
     public Database() {
         // Disables Mongo Logs
@@ -76,6 +77,7 @@ public class Database {
         bookingCollection = instance.getCollection("Booking");
         appointmentCollection = instance.getCollection("Appointment");
         primaryKeysCollection = instance.getCollection("PrimaryKeys");
+        notificationCollection = instance.getCollection("Notification");
     }
     
     public void close() {
@@ -180,17 +182,17 @@ public class Database {
     
     public static void addNotification(int ID, String message) {
         Document document = new Document("ID", ID).append("message", message);
-        userCollection.updateOne(Filters.eq("ID", ID), Updates.addToSet("notification", document));
+        notificationCollection.insertOne(document);
     }
     
     public static void removeNotification(int ID) {
-        userCollection.updateOne(Filters.eq("ID", ID), Updates.set("notification", new ArrayList<>()));
+        notificationCollection.deleteOne(Filters.eq("ID", ID));
     }
     
     public static ArrayList<String> getNotifications(int ID) {
         ArrayList<String> notifications = new ArrayList<>();
-        for (Document document : userCollection.find(Filters.eq("ID", ID))) {
-            notifications.add(document.getString("notification"));
+        for (Document document : notificationCollection.find(Filters.eq("ID", ID))) {
+            notifications.add(document.getString("message"));
         }
         return notifications;
     }
@@ -716,7 +718,7 @@ public class Database {
         subscriptionCollection.insertOne(Document.parse(gson.toJson(subscription)));
         userCollection.updateOne(Filters.eq("ID", user.getID()), Updates.set("subscription",
                 Document.parse(gson.toJson(subscription))));
-                user.setSubscribed(true);
+        user.setSubscribed(true);
     }
     
     public static void removeSubscription(Subscription subscription, UserDTO user) {
@@ -727,16 +729,16 @@ public class Database {
     
     // might change, actually might not be needed
     public static boolean isSubscribed(UserDTO user) {
-        if(user.isSubscribed()) {
+        if (user.isSubscribed()) {
             return true;
         } else {
             return false;
         }
     }
-
+    
     public static void subscribeToTraining(UserDTO user, float amountPaid, String paymentType) {
-      
-    }   
+    
+    }
     
     public static void addEmployee(Employee employee) {
         int ID = getPrimaryKey();
