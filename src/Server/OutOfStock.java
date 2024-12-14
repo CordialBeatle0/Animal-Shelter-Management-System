@@ -8,7 +8,7 @@ public class OutOfStock extends UnicastRemoteObject implements StockStatus {
     }
     
     @Override
-    public void buyItem(int ID, int quantityNeeded, int userID, Payment payment) throws RemoteException, Exception {
-        throw new Exception(" is out of stock");
+    public void buyItem(int ID, int quantityNeeded, int userID, Payment payment) throws RemoteException{
+        System.out.println("Out of stock");
     }
 }

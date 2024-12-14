@@ -353,7 +353,7 @@ public class Database {
         Document document = sellingItemCollection.find(Filters.eq("ID", ID)).first();
         SellingItem item = gson.fromJson(document.toJson(), SellingItem.class);
         
-        Document updatedDocument = new Document("quality", item.getQuantity() - quantityNeeded);
+        Document updatedDocument = new Document("quantity", item.getQuantity() - quantityNeeded);
         Document updateOperation = new Document("$set", updatedDocument);
         
         sellingItemCollection.updateOne(Filters.eq("ID", item.getID()), updateOperation);
