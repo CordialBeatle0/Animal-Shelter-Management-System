@@ -93,14 +93,16 @@ public class Database {
         // Retrieve the document containing the global primary key
         Document document = primaryKeysCollection.find().first();
         
+        int primaryKey;
         // If no primary key exists, initialize it to 0
         if (document == null) {
             setPrimaryKeyTo0();
-            return 0;
+            primaryKey = 0;
+        } else {
+            // Get the current primary key value
+            primaryKey = document.getInteger("primaryKey");
         }
         
-        // Get the current primary key value
-        int primaryKey = document.getInteger("primaryKey");
         
         // Increment and update the primary key value
         primaryKeysCollection.updateOne(
@@ -126,7 +128,7 @@ public class Database {
     public static ArrayList<Observer> getAllObservers() {
         ArrayList<Observer> observers = new ArrayList<>();
         for (Document document : observerCollection.find()) {
-            observers.add(gson.fromJson(document.toJson(), Observer.class));
+            observers.add(gson.fromJson(document.toJson(), User.class));
         }
         return observers;
     }
@@ -312,13 +314,13 @@ public class Database {
     // Utility item methods
     public static void addUtilityItem(UtilityItemDTO item) {
         // if item already exists
-        Document document = utilityItemCollection.find(Filters.eq("itemName", item.getName())).first();
+        Document document = utilityItemCollection.find(Filters.eq("name", item.getName())).first();
         if (document != null) {
             // add the quantity of the current item with the new item
             UtilityItem existingItem = gson.fromJson(document.toJson(), UtilityItem.class);
             int existingQuantity = existingItem.getQuantity();
             int newQuantity = existingQuantity + item.getQuantity();
-            utilityItemCollection.updateOne(Filters.eq("itemName", item.getName()),
+            utilityItemCollection.updateOne(Filters.eq("name", item.getName()),
                     Updates.set("quantity", newQuantity));
             return;
         }
