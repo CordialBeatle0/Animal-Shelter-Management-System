@@ -142,10 +142,17 @@ public class main {
             // }
             // System.out.println(courier1);
             
-            ArrayList<AppointmentDTO> appointmentDTOS = Database.viewDoctorAppointments(doctor1.getID());
-            for (AppointmentDTO appointmentDTO : appointmentDTOS) {
-                System.out.println(appointmentDTO.toString());
-            }
+            // ArrayList<AppointmentDTO> appointmentDTOS = Database.viewDoctorAppointments(doctor1.getID());
+            // for (AppointmentDTO appointmentDTO : appointmentDTOS) {
+            //     System.out.println(appointmentDTO.toString());
+            // }
+            
+            String notification = "This is a notification";
+            String notification2 = "This is another notification";
+            String notification3 = "This is yet another notification";
+            Database.addNotification(user1.getID(), notification);
+            Database.addNotification(user1.getID(), notification2);
+            Database.addNotification(user1.getID(), notification3);
             
             System.out.println("Server is running...");
         } catch (Exception e) {
